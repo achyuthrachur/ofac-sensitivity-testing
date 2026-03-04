@@ -26,11 +26,11 @@
 
 ### Degradation Rules
 
-- [ ] **RULE-01**: User can apply space removal / insertion (`AL QAEDA` → `ALQAEDA` or `A L Q A E D A`)
-- [ ] **RULE-02**: User can apply character substitution — OCR/leet variants (`O`→`0`, `I`→`1`, `S`→`5`, `A`→`@`)
-- [ ] **RULE-03**: User can apply diacritic removal / addition (`Müller` → `Muller`, `Jose` → `José`)
-- [ ] **RULE-04**: User can apply word reordering (`Kim Jong Un` → `Jong Un Kim`)
-- [ ] **RULE-05**: User can apply abbreviation (compress tokens by dropping vowels: `Mohammed` → `Mhd`)
+- [x] **RULE-01**: User can apply space removal / insertion (`AL QAEDA` → `ALQAEDA` or `A L Q A E D A`)
+- [x] **RULE-02**: User can apply character substitution — OCR/leet variants (`O`→`0`, `I`→`1`, `S`→`5`, `A`→`@`)
+- [x] **RULE-03**: User can apply diacritic removal / addition (`Müller` → `Muller`, `Jose` → `José`)
+- [x] **RULE-04**: User can apply word reordering (`Kim Jong Un` → `Jong Un Kim`)
+- [x] **RULE-05**: User can apply abbreviation (compress tokens by dropping vowels: `Mohammed` → `Mhd`)
 - [ ] **RULE-06**: User can apply truncation (drop trailing name tokens)
 - [ ] **RULE-07**: User can apply phonetic / transliteration variants (`Osama` → `Usama`, `Qaddafi` → `Gaddafi`)
 - [ ] **RULE-08**: User can apply punctuation insertion / removal (`Al-Qaeda` → `Al Qaeda` → `AlQaeda`)
@@ -106,11 +106,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DATA-04 | Phase 2 | Complete |
 | DATA-05 | Phase 2 | Complete |
 | DATA-06 | Phase 2 | Complete |
-| RULE-01 | Phase 3 | Pending |
-| RULE-02 | Phase 3 | Pending |
-| RULE-03 | Phase 3 | Pending |
-| RULE-04 | Phase 3 | Pending |
-| RULE-05 | Phase 3 | Pending |
+| RULE-01 | Phase 3 | Complete |
+| RULE-02 | Phase 3 | Complete |
+| RULE-03 | Phase 3 | Complete |
+| RULE-04 | Phase 3 | Complete |
+| RULE-05 | Phase 3 | Complete |
 | RULE-06 | Phase 3 | Pending |
 | RULE-07 | Phase 3 | Pending |
 | RULE-08 | Phase 3 | Pending |

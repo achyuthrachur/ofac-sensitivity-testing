@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Completed 02-synthetic-dataset-03-PLAN.md
-last_updated: "2026-03-04T16:30:15.665Z"
-last_activity: 2026-03-04 — Completed 02-03-PLAN.md (domain review checkpoint approved by reviewer)
+status: in_progress
+stopped_at: Completed 03-transformation-engine-01-PLAN.md
+last_updated: "2026-03-04T11:35:00.000Z"
+last_activity: 2026-03-04 — Completed 03-01-PLAN.md (Vitest 4 + RULE-01 through RULE-05, all 23 tests green)
 progress:
   total_phases: 7
   completed_phases: 2
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-03-03)
 
 ## Current Position
 
-Phase: 2 of 7 (Synthetic Dataset) — COMPLETE
-Plan: 3 of 3 complete in current phase
-Status: Phase 2 complete — DATA-06 domain review approved; ready for Phase 3 (Degradation Rules)
-Last activity: 2026-03-04 — Completed 02-03-PLAN.md (domain review checkpoint approved by reviewer)
+Phase: 3 of 7 (Transformation Engine) — IN PROGRESS
+Plan: 1 of 3 complete in current phase
+Status: Phase 3 plan 1 complete — RULE-01 through RULE-05 implemented, 23 tests green; ready for plan 02 (RULE-06 through RULE-10)
+Last activity: 2026-03-04 — Completed 03-01-PLAN.md (Vitest 4 + RULE-01 through RULE-05, all 23 tests green)
 
-Progress: [██████████] 100% (Phase 2)
+Progress: [███░░░░░░░] 33% (Phase 3 — 1/3 plans complete)
 
 ## Performance Metrics
 
@@ -58,6 +58,7 @@ Progress: [██████████] 100% (Phase 2)
 | Phase 02-synthetic-dataset P01 | 4 | 2 tasks | 3 files |
 | Phase 02-synthetic-dataset P02 | 5 | 1 tasks | 1 files |
 | Phase 02-synthetic-dataset P03 | 1 | 1 tasks | 0 files |
+| Phase 03-transformation-engine P01 | ~20 min | 2 tasks | 13 files |
 
 ## Accumulated Context
 
@@ -81,6 +82,10 @@ Recent decisions affecting current work:
 - [Phase 02-synthetic-dataset]: Vessel region set by script of vessel name not operator nationality; no cyrillic-tagged vessels
 - [Phase 02-synthetic-dataset]: DATA-06 satisfied by human domain reviewer approval — Arabic ism+nasab/kunya patterns, surname-first CJK order, and Russian three-token patronymic structure all confirmed authentic
 - [Phase 02-synthetic-dataset]: Phase 2 complete — all six requirements DATA-01 through DATA-06 addressed; data/sdn.json frozen for Phase 3
+- [Phase 03-transformation-engine]: Vitest 4 + vite-tsconfig-paths resolves @/ aliases in tests without Next.js bundler involvement
+- [Phase 03-transformation-engine]: RULE-05 CONNECTORS set: IBN, BINT, BIN, BT, ABU, ABI, UMM — Arabic genealogical particles preserved verbatim
+- [Phase 03-transformation-engine]: RULE-05 AL-XXXX nisba handling: vowels stripped from suffix only, AL- prefix preserved (AL-RSHD not L-RSHD)
+- [Phase 03-transformation-engine]: RuleFunction contract established — (entry: SdnEntry) => string | null; null means inapplicable or no-op, not empty string
 
 ### Pending Todos
 
@@ -94,6 +99,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T15:56:53.484Z
-Stopped at: Completed 02-synthetic-dataset-03-PLAN.md
+Last session: 2026-03-04T11:35:00.000Z
+Stopped at: Completed 03-transformation-engine-01-PLAN.md
 Resume file: None

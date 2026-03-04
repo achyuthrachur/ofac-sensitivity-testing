@@ -64,7 +64,12 @@ Plans:
   3. Given the same input and rule selection, the engine always produces identical output (deterministic via `CANONICAL_ORDER`)
   4. `lib/sampler.ts` returns the correct entity type and region distribution from a given `RunParams` fixture
   5. Unit tests cover all 10 rules against at minimum one multi-script fixture (Arabic, Chinese, or Cyrillic name) per rule
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Install Vitest 4 + config; implement RULE-01 through RULE-05 with unit tests
+- [ ] 03-02-PLAN.md — Implement RULE-06 through RULE-10 with unit tests (all 10 rules green)
+- [ ] 03-03-PLAN.md — Create rules/index.ts public API barrel and sampler.ts; full suite gate
 
 ### Phase 4: Server Action
 **Goal**: The `runTest` server action validates parameters, invokes the engine, and returns a `ResultRow[]` array — end-to-end flow confirmed working and Vercel timeout risk assessed
@@ -121,7 +126,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete   | 2026-03-04 |
 | 2. Synthetic Dataset | 3/3 | Complete   | 2026-03-04 |
-| 3. Transformation Engine | 0/TBD | Not started | - |
+| 3. Transformation Engine | 1/3 | In progress | - |
 | 4. Server Action | 0/TBD | Not started | - |
 | 5. Parameter Form | 0/TBD | Not started | - |
 | 6. Results Table and CSV Export | 0/TBD | Not started | - |
