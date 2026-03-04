@@ -1,0 +1,1122 @@
+[
+  {
+    "id": "ind-arabic-001",
+    "name": "HASSAN IBN ALI IBN OMAR AL-RASHIDI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Iraq"
+  },
+  {
+    "id": "ind-arabic-002",
+    "name": "AHMAD IBN KHALID AL-MASRI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Egypt"
+  },
+  {
+    "id": "ind-arabic-003",
+    "name": "ABD AL-RAHIM IBN IBRAHIM AL-SURI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Syria"
+  },
+  {
+    "id": "ind-arabic-004",
+    "name": "OMAR BIN YUSUF AL-QAHTANI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "ind-arabic-005",
+    "name": "KHALID IBN WALID AL-ANSARI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Yemen"
+  },
+  {
+    "id": "ind-arabic-006",
+    "name": "MUSTAFA IBN TARIQ IBN HUSSEIN AL-BAGHDADI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Iraq"
+  },
+  {
+    "id": "ind-arabic-007",
+    "name": "ABU BAKR AL-SHAMI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Syria"
+  },
+  {
+    "id": "ind-arabic-008",
+    "name": "ABU UMAR AL-LIBI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Libya"
+  },
+  {
+    "id": "ind-arabic-009",
+    "name": "ABU MUSAB AL-ZARQAWI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Jordan"
+  },
+  {
+    "id": "ind-arabic-010",
+    "name": "NASSER IBN SALEH AL-GHAMDI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "ind-arabic-011",
+    "name": "IBRAHIM BIN ADEL AL-HARBI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "ind-arabic-012",
+    "name": "IMAD IBN RIYAD AL-JABOURI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Iraq"
+  },
+  {
+    "id": "ind-arabic-013",
+    "name": "ZAYD IBN FAISAL AL-MUTAIRI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Kuwait"
+  },
+  {
+    "id": "ind-arabic-014",
+    "name": "TARIQ IBN SAMIR AL-SHAYBANI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Iraq"
+  },
+  {
+    "id": "ind-arabic-015",
+    "name": "QASEM IBN ALI AL-DOSARI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Iran"
+  },
+  {
+    "id": "ind-arabic-016",
+    "name": "BILAL BIN MUSTAFA AL-NOURI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Iraq"
+  },
+  {
+    "id": "ind-arabic-017",
+    "name": "WALID IBN HASSAN AL-TAMIMI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Iraq"
+  },
+  {
+    "id": "ind-arabic-018",
+    "name": "ABD AL-AZIZ IBN OMAR AL-HUSSEINI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Lebanon"
+  },
+  {
+    "id": "ind-arabic-019",
+    "name": "ABD AL-KARIM AL-SADR",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Lebanon"
+  },
+  {
+    "id": "ind-arabic-020",
+    "name": "SAMIR IBN AHMAD AL-SHAMI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Syria"
+  },
+  {
+    "id": "ind-arabic-021",
+    "name": "RIYAD IBN IBRAHIM AL-LIBI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Libya"
+  },
+  {
+    "id": "ind-arabic-022",
+    "name": "ADEL BIN NASSER AL-KUWAYTI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Kuwait"
+  },
+  {
+    "id": "ind-arabic-023",
+    "name": "YUSUF IBN KHALID AL-MASRI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Egypt"
+  },
+  {
+    "id": "ind-arabic-024",
+    "name": "FAISAL IBN TARIQ AL-GHAMDI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "ind-arabic-025",
+    "name": "ALI IBN WALID AL-SURI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Syria"
+  },
+  {
+    "id": "ind-arabic-026",
+    "name": "SALEH BIN OMAR AL-JABOURI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Iraq"
+  },
+  {
+    "id": "ind-arabic-027",
+    "name": "ABU HAFS AL-MASRI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Egypt"
+  },
+  {
+    "id": "ind-arabic-028",
+    "name": "ABU YAHYA AL-LIBI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Libya"
+  },
+  {
+    "id": "ind-arabic-029",
+    "name": "UMAYMA BINT HASSAN AL-QAHTANI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "ind-arabic-030",
+    "name": "FATIMA BINT ALI AL-RASHIDI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Iraq"
+  },
+  {
+    "id": "ind-arabic-031",
+    "name": "ZAYNAB BINT IBRAHIM AL-MASRI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Egypt"
+  },
+  {
+    "id": "ind-arabic-032",
+    "name": "KHADIJAH BINT YUSUF AL-ANSARI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Yemen"
+  },
+  {
+    "id": "ind-arabic-033",
+    "name": "MARYAM BINT KHALID AL-TAMIMI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Iraq"
+  },
+  {
+    "id": "ind-arabic-034",
+    "name": "HUDA BINT SALEH AL-HARBI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Saudi Arabia"
+  },
+  {
+    "id": "ind-arabic-035",
+    "name": "NOUR BINT ADEL AL-SHAYBANI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Syria"
+  },
+  {
+    "id": "ind-arabic-036",
+    "name": "AISHA BINT OMAR AL-DOSARI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Iran"
+  },
+  {
+    "id": "ind-arabic-037",
+    "name": "RANIA BINT MUSTAFA AL-SURI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Syria"
+  },
+  {
+    "id": "ind-arabic-038",
+    "name": "LAYLA BINT NASSER AL-BAGHDADI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Iraq"
+  },
+  {
+    "id": "ind-arabic-039",
+    "name": "ABU IBRAHIM AL-HASHIMI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Iraq"
+  },
+  {
+    "id": "ind-arabic-040",
+    "name": "ABD AL-RAHMAN IBN BILAL AL-QAHTANI",
+    "entityType": "individual",
+    "region": "arabic",
+    "country": "Yemen"
+  },
+  {
+    "id": "ind-cjk-001",
+    "name": "ZHANG WEI",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-002",
+    "name": "LI HONG MEI",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-003",
+    "name": "WANG JIANGUO",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-004",
+    "name": "LIU BIAO",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-005",
+    "name": "CHEN GANG",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-006",
+    "name": "YANG FANG",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-007",
+    "name": "HUANG MING",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-008",
+    "name": "ZHAO QIANG",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-009",
+    "name": "WU YONG",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-010",
+    "name": "ZHOU ZHENG",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-011",
+    "name": "XU SHENG",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-012",
+    "name": "SUN TAO",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-013",
+    "name": "MA WEIDONG",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-014",
+    "name": "HU XIAODONG",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-015",
+    "name": "ZHU LIANG",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-016",
+    "name": "LIN ZHI",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-017",
+    "name": "GUO HONG",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-018",
+    "name": "HE PENG",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-019",
+    "name": "GAO LAN",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-020",
+    "name": "LIANG XUE",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "ind-cjk-021",
+    "name": "KIM JONG SU",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "ind-cjk-022",
+    "name": "RI SONG JIN",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "ind-cjk-023",
+    "name": "JANG SONG THAEK",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "ind-cjk-024",
+    "name": "CHOE SON HUI",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "ind-cjk-025",
+    "name": "KIM PYONG HAE",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "ind-cjk-026",
+    "name": "PARK MYONG GUK",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "ind-cjk-027",
+    "name": "KANG RYONG CHOL",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "ind-cjk-028",
+    "name": "YUN JONG RIN",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "ind-cjk-029",
+    "name": "LEE IL GWAN",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "ind-cjk-030",
+    "name": "CHO CHUN RYONG",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "ind-cjk-031",
+    "name": "RI CHOL BONG",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "ind-cjk-032",
+    "name": "KIM KWANG IL",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "ind-cjk-033",
+    "name": "NGUYEN VAN HUNG",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "Vietnam"
+  },
+  {
+    "id": "ind-cjk-034",
+    "name": "TRAN THI HOA",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "Vietnam"
+  },
+  {
+    "id": "ind-cjk-035",
+    "name": "LE VAN THANH",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "Vietnam"
+  },
+  {
+    "id": "ind-cjk-036",
+    "name": "PHAM VAN DONG",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "Vietnam"
+  },
+  {
+    "id": "ind-cjk-037",
+    "name": "HOANG THI LAN",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "Vietnam"
+  },
+  {
+    "id": "ind-cjk-038",
+    "name": "NGUYEN VAN AN",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "Vietnam"
+  },
+  {
+    "id": "ind-cjk-039",
+    "name": "TRAN DINH DUNG",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "Vietnam"
+  },
+  {
+    "id": "ind-cjk-040",
+    "name": "LE THI BICH",
+    "entityType": "individual",
+    "region": "cjk",
+    "country": "Vietnam"
+  },
+  {
+    "id": "ind-cyrillic-001",
+    "name": "IGOR VLADIMIROVICH PETROV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-002",
+    "name": "SERGEI NIKOLAYEVICH IVANOV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-003",
+    "name": "DMITRI ALEKSEYEVICH VOLKOV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-004",
+    "name": "VLADIMIR IVANOVICH KOZLOV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-005",
+    "name": "ALEKSEI BORISOVICH SOKOLOV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-006",
+    "name": "NIKOLAI SERGEYEVICH NOVIKOV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-007",
+    "name": "MIKHAIL PAVLOVICH MOROZOV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-008",
+    "name": "ANDREI DMITRIYEVICH FEDOROV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-009",
+    "name": "PAVEL MIKHAILOVICH LEBEDEV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-010",
+    "name": "IVAN IGOREVICH SEMENOV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-011",
+    "name": "ROMAN VLADIMIROVICH POPOV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-012",
+    "name": "YURI NIKOLAYEVICH NIKITIN",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-013",
+    "name": "VIKTOR ALEKSEYEVICH ORLOV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-014",
+    "name": "KONSTANTIN IVANOVICH ZYKOV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-015",
+    "name": "OLEG BORISOVICH KUZNETSOV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-016",
+    "name": "BORIS SERGEYEVICH MAKAROV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-017",
+    "name": "ANATOLY PAVLOVICH GROMOV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-018",
+    "name": "ARTEM MIKHAILOVICH ZHUKOV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-019",
+    "name": "DENIS DMITRIYEVICH CHERNIKOV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-020",
+    "name": "ALEKSANDR VLADIMIROVICH SIDOROV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-021",
+    "name": "NATALIA VLADIMIROVNA PETROVA",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-022",
+    "name": "ELENA NIKOLAYEVNA IVANOVA",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-023",
+    "name": "IRINA ALEKSEYEVNA VOLKOVA",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-024",
+    "name": "SVETLANA IVANOVNA KOZLOVA",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-025",
+    "name": "TATIANA BORISOVNA SOKOLOVA",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-026",
+    "name": "OLGA SERGEYEVNA NOVIKOVA",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-027",
+    "name": "MARIA PAVLOVNA MOROZOVA",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-028",
+    "name": "ANNA MIKHAILOVNA FEDOROVA",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-029",
+    "name": "EKATERINA DMITRIYEVNA LEBEDEVA",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-030",
+    "name": "YULIA IGOREVNA SEMENOVA",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-cyrillic-031",
+    "name": "ANDRIY VOLODYMYROVYCH BONDARENKO",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Ukraine"
+  },
+  {
+    "id": "ind-cyrillic-032",
+    "name": "MYKOLA IVANOVYCH KOVALENKO",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Ukraine"
+  },
+  {
+    "id": "ind-cyrillic-033",
+    "name": "VASYL PETROVYCH SHEVCHENKO",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Ukraine"
+  },
+  {
+    "id": "ind-cyrillic-034",
+    "name": "OLEKSANDR VIKTOROVYCH PONOMARENKO",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Ukraine"
+  },
+  {
+    "id": "ind-cyrillic-035",
+    "name": "IRYNA MYKOLAYIVNA KOVALCHUK",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Ukraine"
+  },
+  {
+    "id": "ind-cyrillic-036",
+    "name": "VIKTAR IVANOVICH LUKASHENKA",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Belarus"
+  },
+  {
+    "id": "ind-cyrillic-037",
+    "name": "ANATOL VASILYEVICH SIDORENKO",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Belarus"
+  },
+  {
+    "id": "ind-cyrillic-038",
+    "name": "SERGEI ALEXANDROVICH TIKHONOV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Belarus"
+  },
+  {
+    "id": "ind-cyrillic-039",
+    "name": "VLADIMIR NIKOLAYEVICH OSTROV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Belarus"
+  },
+  {
+    "id": "ind-cyrillic-040",
+    "name": "BORIS PAVLOVICH ZAITSEV",
+    "entityType": "individual",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "ind-latin-001",
+    "name": "CARLOS EDUARDO RODRIGUEZ GARCIA",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Venezuela"
+  },
+  {
+    "id": "ind-latin-002",
+    "name": "MIGUEL ANGEL SANCHEZ LOPEZ",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Cuba"
+  },
+  {
+    "id": "ind-latin-003",
+    "name": "JORGE LUIS FERNANDEZ MARTINEZ",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Cuba"
+  },
+  {
+    "id": "ind-latin-004",
+    "name": "JUAN PABLO RAMIREZ HERRERA",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Cuba"
+  },
+  {
+    "id": "ind-latin-005",
+    "name": "ANTONIO JOSE GOMEZ VARGAS",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Venezuela"
+  },
+  {
+    "id": "ind-latin-006",
+    "name": "LUIS ALBERTO MENDOZA REYES",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Cuba"
+  },
+  {
+    "id": "ind-latin-007",
+    "name": "RAFAEL MIGUEL TORRES CASTILLO",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Cuba"
+  },
+  {
+    "id": "ind-latin-008",
+    "name": "FRANCISCO JAVIER MORALES JIMENEZ",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Venezuela"
+  },
+  {
+    "id": "ind-latin-009",
+    "name": "PEDRO ANTONIO RUIZ ESCOBAR",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Colombia"
+  },
+  {
+    "id": "ind-latin-010",
+    "name": "DIEGO ALEJANDRO VARGAS SILVA",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Venezuela"
+  },
+  {
+    "id": "ind-latin-011",
+    "name": "ROBERTO CARLOS PEREZ OCHOA",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Colombia"
+  },
+  {
+    "id": "ind-latin-012",
+    "name": "ERNESTO RAFAEL HERRERA LUNA",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Venezuela"
+  },
+  {
+    "id": "ind-latin-013",
+    "name": "GABRIEL AUGUSTO MEDINA SALAZAR",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Venezuela"
+  },
+  {
+    "id": "ind-latin-014",
+    "name": "ANDRES FELIPE CASTRO BOLIVAR",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Colombia"
+  },
+  {
+    "id": "ind-latin-015",
+    "name": "JOSE MARIA NUNEZ DELGADO",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Nicaragua"
+  },
+  {
+    "id": "ind-latin-016",
+    "name": "JEAN-PIERRE DUBOIS",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "France"
+  },
+  {
+    "id": "ind-latin-017",
+    "name": "FRANCOIS XAVIER MOREAU",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "France"
+  },
+  {
+    "id": "ind-latin-018",
+    "name": "PIERRE ANTOINE LECLERC",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "France"
+  },
+  {
+    "id": "ind-latin-019",
+    "name": "JEAN-BAPTISTE ROUSSEAU",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "France"
+  },
+  {
+    "id": "ind-latin-020",
+    "name": "MICHEL ALAIN BERNARD",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "France"
+  },
+  {
+    "id": "ind-latin-021",
+    "name": "HANS JUERGEN MUELLER",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Germany"
+  },
+  {
+    "id": "ind-latin-022",
+    "name": "DIETER HELMUT SCHMIDT",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Germany"
+  },
+  {
+    "id": "ind-latin-023",
+    "name": "KARL HEINZ BRAUN",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Germany"
+  },
+  {
+    "id": "ind-latin-024",
+    "name": "FRITZ WERNER HOFFMANN",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Germany"
+  },
+  {
+    "id": "ind-latin-025",
+    "name": "STEFAN KRISTOPH RICHTER",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Germany"
+  },
+  {
+    "id": "ind-latin-026",
+    "name": "GIOVANNI MARIO RICCI",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Italy"
+  },
+  {
+    "id": "ind-latin-027",
+    "name": "MARCO ANTONIO FERRARI",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Italy"
+  },
+  {
+    "id": "ind-latin-028",
+    "name": "LUIGI ENZO BIANCHI",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Italy"
+  },
+  {
+    "id": "ind-latin-029",
+    "name": "ROBERTO SALVATORE CONTI",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Italy"
+  },
+  {
+    "id": "ind-latin-030",
+    "name": "GIUSEPPE FRANCO CARUSO",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Italy"
+  },
+  {
+    "id": "ind-latin-031",
+    "name": "JEAN MARIE LAMBERT",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Belgium"
+  },
+  {
+    "id": "ind-latin-032",
+    "name": "PIERRE MARC FONTAINE",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "France"
+  },
+  {
+    "id": "ind-latin-033",
+    "name": "RENE CLAUDE MARTIN",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "France"
+  },
+  {
+    "id": "ind-latin-034",
+    "name": "NICOLAS JEAN THOMAS",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "France"
+  },
+  {
+    "id": "ind-latin-035",
+    "name": "OLIVIER PAUL LEFEVRE",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Switzerland"
+  },
+  {
+    "id": "ind-latin-036",
+    "name": "HEINRICH KURT WALTHER",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Germany"
+  },
+  {
+    "id": "ind-latin-037",
+    "name": "BERND OTTO ZIMMERMANN",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Germany"
+  },
+  {
+    "id": "ind-latin-038",
+    "name": "SEBASTIAN LORENZ GRUBER",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Germany"
+  },
+  {
+    "id": "ind-latin-039",
+    "name": "FELIX ALEXANDER WEBER",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Germany"
+  },
+  {
+    "id": "ind-latin-040",
+    "name": "KURT JOACHIM LEHMANN",
+    "entityType": "individual",
+    "region": "latin",
+    "country": "Germany"
+  }
+]
