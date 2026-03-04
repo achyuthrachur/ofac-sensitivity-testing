@@ -68,9 +68,9 @@ describe('toggleRegion', () => {
   });
 
   it('does not mutate the input array', () => {
-    const input = ['arabic', 'cjk'] as const;
+    const input: import('@/types').Region[] = ['arabic', 'cjk'];
     const inputCopy = [...input];
-    toggleRegion(input as string[] as import('@/types').Region[], 'arabic');
+    toggleRegion(input, 'arabic');
     expect(input).toEqual(inputCopy);
   });
 });
