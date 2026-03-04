@@ -31,7 +31,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. `SdnEntry`, `ResultRow`, and `RunParams` TypeScript types are defined and importable by any module
   3. ESLint and TypeScript strict mode pass with zero errors on the empty scaffold
   4. Directory structure for `lib/rules/`, `data/`, `app/actions/`, and `components/` exists
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold Next.js 15 in-place, configure git safety, add Prettier
+- [ ] 01-02-PLAN.md — Define type contracts, constants, directory skeleton, and initialize shadcn/ui
 
 ### Phase 2: Synthetic Dataset
 **Goal**: A built-in synthetic SDN dataset covers all four entity types and all required linguistic regions with culturally authentic naming conventions
@@ -110,7 +114,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/TBD | Not started | - |
+| 1. Foundation | 0/2 | In progress | - |
 | 2. Synthetic Dataset | 0/TBD | Not started | - |
 | 3. Transformation Engine | 0/TBD | Not started | - |
 | 4. Server Action | 0/TBD | Not started | - |
