@@ -72,6 +72,7 @@ describe('runTest integration', () => {
 
   it(
     'worst-case run (500 individuals, all 4 regions, all 10 rules) completes in under 5000ms',
+    { timeout: 10_000 },
     async () => {
       const benchParams = {
         entityCounts: { individual: 500, business: 0, vessel: 0, aircraft: 0 },
@@ -85,6 +86,5 @@ describe('runTest integration', () => {
       expect(result.ok).toBe(true);
       expect(elapsed).toBeLessThan(5000);
     },
-    { timeout: 10_000 },
   );
 });

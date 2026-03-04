@@ -54,3 +54,8 @@ export interface RunParams {
   ruleIds: string[]; // which degradation rules to apply
   clientName: string; // used in CSV filename
 }
+
+/** Discriminated union returned by the runTest server action. */
+export type ActionResult =
+  | { ok: true; rows: ResultRow[] }
+  | { ok: false; error: string };
