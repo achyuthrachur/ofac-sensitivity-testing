@@ -13,7 +13,7 @@ Seven phases deliver a complete client-facing demo tool. The build order follows
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Next.js 15 TypeScript project scaffold with shared type contracts (completed 2026-03-04)
-- [ ] **Phase 2: Synthetic Dataset** - Built-in SDN names spanning all entity types and linguistic regions
+- [x] **Phase 2: Synthetic Dataset** - Built-in SDN names spanning all entity types and linguistic regions (completed 2026-03-04)
 - [ ] **Phase 3: Transformation Engine** - All 10 degradation rules as pure, independently testable functions
 - [ ] **Phase 4: Server Action** - Zod-validated orchestration layer connecting engine to UI with loading state
 - [ ] **Phase 5: Parameter Form** - Entity counts, region selection, rule checkboxes, and client name input
@@ -120,7 +120,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete   | 2026-03-04 |
-| 2. Synthetic Dataset | 1/3 | In Progress|  |
+| 2. Synthetic Dataset | 3/3 | Complete   | 2026-03-04 |
 | 3. Transformation Engine | 0/TBD | Not started | - |
 | 4. Server Action | 0/TBD | Not started | - |
 | 5. Parameter Form | 0/TBD | Not started | - |
