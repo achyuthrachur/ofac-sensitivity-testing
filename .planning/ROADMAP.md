@@ -94,7 +94,11 @@ Plans:
   2. User can check/uncheck one or more linguistic regions (Arabic, Chinese, Russian/Cyrillic, Latin/European) to include in the sample
   3. User can select any combination of the 10 degradation rules via checkboxes, including a "Select All" shortcut that toggles all rules at once
   4. User can type a client name into a text field and it appears as a label in the output CSV filename
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — Implement formUtils pure helpers (TDD: RED then GREEN)
+- [ ] 05-02-PLAN.md — Build page.tsx form + layout.tsx metadata + human verify
 
 ### Phase 6: Results Table and CSV Export
 **Goal**: A consultant can view all degraded name variants in a responsive table and download the full dataset as a properly encoded CSV file
@@ -131,6 +135,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 2. Synthetic Dataset | 3/3 | Complete   | 2026-03-04 |
 | 3. Transformation Engine | 3/3 | Complete   | 2026-03-04 |
 | 4. Server Action | 1/1 | Complete    | 2026-03-04 |
-| 5. Parameter Form | 0/TBD | Not started | - |
+| 5. Parameter Form | 0/2 | Not started | - |
 | 6. Results Table and CSV Export | 0/TBD | Not started | - |
 | 7. Polish and Deployment | 0/TBD | Not started | - |
