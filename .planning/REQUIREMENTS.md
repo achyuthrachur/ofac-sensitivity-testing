@@ -31,11 +31,11 @@
 - [x] **RULE-03**: User can apply diacritic removal / addition (`Müller` → `Muller`, `Jose` → `José`)
 - [x] **RULE-04**: User can apply word reordering (`Kim Jong Un` → `Jong Un Kim`)
 - [x] **RULE-05**: User can apply abbreviation (compress tokens by dropping vowels: `Mohammed` → `Mhd`)
-- [ ] **RULE-06**: User can apply truncation (drop trailing name tokens)
-- [ ] **RULE-07**: User can apply phonetic / transliteration variants (`Osama` → `Usama`, `Qaddafi` → `Gaddafi`)
-- [ ] **RULE-08**: User can apply punctuation insertion / removal (`Al-Qaeda` → `Al Qaeda` → `AlQaeda`)
-- [ ] **RULE-09**: User can apply prefix / suffix removal (`Mr. John Smith Jr.` → `John Smith`)
-- [ ] **RULE-10**: User can apply nickname / alias substitution (`Mohammed` → `Mohamed` / `Muhammad` / `Mohamad`)
+- [x] **RULE-06**: User can apply truncation (drop trailing name tokens)
+- [x] **RULE-07**: User can apply phonetic / transliteration variants (`Osama` → `Usama`, `Qaddafi` → `Gaddafi`)
+- [x] **RULE-08**: User can apply punctuation insertion / removal (`Al-Qaeda` → `Al Qaeda` → `AlQaeda`)
+- [x] **RULE-09**: User can apply prefix / suffix removal (`Mr. John Smith Jr.` → `John Smith`)
+- [x] **RULE-10**: User can apply nickname / alias substitution (`Mohammed` → `Mohamed` / `Muhammad` / `Mohamad`)
 
 ### Results Display
 
@@ -111,11 +111,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RULE-03 | Phase 3 | Complete |
 | RULE-04 | Phase 3 | Complete |
 | RULE-05 | Phase 3 | Complete |
-| RULE-06 | Phase 3 | Pending |
-| RULE-07 | Phase 3 | Pending |
-| RULE-08 | Phase 3 | Pending |
-| RULE-09 | Phase 3 | Pending |
-| RULE-10 | Phase 3 | Pending |
+| RULE-06 | Phase 3 | Complete |
+| RULE-07 | Phase 3 | Complete |
+| RULE-08 | Phase 3 | Complete |
+| RULE-09 | Phase 3 | Complete |
+| RULE-10 | Phase 3 | Complete |
 | RSLT-01 | Phase 6 | Pending |
 | RSLT-02 | Phase 6 | Pending |
 | RSLT-03 | Phase 6 | Pending |

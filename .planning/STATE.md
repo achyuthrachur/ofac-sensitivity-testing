@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in_progress
-stopped_at: Completed 03-transformation-engine-01-PLAN.md
-last_updated: "2026-03-04T11:35:00.000Z"
+status: completed
+stopped_at: Completed 03-transformation-engine-02-PLAN.md
+last_updated: "2026-03-04T17:45:34.077Z"
 last_activity: 2026-03-04 — Completed 03-01-PLAN.md (Vitest 4 + RULE-01 through RULE-05, all 23 tests green)
 progress:
   total_phases: 7
   completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
-  percent: 100
+  total_plans: 8
+  completed_plans: 7
+  percent: 33
 ---
 
 # Project State
@@ -59,6 +59,7 @@ Progress: [███░░░░░░░] 33% (Phase 3 — 1/3 plans complete)
 | Phase 02-synthetic-dataset P02 | 5 | 1 tasks | 1 files |
 | Phase 02-synthetic-dataset P03 | 1 | 1 tasks | 0 files |
 | Phase 03-transformation-engine P01 | ~20 min | 2 tasks | 13 files |
+| Phase 03-transformation-engine P02 | 5 | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -86,6 +87,9 @@ Recent decisions affecting current work:
 - [Phase 03-transformation-engine]: RULE-05 CONNECTORS set: IBN, BINT, BIN, BT, ABU, ABI, UMM — Arabic genealogical particles preserved verbatim
 - [Phase 03-transformation-engine]: RULE-05 AL-XXXX nisba handling: vowels stripped from suffix only, AL- prefix preserved (AL-RSHD not L-RSHD)
 - [Phase 03-transformation-engine]: RuleFunction contract established — (entry: SdnEntry) => string | null; null means inapplicable or no-op, not empty string
+- [Phase 03-transformation-engine]: RULE-07 AL- prefix: strip before PHONETIC_MAP lookup, reconstitute as AL-<variant> — preserves nisba form
+- [Phase 03-transformation-engine]: RULE-09 double-strip order: prefix first (tokens[0]), then suffix (last remaining token) in single pass
+- [Phase 03-transformation-engine]: RULE-10 SKIP_FIRST set (ABU/ABD/AL): connector tokens skipped to find given name for alias lookup
 
 ### Pending Todos
 
@@ -99,6 +103,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T11:35:00.000Z
-Stopped at: Completed 03-transformation-engine-01-PLAN.md
+Last session: 2026-03-04T17:45:34.057Z
+Stopped at: Completed 03-transformation-engine-02-PLAN.md
 Resume file: None
