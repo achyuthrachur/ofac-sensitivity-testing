@@ -27,6 +27,7 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Loader2 } from 'lucide-react';
+import { ResultsTable } from '@/components/ResultsTable';
 
 // ─── Module-level constants ────────────────────────────────────────────────────
 
@@ -248,7 +249,7 @@ export default function Home() {
           </p>
         )}
 
-        {/* Phase 6: mount <ResultsTable rows={rows} /> here */}
+        <ResultsTable rows={rows} clientName={clientName} />
       </div>
     </div>
   );
