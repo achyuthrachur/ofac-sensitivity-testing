@@ -18,7 +18,8 @@ describe('spaceRemoval (RULE-01)', () => {
   });
 
   it('removes spaces but preserves hyphens in AL- nisba form', () => {
-    expect(spaceRemoval(makeEntry('HASSAN IBN ALI AL-RASHIDI'))).toBe('HASSANIBNAIAL-RASHIDI');
+    // HASSAN + IBN + ALI + AL-RASHIDI -> HASSANIBNALIAL-RASHIDI (hyphen preserved)
+    expect(spaceRemoval(makeEntry('HASSAN IBN ALI AL-RASHIDI'))).toBe('HASSANIBNALIAL-RASHIDI');
   });
 
   it('returns null for single-token name (no spaces)', () => {
