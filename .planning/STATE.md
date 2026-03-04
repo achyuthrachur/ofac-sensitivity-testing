@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 02-synthetic-dataset-01-PLAN.md
-last_updated: "2026-03-04T15:39:53.228Z"
+stopped_at: Completed 02-synthetic-dataset-02-PLAN.md
+last_updated: "2026-03-04T15:46:56.473Z"
 last_activity: 2026-03-04 — Completed 01-02-PLAN.md (types, constants, shadcn/ui; checkpoint approved)
 progress:
   total_phases: 7
   completed_phases: 1
   total_plans: 5
-  completed_plans: 3
+  completed_plans: 4
   percent: 100
 ---
 
@@ -56,6 +56,7 @@ Progress: [██████████] 100% (Phase 1)
 | Phase 01-foundation P01 | 27 min | 2 tasks | 17 files |
 | Phase 01-foundation P02 | 6 min | 2 tasks | 12 files |
 | Phase 02-synthetic-dataset P01 | 4 | 2 tasks | 3 files |
+| Phase 02-synthetic-dataset P02 | 5 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -75,6 +76,8 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: Tailwind v4 confirmed compatible with shadcn/ui v3.8.5 — no downgrade needed
 - [Phase 02-synthetic-dataset]: Used @data/* tsconfig alias for clean JSON import path from any file depth
 - [Phase 02-synthetic-dataset]: Flat SdnEntry[] array (no wrapper object) validated by TypeScript resolveJsonModule
+- [Phase 02-synthetic-dataset]: Aircraft tagged region latin per locked CONTEXT.md decision — ICAO strings are Latin-script regardless of issuing country
+- [Phase 02-synthetic-dataset]: Vessel region set by script of vessel name not operator nationality; no cyrillic-tagged vessels
 
 ### Pending Todos
 
@@ -88,6 +91,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T15:39:53.173Z
-Stopped at: Completed 02-synthetic-dataset-01-PLAN.md
+Last session: 2026-03-04T15:46:56.459Z
+Stopped at: Completed 02-synthetic-dataset-02-PLAN.md
 Resume file: None

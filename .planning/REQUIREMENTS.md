@@ -18,9 +18,9 @@
 ### Synthetic Dataset
 
 - [x] **DATA-01**: App includes built-in synthetic SDN names for Individual entity type
-- [ ] **DATA-02**: App includes built-in synthetic SDN names for Business/Organization entity type
-- [ ] **DATA-03**: App includes built-in synthetic SDN names for Vessel entity type
-- [ ] **DATA-04**: App includes built-in synthetic SDN names for Aircraft entity type
+- [x] **DATA-02**: App includes built-in synthetic SDN names for Business/Organization entity type
+- [x] **DATA-03**: App includes built-in synthetic SDN names for Vessel entity type
+- [x] **DATA-04**: App includes built-in synthetic SDN names for Aircraft entity type
 - [x] **DATA-05**: Synthetic names span Arabic, Chinese, Russian/Cyrillic, and Latin/European linguistic regions
 - [x] **DATA-06**: Synthetic names follow culturally authentic naming conventions per region (ism+nasab for Arabic, surname-first for Chinese, etc.)
 
@@ -101,9 +101,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FORM-04 | Phase 5 | Pending |
 | FORM-05 | Phase 4 | Pending |
 | DATA-01 | Phase 2 | Complete |
-| DATA-02 | Phase 2 | Pending |
-| DATA-03 | Phase 2 | Pending |
-| DATA-04 | Phase 2 | Pending |
+| DATA-02 | Phase 2 | Complete |
+| DATA-03 | Phase 2 | Complete |
+| DATA-04 | Phase 2 | Complete |
 | DATA-05 | Phase 2 | Complete |
 | DATA-06 | Phase 2 | Complete |
 | RULE-01 | Phase 3 | Pending |
