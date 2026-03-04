@@ -126,7 +126,11 @@ Plans:
   2. The UI reflects Crowe brand colors, typography, and design language as defined in CLAUDE.md
   3. Form submission shows a loading skeleton or spinner during processing, and an error message if the action fails
   4. The page title and any visible labeling identify this as a Crowe OFAC Sensitivity Testing tool
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 07-01-PLAN.md — Fix build-blocking Geist import, apply Crowe brand tokens, add header/footer, amber button, score color-coding
+- [ ] 07-02-PLAN.md — Push to GitHub, deploy to Vercel production, human verify live URL
 
 ## Progress
 
@@ -141,4 +145,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 4. Server Action | 1/1 | Complete    | 2026-03-04 |
 | 5. Parameter Form | 2/2 | Complete    | 2026-03-04 |
 | 6. Results Table and CSV Export | 2/2 | Complete    | 2026-03-04 |
-| 7. Polish and Deployment | 0/TBD | Not started | - |
+| 7. Polish and Deployment | 0/2 | Not started | - |
