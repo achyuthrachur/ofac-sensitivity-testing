@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 06-results-table-and-csv-export-01-PLAN.md
-last_updated: "2026-03-04T22:11:20.573Z"
+stopped_at: Completed 06-results-table-and-csv-export-02-PLAN.md
+last_updated: "2026-03-04T22:23:50.177Z"
 last_activity: 2026-03-04 — Completed 03-01-PLAN.md (Vitest 4 + RULE-01 through RULE-05, all 23 tests green)
 progress:
   total_phases: 7
-  completed_phases: 5
+  completed_phases: 6
   total_plans: 13
-  completed_plans: 12
+  completed_plans: 13
   percent: 33
 ---
 
@@ -65,6 +65,7 @@ Progress: [███░░░░░░░] 33% (Phase 3 — 1/3 plans complete)
 | Phase 05-parameter-form P01 | 6 | 2 tasks | 2 files |
 | Phase 05-parameter-form P02 | 30 | 2 tasks | 2 files |
 | Phase 06-results-table-and-csv-export P01 | 8 | 2 tasks | 4 files |
+| Phase 06-results-table-and-csv-export P02 | 25 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -110,6 +111,9 @@ Recent decisions affecting current work:
 - [Phase 06-results-table-and-csv-export]: buildCsvString does not sort rows — caller controls ordering; function is a pure serializer
 - [Phase 06-results-table-and-csv-export]: Similarity Score in CSV is an integer (Math.round * 100), not a 0-1 float — matches human-readable expectations
 - [Phase 06-results-table-and-csv-export]: UTF-8 BOM prepended in triggerCsvDownload so Excel opens CSV with correct encoding on Windows
+- [Phase 06-results-table-and-csv-export]: colgroup with percentage column widths required for absolute-positioned virtualizer rows — columns collapse to zero without explicit dimensions
+- [Phase 06-results-table-and-csv-export]: Sticky thead requires explicit bg-white class — without background color rows scroll visibly beneath the transparent sticky header
+- [Phase 06-results-table-and-csv-export]: ResultsTable CSV export uses unsorted original rows not sortedRows — sort state is view-only, download always delivers full dataset
 
 ### Pending Todos
 
@@ -123,8 +127,8 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T22:11:20.561Z
-Stopped at: Completed 06-results-table-and-csv-export-01-PLAN.md
+Last session: 2026-03-04T22:23:50.168Z
+Stopped at: Completed 06-results-table-and-csv-export-02-PLAN.md
 Resume file: None
 Resumed: Session resumed 2026-03-04 — proceeding to Phase 4 (Server Action)
 Stopped at: Phase 4 context gathered — ready for /gsd:plan-phase 4

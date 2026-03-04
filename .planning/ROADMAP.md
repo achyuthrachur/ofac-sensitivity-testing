@@ -17,7 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 3: Transformation Engine** - All 10 degradation rules as pure, independently testable functions (completed 2026-03-04)
 - [x] **Phase 4: Server Action** - Zod-validated orchestration layer connecting engine to UI with loading state (completed 2026-03-04)
 - [x] **Phase 5: Parameter Form** - Entity counts, region selection, rule checkboxes, and client name input (completed 2026-03-04)
-- [ ] **Phase 6: Results Table and CSV Export** - Virtualized results table and UTF-8 BOM CSV download
+- [x] **Phase 6: Results Table and CSV Export** - Virtualized results table and UTF-8 BOM CSV download (completed 2026-03-04)
 - [ ] **Phase 7: Polish and Deployment** - Crowe branding, UX refinements, and Vercel production deployment
 
 ## Phase Details
@@ -140,5 +140,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 3. Transformation Engine | 3/3 | Complete   | 2026-03-04 |
 | 4. Server Action | 1/1 | Complete    | 2026-03-04 |
 | 5. Parameter Form | 2/2 | Complete    | 2026-03-04 |
-| 6. Results Table and CSV Export | 1/2 | In Progress|  |
+| 6. Results Table and CSV Export | 2/2 | Complete   | 2026-03-04 |
 | 7. Polish and Deployment | 0/TBD | Not started | - |

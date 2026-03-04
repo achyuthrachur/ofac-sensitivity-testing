@@ -39,10 +39,10 @@
 
 ### Results Display
 
-- [ ] **RSLT-01**: Results display in a table showing Original Name, Entity Type, Linguistic Region, Degraded Variant, and Rule Applied
+- [x] **RSLT-01**: Results display in a table showing Original Name, Entity Type, Linguistic Region, Degraded Variant, and Rule Applied
 - [x] **RSLT-02**: Results table shows a Jaro-Winkler similarity score for each original → degraded name pair
 - [x] **RSLT-03**: Results page shows a catch-rate summary stat (e.g., "X of Y degraded variants would be caught at 85% match threshold")
-- [ ] **RSLT-04**: Results table remains usable and responsive with thousands of rows (virtualized rendering)
+- [x] **RSLT-04**: Results table remains usable and responsive with thousands of rows (virtualized rendering)
 
 ### Export
 
@@ -116,10 +116,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RULE-08 | Phase 3 | Complete |
 | RULE-09 | Phase 3 | Complete |
 | RULE-10 | Phase 3 | Complete |
-| RSLT-01 | Phase 6 | Pending |
+| RSLT-01 | Phase 6 | Complete |
 | RSLT-02 | Phase 6 | Complete |
 | RSLT-03 | Phase 6 | Complete |
-| RSLT-04 | Phase 6 | Pending |
+| RSLT-04 | Phase 6 | Complete |
 | EXPO-01 | Phase 6 | Complete |
 | EXPO-02 | Phase 6 | Complete |
 | EXPO-03 | Phase 6 | Complete |
