@@ -47,7 +47,12 @@ Plans:
   3. Arabic Individual names follow ism+nasab or kunya conventions; Chinese names appear surname-first; Russian names include patronymics — a domain reviewer can confirm authenticity
   4. All entries conform to the `SdnEntry` TypeScript type with no type errors
   5. The dataset contains enough entries per entity type (minimum 20 per type) to support sampling up to 500 per run without exhaustion
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Add @data/* tsconfig alias; author 160 Individual entries (Arabic, CJK, Cyrillic, Latin)
+- [ ] 02-02-PLAN.md — Author 125 Business, Vessel, and Aircraft entries; validate complete 285-entry dataset
+- [ ] 02-03-PLAN.md — Human verify naming authenticity (DATA-06 checkpoint)
 
 ### Phase 3: Transformation Engine
 **Goal**: All 10 degradation rules are implemented as pure TypeScript functions, script-aware, deterministically ordered, and independently unit-tested
@@ -115,7 +120,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete   | 2026-03-04 |
-| 2. Synthetic Dataset | 0/TBD | Not started | - |
+| 2. Synthetic Dataset | 0/3 | Not started | - |
 | 3. Transformation Engine | 0/TBD | Not started | - |
 | 4. Server Action | 0/TBD | Not started | - |
 | 5. Parameter Form | 0/TBD | Not started | - |
