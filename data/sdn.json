@@ -1993,5 +1993,40 @@
     "entityType": "aircraft",
     "region": "latin",
     "country": "Kazakhstan"
+  },
+  {
+    "id": "acft-latin-016",
+    "name": "YK-BAD",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Syria"
+  },
+  {
+    "id": "acft-latin-017",
+    "name": "RA-86524",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Russia"
+  },
+  {
+    "id": "acft-latin-018",
+    "name": "EP-AGA",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Iran"
+  },
+  {
+    "id": "acft-latin-019",
+    "name": "POUYA AIR BOEING 747",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Iran"
+  },
+  {
+    "id": "acft-latin-020",
+    "name": "UN-76435",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Uzbekistan"
   }
 ]
