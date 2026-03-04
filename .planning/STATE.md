@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 03-transformation-engine-02-PLAN.md
-last_updated: "2026-03-04T17:45:34.077Z"
+stopped_at: Completed 03-transformation-engine-03-PLAN.md
+last_updated: "2026-03-04T18:05:57.526Z"
 last_activity: 2026-03-04 — Completed 03-01-PLAN.md (Vitest 4 + RULE-01 through RULE-05, all 23 tests green)
 progress:
   total_phases: 7
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
   percent: 33
 ---
 
@@ -60,6 +60,7 @@ Progress: [███░░░░░░░] 33% (Phase 3 — 1/3 plans complete)
 | Phase 02-synthetic-dataset P03 | 1 | 1 tasks | 0 files |
 | Phase 03-transformation-engine P01 | ~20 min | 2 tasks | 13 files |
 | Phase 03-transformation-engine P02 | 5 | 2 tasks | 10 files |
+| Phase 03-transformation-engine P03 | 9 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -90,6 +91,9 @@ Recent decisions affecting current work:
 - [Phase 03-transformation-engine]: RULE-07 AL- prefix: strip before PHONETIC_MAP lookup, reconstitute as AL-<variant> — preserves nisba form
 - [Phase 03-transformation-engine]: RULE-09 double-strip order: prefix first (tokens[0]), then suffix (last remaining token) in single pass
 - [Phase 03-transformation-engine]: RULE-10 SKIP_FIRST set (ABU/ABD/AL): connector tokens skipped to find given name for alias lookup
+- [Phase 03-transformation-engine]: CANONICAL_RULE_ORDER is authoritative fixed sequence — Phase 4 uses this to guarantee deterministic output regardless of user checkbox order
+- [Phase 03-transformation-engine]: ruleMap uses Record<RuleId, RuleFunction> so TypeScript enforces all 10 rule IDs are present at compile time
+- [Phase 03-transformation-engine]: sampleEntries uses Mulberry32 inline (5 lines, no npm dep) — deterministic seeded PRNG, seed defaults to 42, sampling with replacement
 
 ### Pending Todos
 
@@ -103,6 +107,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T17:45:34.057Z
-Stopped at: Completed 03-transformation-engine-02-PLAN.md
+Last session: 2026-03-04T18:05:57.449Z
+Stopped at: Completed 03-transformation-engine-03-PLAN.md
 Resume file: None
