@@ -111,7 +111,11 @@ Plans:
   4. Clicking "Download CSV" triggers a file download containing all result rows with correct column headers
   5. Opening the downloaded CSV in Microsoft Excel displays Arabic, Chinese, and Cyrillic characters correctly (UTF-8 BOM present)
   6. The downloaded CSV filename includes the client name entered in the parameter form
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — Install @tanstack/react-virtual, create resultsUtils test stub (RED), implement resultsUtils.ts (GREEN)
+- [ ] 06-02-PLAN.md — Build ResultsTable.tsx, wire into page.tsx, human verify all 6 manual checklist items
 
 ### Phase 7: Polish and Deployment
 **Goal**: The application is deployed to Vercel, Crowe-branded, and ready for a live client demonstration
@@ -136,5 +140,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 3. Transformation Engine | 3/3 | Complete   | 2026-03-04 |
 | 4. Server Action | 1/1 | Complete    | 2026-03-04 |
 | 5. Parameter Form | 2/2 | Complete    | 2026-03-04 |
-| 6. Results Table and CSV Export | 0/TBD | Not started | - |
+| 6. Results Table and CSV Export | 0/2 | Not started | - |
 | 7. Polish and Deployment | 0/TBD | Not started | - |
