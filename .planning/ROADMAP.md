@@ -80,7 +80,10 @@ Plans:
   2. Invoking `runTest` with invalid params (e.g., sample count above 500) returns a validation error, not a crash
   3. The UI transitions to a loading/disabled state while `runTest` is pending and returns to interactive state on completion — no duplicate submissions possible
   4. A worst-case benchmark (500 names, all 10 rules active) completes within the Vercel function timeout for the project's plan tier
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [ ] 04-01-PLAN.md — Install talisman, create integration test stub (RED), add ActionResult type, implement runTest action (GREEN)
 
 ### Phase 5: Parameter Form
 **Goal**: A consultant can configure all test parameters through a usable form and submit it to generate results
@@ -127,7 +130,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 1. Foundation | 2/2 | Complete   | 2026-03-04 |
 | 2. Synthetic Dataset | 3/3 | Complete   | 2026-03-04 |
 | 3. Transformation Engine | 3/3 | Complete   | 2026-03-04 |
-| 4. Server Action | 0/TBD | Not started | - |
+| 4. Server Action | 0/1 | Not started | - |
 | 5. Parameter Form | 0/TBD | Not started | - |
 | 6. Results Table and CSV Export | 0/TBD | Not started | - |
 | 7. Polish and Deployment | 0/TBD | Not started | - |
