@@ -1118,5 +1118,880 @@
     "entityType": "individual",
     "region": "latin",
     "country": "Germany"
+  },
+  {
+    "id": "biz-arabic-001",
+    "name": "AL-NOOR TRADING LLC",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Iran"
+  },
+  {
+    "id": "biz-arabic-002",
+    "name": "BADR INTERNATIONAL GROUP",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Iraq"
+  },
+  {
+    "id": "biz-arabic-003",
+    "name": "FADL SHIPPING COMPANY",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Syria"
+  },
+  {
+    "id": "biz-arabic-004",
+    "name": "AL-RASHID GENERAL TRADING CO",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Iran"
+  },
+  {
+    "id": "biz-arabic-005",
+    "name": "FAJR PETROLEUM SERVICES LLC",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Iran"
+  },
+  {
+    "id": "biz-arabic-006",
+    "name": "NOOR AL-ISLAM FINANCIAL SERVICES",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Lebanon"
+  },
+  {
+    "id": "biz-arabic-007",
+    "name": "BAYAN IMPORT EXPORT CO",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Syria"
+  },
+  {
+    "id": "biz-arabic-008",
+    "name": "AL-FATEH INDUSTRIAL CO",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Libya"
+  },
+  {
+    "id": "biz-arabic-009",
+    "name": "CRESCENT INTERNATIONAL TRADING",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Iran"
+  },
+  {
+    "id": "biz-arabic-010",
+    "name": "AL-WEFAQ EXCHANGE",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Iraq"
+  },
+  {
+    "id": "biz-arabic-011",
+    "name": "SAFA SHIPPING CO",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Iran"
+  },
+  {
+    "id": "biz-arabic-012",
+    "name": "MAWJ MARITIME SERVICES",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Syria"
+  },
+  {
+    "id": "biz-arabic-013",
+    "name": "AL-MAJD GENERAL TRADING",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Iraq"
+  },
+  {
+    "id": "biz-arabic-014",
+    "name": "FALAH AGRICULTURAL TRADING CO",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Libya"
+  },
+  {
+    "id": "biz-arabic-015",
+    "name": "BARAKAH INDUSTRIAL GROUP",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Lebanon"
+  },
+  {
+    "id": "biz-arabic-016",
+    "name": "HIRA IMPORT EXPORT LLC",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Syria"
+  },
+  {
+    "id": "biz-arabic-017",
+    "name": "AL-NASR PETROLEUM SERVICES",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Iran"
+  },
+  {
+    "id": "biz-arabic-018",
+    "name": "MAJD INTERNATIONAL SHIPPING",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Libya"
+  },
+  {
+    "id": "biz-arabic-019",
+    "name": "ANWAR TRADING AND LOGISTICS",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Iraq"
+  },
+  {
+    "id": "biz-arabic-020",
+    "name": "AL-HILAL FINANCIAL SERVICES",
+    "entityType": "business",
+    "region": "arabic",
+    "country": "Lebanon"
+  },
+  {
+    "id": "biz-cjk-001",
+    "name": "HONG XIANG INDUSTRIAL CO LTD",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "biz-cjk-002",
+    "name": "BEIJING WANTONG REAL ESTATE CO LTD",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "biz-cjk-003",
+    "name": "DALIAN SUNRISE TRADE CO LTD",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "biz-cjk-004",
+    "name": "ZHONGCHENG INTERNATIONAL SHIPPING CO LTD",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "biz-cjk-005",
+    "name": "TIANJIN WEIFENG IMPORT EXPORT CO LTD",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "biz-cjk-006",
+    "name": "LIAONING HAIFENG TECHNOLOGY CO LTD",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "biz-cjk-007",
+    "name": "GUANGZHOU LONGHUA TRADING CO LTD",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "biz-cjk-008",
+    "name": "SHENYANG DONGFANG INDUSTRIAL CO LTD",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "biz-cjk-009",
+    "name": "KUNLUN ENERGY CO LTD",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "biz-cjk-010",
+    "name": "MINGZHENG INTERNATIONAL TRADING CO LTD",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "biz-cjk-011",
+    "name": "DAESUNG GENERAL BUREAU",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "biz-cjk-012",
+    "name": "KOREA KWANGSON BANKING CORPORATION",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "biz-cjk-013",
+    "name": "RYONBONG GENERAL CORPORATION",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "biz-cjk-014",
+    "name": "KOREA MINING DEVELOPMENT TRADING CORPORATION",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "biz-cjk-015",
+    "name": "PAEKTUSAN TRADING CORPORATION",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "biz-cjk-016",
+    "name": "KORYO BANK",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "biz-cjk-017",
+    "name": "CHONGCHONGANG SHIPPING CO LTD",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "biz-cjk-018",
+    "name": "JOSEON EXPO JOINT VENTURE",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "biz-cjk-019",
+    "name": "KOREA NATIONAL INSURANCE CORPORATION",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "biz-cjk-020",
+    "name": "SINGIDA ELECTRONICS CO LTD",
+    "entityType": "business",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "biz-cyrillic-001",
+    "name": "STROYTRANSGAZ OOO",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-cyrillic-002",
+    "name": "ROSOBORONEXPORT AO",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-cyrillic-003",
+    "name": "VNESHTORGBANK PAO",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-cyrillic-004",
+    "name": "ROSATOM STATE CORPORATION",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-cyrillic-005",
+    "name": "NOVATEK OAO",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-cyrillic-006",
+    "name": "SOVCOMFLOT PAO",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-cyrillic-007",
+    "name": "GAZPROMBANK AO",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-cyrillic-008",
+    "name": "ALMAZ-ANTEY CONCERN JSC",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-cyrillic-009",
+    "name": "RUSSIAN FINANCIAL CORPORATION AO",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-cyrillic-010",
+    "name": "PROMSVYAZBANK PAO",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-cyrillic-011",
+    "name": "URALVAGONZAVOD FGUP",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-cyrillic-012",
+    "name": "ROSNEFT OIL COMPANY PAO",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-cyrillic-013",
+    "name": "VNESHECONOMBANK STATE CORPORATION",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-cyrillic-014",
+    "name": "RUSSIAN NATIONAL COMMERCIAL BANK AO",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-cyrillic-015",
+    "name": "OBORONLOGISTIKA OOO",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-cyrillic-016",
+    "name": "SECURITAS AO",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-cyrillic-017",
+    "name": "TSENTROBANK OOO",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Belarus"
+  },
+  {
+    "id": "biz-cyrillic-018",
+    "name": "STROYINDUSTRIYA OOO",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-cyrillic-019",
+    "name": "AGROPROMFINANS OOO",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Belarus"
+  },
+  {
+    "id": "biz-cyrillic-020",
+    "name": "MOSPRIBORINTORG OOO",
+    "entityType": "business",
+    "region": "cyrillic",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-latin-001",
+    "name": "GLOBAL TRADE SOLUTIONS SA",
+    "entityType": "business",
+    "region": "latin",
+    "country": "Cuba"
+  },
+  {
+    "id": "biz-latin-002",
+    "name": "EMPRESA DE IMPORTACIONES Y EXPORTACIONES SRL",
+    "entityType": "business",
+    "region": "latin",
+    "country": "Venezuela"
+  },
+  {
+    "id": "biz-latin-003",
+    "name": "KREBS CONSULTING GMBH",
+    "entityType": "business",
+    "region": "latin",
+    "country": "Germany"
+  },
+  {
+    "id": "biz-latin-004",
+    "name": "COMMERCIAL TRADING SERVICES LTD",
+    "entityType": "business",
+    "region": "latin",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-latin-005",
+    "name": "CONTINENTAL PETROLEUM SA",
+    "entityType": "business",
+    "region": "latin",
+    "country": "Venezuela"
+  },
+  {
+    "id": "biz-latin-006",
+    "name": "EURO MARITIME TRADING GMBH",
+    "entityType": "business",
+    "region": "latin",
+    "country": "Iran"
+  },
+  {
+    "id": "biz-latin-007",
+    "name": "VANGUARD FINANCIAL SERVICES SA",
+    "entityType": "business",
+    "region": "latin",
+    "country": "Cuba"
+  },
+  {
+    "id": "biz-latin-008",
+    "name": "TRANSATLANTIC CARGO BV",
+    "entityType": "business",
+    "region": "latin",
+    "country": "North Korea"
+  },
+  {
+    "id": "biz-latin-009",
+    "name": "PREMIER INDUSTRIAL HOLDINGS LTD",
+    "entityType": "business",
+    "region": "latin",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-latin-010",
+    "name": "CONSOLIDATED TRADE GROUP SA",
+    "entityType": "business",
+    "region": "latin",
+    "country": "Venezuela"
+  },
+  {
+    "id": "biz-latin-011",
+    "name": "IBERIAN EXPORTS SL",
+    "entityType": "business",
+    "region": "latin",
+    "country": "Iran"
+  },
+  {
+    "id": "biz-latin-012",
+    "name": "ANDES PETROLEUM SA",
+    "entityType": "business",
+    "region": "latin",
+    "country": "Cuba"
+  },
+  {
+    "id": "biz-latin-013",
+    "name": "CARIBBEAN SHIPPING ENTERPRISES LTD",
+    "entityType": "business",
+    "region": "latin",
+    "country": "Cuba"
+  },
+  {
+    "id": "biz-latin-014",
+    "name": "MERIDIAN COMMODITIES SA",
+    "entityType": "business",
+    "region": "latin",
+    "country": "Iran"
+  },
+  {
+    "id": "biz-latin-015",
+    "name": "BALKANS TRADING COMPANY SRL",
+    "entityType": "business",
+    "region": "latin",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-latin-016",
+    "name": "ADRIATIC SHIPPING GMBH",
+    "entityType": "business",
+    "region": "latin",
+    "country": "Iran"
+  },
+  {
+    "id": "biz-latin-017",
+    "name": "FRANCO-IBERIAN TRADING SARL",
+    "entityType": "business",
+    "region": "latin",
+    "country": "North Korea"
+  },
+  {
+    "id": "biz-latin-018",
+    "name": "HELVETICA COMMODITIES SA",
+    "entityType": "business",
+    "region": "latin",
+    "country": "Russia"
+  },
+  {
+    "id": "biz-latin-019",
+    "name": "GLOBAL ARMS TRADING SAS",
+    "entityType": "business",
+    "region": "latin",
+    "country": "Iran"
+  },
+  {
+    "id": "biz-latin-020",
+    "name": "WESTERN FINANCIAL INTERMEDIARIES LTD",
+    "entityType": "business",
+    "region": "latin",
+    "country": "Russia"
+  },
+  {
+    "id": "vsl-latin-001",
+    "name": "ATLANTIC SPIRIT",
+    "entityType": "vessel",
+    "region": "latin",
+    "country": "Panama"
+  },
+  {
+    "id": "vsl-latin-002",
+    "name": "BUENA VISTA",
+    "entityType": "vessel",
+    "region": "latin",
+    "country": "Venezuela"
+  },
+  {
+    "id": "vsl-latin-003",
+    "name": "SEA EAGLE",
+    "entityType": "vessel",
+    "region": "latin",
+    "country": "Iran"
+  },
+  {
+    "id": "vsl-latin-004",
+    "name": "OCEAN PIONEER",
+    "entityType": "vessel",
+    "region": "latin",
+    "country": "Belize"
+  },
+  {
+    "id": "vsl-latin-005",
+    "name": "GOLDEN MERIDIAN",
+    "entityType": "vessel",
+    "region": "latin",
+    "country": "Syria"
+  },
+  {
+    "id": "vsl-latin-006",
+    "name": "SOUTH STAR",
+    "entityType": "vessel",
+    "region": "latin",
+    "country": "North Korea"
+  },
+  {
+    "id": "vsl-latin-007",
+    "name": "PACIFIC FORTUNE",
+    "entityType": "vessel",
+    "region": "latin",
+    "country": "Russia"
+  },
+  {
+    "id": "vsl-latin-008",
+    "name": "LIBERTY TRADER",
+    "entityType": "vessel",
+    "region": "latin",
+    "country": "Panama"
+  },
+  {
+    "id": "vsl-latin-009",
+    "name": "BLUE HORIZON",
+    "entityType": "vessel",
+    "region": "latin",
+    "country": "Cuba"
+  },
+  {
+    "id": "vsl-latin-010",
+    "name": "SILVER WAVE",
+    "entityType": "vessel",
+    "region": "latin",
+    "country": "Libya"
+  },
+  {
+    "id": "vsl-latin-011",
+    "name": "EUROPA SPIRIT",
+    "entityType": "vessel",
+    "region": "latin",
+    "country": "Iran"
+  },
+  {
+    "id": "vsl-latin-012",
+    "name": "NORTHERN LIGHT",
+    "entityType": "vessel",
+    "region": "latin",
+    "country": "Russia"
+  },
+  {
+    "id": "vsl-latin-013",
+    "name": "GOLDEN EAGLE",
+    "entityType": "vessel",
+    "region": "latin",
+    "country": "Panama"
+  },
+  {
+    "id": "vsl-latin-014",
+    "name": "OCEAN QUEST",
+    "entityType": "vessel",
+    "region": "latin",
+    "country": "Belize"
+  },
+  {
+    "id": "vsl-latin-015",
+    "name": "AMBER SUNRISE",
+    "entityType": "vessel",
+    "region": "latin",
+    "country": "Syria"
+  },
+  {
+    "id": "vsl-latin-016",
+    "name": "FALCON TRADER",
+    "entityType": "vessel",
+    "region": "latin",
+    "country": "Iran"
+  },
+  {
+    "id": "vsl-latin-017",
+    "name": "GLOBAL PIONEER",
+    "entityType": "vessel",
+    "region": "latin",
+    "country": "North Korea"
+  },
+  {
+    "id": "vsl-latin-018",
+    "name": "CAPE ENDEAVOUR",
+    "entityType": "vessel",
+    "region": "latin",
+    "country": "Russia"
+  },
+  {
+    "id": "vsl-arabic-001",
+    "name": "AL NOOR",
+    "entityType": "vessel",
+    "region": "arabic",
+    "country": "Iran"
+  },
+  {
+    "id": "vsl-arabic-002",
+    "name": "BADR AL DIN",
+    "entityType": "vessel",
+    "region": "arabic",
+    "country": "Syria"
+  },
+  {
+    "id": "vsl-arabic-003",
+    "name": "FAJR",
+    "entityType": "vessel",
+    "region": "arabic",
+    "country": "Iran"
+  },
+  {
+    "id": "vsl-arabic-004",
+    "name": "HILAL",
+    "entityType": "vessel",
+    "region": "arabic",
+    "country": "Libya"
+  },
+  {
+    "id": "vsl-arabic-005",
+    "name": "QAMAR",
+    "entityType": "vessel",
+    "region": "arabic",
+    "country": "Yemen"
+  },
+  {
+    "id": "vsl-arabic-006",
+    "name": "AL RASHID",
+    "entityType": "vessel",
+    "region": "arabic",
+    "country": "Iraq"
+  },
+  {
+    "id": "vsl-arabic-007",
+    "name": "NOUR AL BAHR",
+    "entityType": "vessel",
+    "region": "arabic",
+    "country": "Iran"
+  },
+  {
+    "id": "vsl-arabic-008",
+    "name": "SALAM",
+    "entityType": "vessel",
+    "region": "arabic",
+    "country": "Lebanon"
+  },
+  {
+    "id": "vsl-cjk-001",
+    "name": "HONG XIANG",
+    "entityType": "vessel",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "vsl-cjk-002",
+    "name": "BLUE DIAMOND",
+    "entityType": "vessel",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "vsl-cjk-003",
+    "name": "PACIFIC STAR",
+    "entityType": "vessel",
+    "region": "cjk",
+    "country": "China"
+  },
+  {
+    "id": "vsl-cjk-004",
+    "name": "ORIENT GLORY",
+    "entityType": "vessel",
+    "region": "cjk",
+    "country": "North Korea"
+  },
+  {
+    "id": "acft-latin-001",
+    "name": "EP-TQA",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Iran"
+  },
+  {
+    "id": "acft-latin-002",
+    "name": "EP-SHR",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Iran"
+  },
+  {
+    "id": "acft-latin-003",
+    "name": "EP-MNW",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Iran"
+  },
+  {
+    "id": "acft-latin-004",
+    "name": "EP-FCB",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Iran"
+  },
+  {
+    "id": "acft-latin-005",
+    "name": "RA-76503",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Russia"
+  },
+  {
+    "id": "acft-latin-006",
+    "name": "RA-64049",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Russia"
+  },
+  {
+    "id": "acft-latin-007",
+    "name": "RA-86570",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Russia"
+  },
+  {
+    "id": "acft-latin-008",
+    "name": "UP-B1601",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Kazakhstan"
+  },
+  {
+    "id": "acft-latin-009",
+    "name": "UP-I4513",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Kazakhstan"
+  },
+  {
+    "id": "acft-latin-010",
+    "name": "YK-ATD",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Syria"
+  },
+  {
+    "id": "acft-latin-011",
+    "name": "YK-BAB",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Syria"
+  },
+  {
+    "id": "acft-latin-012",
+    "name": "MAHAN AIR BOEING 747",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Iran"
+  },
+  {
+    "id": "acft-latin-013",
+    "name": "CHAM WINGS A320",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Syria"
+  },
+  {
+    "id": "acft-latin-014",
+    "name": "MERAJ AIRLINE IL-76",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Iran"
+  },
+  {
+    "id": "acft-latin-015",
+    "name": "QOAIR IL-76 CARGO",
+    "entityType": "aircraft",
+    "region": "latin",
+    "country": "Kazakhstan"
   }
 ]
