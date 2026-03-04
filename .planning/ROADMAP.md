@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Next.js 15 TypeScript project scaffold with shared type contracts (completed 2026-03-04)
 - [x] **Phase 2: Synthetic Dataset** - Built-in SDN names spanning all entity types and linguistic regions (completed 2026-03-04)
 - [x] **Phase 3: Transformation Engine** - All 10 degradation rules as pure, independently testable functions (completed 2026-03-04)
-- [ ] **Phase 4: Server Action** - Zod-validated orchestration layer connecting engine to UI with loading state
+- [x] **Phase 4: Server Action** - Zod-validated orchestration layer connecting engine to UI with loading state (completed 2026-03-04)
 - [ ] **Phase 5: Parameter Form** - Entity counts, region selection, rule checkboxes, and client name input
 - [ ] **Phase 6: Results Table and CSV Export** - Virtualized results table and UTF-8 BOM CSV download
 - [ ] **Phase 7: Polish and Deployment** - Crowe branding, UX refinements, and Vercel production deployment
@@ -130,7 +130,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 1. Foundation | 2/2 | Complete   | 2026-03-04 |
 | 2. Synthetic Dataset | 3/3 | Complete   | 2026-03-04 |
 | 3. Transformation Engine | 3/3 | Complete   | 2026-03-04 |
-| 4. Server Action | 0/1 | Not started | - |
+| 4. Server Action | 1/1 | Complete   | 2026-03-04 |
 | 5. Parameter Form | 0/TBD | Not started | - |
 | 6. Results Table and CSV Export | 0/TBD | Not started | - |
 | 7. Polish and Deployment | 0/TBD | Not started | - |
