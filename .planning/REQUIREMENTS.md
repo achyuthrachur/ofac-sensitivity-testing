@@ -9,10 +9,10 @@
 
 ### Parameter Form
 
-- [ ] **FORM-01**: User can set sample count per entity type (Individual, Business, Vessel, Aircraft — 0–500 each)
-- [ ] **FORM-02**: User can select one or more linguistic regions to include (Arabic, Chinese, Russian/Cyrillic, Latin/European)
-- [ ] **FORM-03**: User can select degradation rules to apply via checkboxes with a "Select All" option
-- [ ] **FORM-04**: User can enter a client name used to label the output CSV
+- [x] **FORM-01**: User can set sample count per entity type (Individual, Business, Vessel, Aircraft — 0–500 each)
+- [x] **FORM-02**: User can select one or more linguistic regions to include (Arabic, Chinese, Russian/Cyrillic, Latin/European)
+- [x] **FORM-03**: User can select degradation rules to apply via checkboxes with a "Select All" option
+- [x] **FORM-04**: User can enter a client name used to label the output CSV
 - [x] **FORM-05**: Form shows a loading state while results are generating and disables the submit button to prevent duplicate submissions
 
 ### Synthetic Dataset
@@ -95,10 +95,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FORM-01 | Phase 5 | Pending |
-| FORM-02 | Phase 5 | Pending |
-| FORM-03 | Phase 5 | Pending |
-| FORM-04 | Phase 5 | Pending |
+| FORM-01 | Phase 5 | Complete |
+| FORM-02 | Phase 5 | Complete |
+| FORM-03 | Phase 5 | Complete |
+| FORM-04 | Phase 5 | Complete |
 | FORM-05 | Phase 4 | Complete |
 | DATA-01 | Phase 2 | Complete |
 | DATA-02 | Phase 2 | Complete |

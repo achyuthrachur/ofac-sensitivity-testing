@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 04-server-action-01-PLAN.md
-last_updated: "2026-03-04T20:24:22.213Z"
+stopped_at: Completed 05-parameter-form-01-PLAN.md
+last_updated: "2026-03-04T21:11:22.773Z"
 last_activity: 2026-03-04 — Completed 03-01-PLAN.md (Vitest 4 + RULE-01 through RULE-05, all 23 tests green)
 progress:
   total_phases: 7
   completed_phases: 4
-  total_plans: 9
-  completed_plans: 9
+  total_plans: 11
+  completed_plans: 10
   percent: 33
 ---
 
@@ -62,6 +62,7 @@ Progress: [███░░░░░░░] 33% (Phase 3 — 1/3 plans complete)
 | Phase 03-transformation-engine P02 | 5 | 2 tasks | 10 files |
 | Phase 03-transformation-engine P03 | 9 | 2 tasks | 3 files |
 | Phase 04-server-action P01 | 15 | 2 tasks | 6 files |
+| Phase 05-parameter-form P01 | 6 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -98,6 +99,9 @@ Recent decisions affecting current work:
 - [Phase 04-server-action]: talisman.d.ts shim required — no official TypeScript types, shim declares default export as (a, b) => number
 - [Phase 04-server-action]: Benchmark passes at ~53ms for 500 individuals + all 10 rules — MAX_ENTITY_COUNT stays at 500, no reduction needed
 - [Phase 04-server-action]: Vitest 4 changed it() timeout option to second argument (not third) — auto-fixed during TDD RED->GREEN transition
+- [Phase 05-parameter-form]: formUtils.ts uses length comparison for deriveSelectAllState — sufficient for UI tri-state without checking actual IDs
+- [Phase 05-parameter-form]: buildRunParams passes clientName through untrimmed — Zod handles server-side validation
+- [Phase 05-parameter-form]: parseEntityCount uses parseInt (not parseFloat) to match Zod .int() contract
 
 ### Pending Todos
 
@@ -111,8 +115,8 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-04T20:16:08.021Z
-Stopped at: Completed 04-server-action-01-PLAN.md
+Last session: 2026-03-04T21:11:22.763Z
+Stopped at: Completed 05-parameter-form-01-PLAN.md
 Resume file: None
 Resumed: Session resumed 2026-03-04 — proceeding to Phase 4 (Server Action)
 Stopped at: Phase 4 context gathered — ready for /gsd:plan-phase 4
