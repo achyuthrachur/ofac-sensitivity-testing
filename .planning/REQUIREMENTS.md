@@ -40,15 +40,15 @@
 ### Results Display
 
 - [ ] **RSLT-01**: Results display in a table showing Original Name, Entity Type, Linguistic Region, Degraded Variant, and Rule Applied
-- [ ] **RSLT-02**: Results table shows a Jaro-Winkler similarity score for each original → degraded name pair
-- [ ] **RSLT-03**: Results page shows a catch-rate summary stat (e.g., "X of Y degraded variants would be caught at 85% match threshold")
+- [x] **RSLT-02**: Results table shows a Jaro-Winkler similarity score for each original → degraded name pair
+- [x] **RSLT-03**: Results page shows a catch-rate summary stat (e.g., "X of Y degraded variants would be caught at 85% match threshold")
 - [ ] **RSLT-04**: Results table remains usable and responsive with thousands of rows (virtualized rendering)
 
 ### Export
 
-- [ ] **EXPO-01**: User can download all results as a CSV file
-- [ ] **EXPO-02**: CSV file uses UTF-8 encoding with BOM so non-Latin characters display correctly in Excel
-- [ ] **EXPO-03**: CSV filename includes the client name entered in the parameter form
+- [x] **EXPO-01**: User can download all results as a CSV file
+- [x] **EXPO-02**: CSV file uses UTF-8 encoding with BOM so non-Latin characters display correctly in Excel
+- [x] **EXPO-03**: CSV filename includes the client name entered in the parameter form
 
 ---
 
@@ -117,12 +117,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RULE-09 | Phase 3 | Complete |
 | RULE-10 | Phase 3 | Complete |
 | RSLT-01 | Phase 6 | Pending |
-| RSLT-02 | Phase 6 | Pending |
-| RSLT-03 | Phase 6 | Pending |
+| RSLT-02 | Phase 6 | Complete |
+| RSLT-03 | Phase 6 | Complete |
 | RSLT-04 | Phase 6 | Pending |
-| EXPO-01 | Phase 6 | Pending |
-| EXPO-02 | Phase 6 | Pending |
-| EXPO-03 | Phase 6 | Pending |
+| EXPO-01 | Phase 6 | Complete |
+| EXPO-02 | Phase 6 | Complete |
+| EXPO-03 | Phase 6 | Complete |
 
 **Coverage:**
 - v1 requirements: 27 total

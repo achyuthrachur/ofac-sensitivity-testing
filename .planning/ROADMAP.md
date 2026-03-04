@@ -140,5 +140,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 3. Transformation Engine | 3/3 | Complete   | 2026-03-04 |
 | 4. Server Action | 1/1 | Complete    | 2026-03-04 |
 | 5. Parameter Form | 2/2 | Complete    | 2026-03-04 |
-| 6. Results Table and CSV Export | 0/2 | Not started | - |
+| 6. Results Table and CSV Export | 1/2 | In Progress|  |
 | 7. Polish and Deployment | 0/TBD | Not started | - |
