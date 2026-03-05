@@ -1,17 +1,17 @@
 # Project Research Summary
 
-**Project:** OFAC Sensitivity Testing Web Tool
-**Domain:** Form-driven string transformation demo tool / compliance consulting aid
-**Researched:** 2026-03-03
+**Project:** OFAC Sensitivity Testing Tool — v2.0 Production Face
+**Domain:** B2B compliance demo tool — UI layer upgrade over existing v1.0 engine
+**Researched:** 2026-03-05
 **Confidence:** HIGH
 
 ## Executive Summary
 
-The OFAC Sensitivity Testing tool is a client-facing demo application that generates degraded variants of sanctions watchlist names to illustrate how evasion techniques can defeat screening systems. This is a form-driven, compute-on-demand tool — not a screening engine, not a database-backed SaaS product. The established pattern for this type of application is a Next.js App Router single-page tool: a parameter form triggers a Server Action that processes a static synthetic dataset through a rule engine, returns a typed result array, and the client renders results in a virtualized table with CSV export. All computation belongs server-side to protect rule logic and keep the client bundle small.
+The v2.0 milestone is an additive UI layer over a fully functional v1.0 engine. The core logic — server action, Jaro-Winkler scoring, 10 degradation rules, 285 synthetic SDN entries, virtualized results table — is complete and must not be touched. The work is: introduce a landing page at `/`, move the tool to `/tool`, add contextual explanations to the form, animate the page with Anime.js v4, replace Lucide icons with Iconsax, and upgrade select UI elements with React Bits / 21st.dev premium components. This is a well-bounded, additive scope with no architectural risk to the existing engine.
 
-The recommended approach is a narrow, high-quality v1 that covers all 10 degradation rule categories with plain-English descriptions, a synthetic SDN dataset spanning all entity types and linguistic regions, and a clean professional UI. The stack is mature and opinionated: Next.js 15 + TypeScript, React Hook Form + Zod for form validation, TanStack Table v8 with virtualization for results, and shadcn/ui for accessible components. The entire application lives on a single route, deployed to Vercel with zero-config CI/CD. Jaro-Winkler scoring, catch-rate statistics, and compound degradations are v2 features — they require scoring infrastructure as a prerequisite and should not be conflated with the v1 demo goal.
+The recommended approach is a strict phased build order driven by hard dependency chains: route restructuring must come first (the landing page cannot exist until `/` is freed from the tool), then static landing page content, then the explanation layer and icon pass (independent of each other), then the animation pass last (animations require DOM elements to exist before they can be targeted). The stack additions are minimal: `animejs@^4.3.6`, `iconsax-react-19@^1.2.5` (React 19-compatible fork), and React Bits components installed per-component via the shadcn CLI. No new backend dependencies, no schema changes, no test changes.
 
-The critical risks are Unicode corruption (rules silently no-oping or mangling non-Latin scripts), non-deterministic output from unstable rule ordering, and CSV files that display as mojibake in Excel. All three are pre-emptable by design decisions made before any UI work begins: script-aware rule declarations, a canonical rule order constant, and UTF-8 BOM on every CSV export. Vercel timeout risk is real but manageable — worst-case processing (500 names, all rules active) should be benchmarked before deployment, with a client-side fallback if needed.
+The primary risks are all on the client-boundary and animation side, and all have established prevention patterns. Anime.js v4 requires `'use client'` + `useEffect` wrapping — failing this crashes the build. TanStack virtualizer rows must never be animated with `translateY` — doing so stacks all rows at y=0. The shadcn Button forces SVG children to 16px via `[&_svg]:size-4` — `button.tsx` must be patched before any icon work. Every risk is LOW recovery cost when caught early, and MEDIUM-HIGH cost if discovered after several features are built on top. The mitigation strategy is a specific verification checklist at the end of each phase.
 
 ---
 
@@ -19,146 +19,132 @@ The critical risks are Unicode corruption (rules silently no-oping or mangling n
 
 ### Recommended Stack
 
-The stack is a well-established combination for a TypeScript-first Next.js tool. Next.js 15 with App Router and Server Actions eliminates the need for a separate API layer — the Server Action is co-located with the form, integrates with `useTransition` for pending state, and runs in the Node.js runtime (not Edge, which lacks the CPU budget for Unicode normalization). React Hook Form 7 + Zod 3 is the de facto standard for form validation in this stack, providing a single schema that serves both frontend validation and server-side input parsing.
+The existing stack (Next.js 16.1.6, React 19.2.3, Tailwind v4, shadcn 3.8.5, TanStack Virtualizer 3.13.19) is confirmed and stable — no upgrades or changes needed. Two npm additions are required: `animejs@^4.3.6` for scroll-triggered reveals and stagger entrances (framework-agnostic, ES module named exports, ~25KB tree-shakeable), and `iconsax-react-19@^1.2.5` (React 19-compatible community fork of the original iconsax-react, which has a confirmed React 19 breakage due to `defaultProps` removal). React Bits and 21st.dev components are installed as owned code via the shadcn CLI or copy-paste — they are not node_modules.
 
-TanStack Table v8 (headless, Tailwind-compatible) paired with `@tanstack/react-virtual` is non-negotiable for the results display — the tool can produce several thousand rows and DOM-rendering them without virtualization causes layout thrashing. CSV export is zero-dependency using the native Blob API with a UTF-8 BOM prepended for Excel compatibility.
+The route architecture requires one structural change: move `src/app/page.tsx` to `src/app/tool/page.tsx` and create a new server-component landing page at `src/app/page.tsx`. This is a file-system move with no Next.js configuration changes, no rewrites, no redirects.
 
 **Core technologies:**
-- **Next.js 15 (App Router):** Full-stack framework — Server Actions eliminate API route boilerplate; Vercel-native
-- **TypeScript 5.x:** Enforces contract between form schema, Server Action payload, and result types
-- **React Hook Form 7 + Zod 3:** Form validation — zero re-renders on keystroke; single schema for frontend and server
-- **TanStack Table v8 + react-virtual:** Headless virtualized table — required for 2,000–5,000 result rows
-- **shadcn/ui + Tailwind CSS:** Accessible components with no style conflicts; no vendor lock-in
-- **Vercel:** Zero-config deployment with automatic preview builds
-
-**Do not use:** Formik, AG Grid, MUI DataGrid, SheetJS/xlsx for CSV-only, Edge Runtime for the Server Action.
+- `animejs@^4.3.6`: Scroll-triggered reveals, stagger entrances, count-up numbers — ES module tree-shaking, no React 19 peer dep issues, MIT licensed
+- `iconsax-react-19@^1.2.5`: React 19-compatible Iconsax fork — same API as original, fixes `defaultProps` removal; always pass `size` and `color` explicitly; verify not abandoned before committing
+- React Bits (via `npx shadcn@latest add @react-bits/<Component>-TS-TW`): BlurText (hero headline), CountUp (stats section), SpotlightCard (How It Works steps) — installs to `src/components/` as owned code
+- 21st.dev (copy-paste from browser): Premium hero elements and CTA buttons if needed — no npm install, adapt Crowe color tokens after paste
+- shadcn Tooltip + Popover (`npx shadcn add tooltip popover`): Already available from v1.0 init but unused — wire for form explanations
 
 ### Expected Features
 
-The feature set is clearly scoped. The v1 must deliver a complete demo experience: all 10 degradation rule categories, a synthetic dataset covering all entity types and regions, a side-by-side results table, and CSV download. Any missing degradation category makes the tool look incomplete to compliance professionals. Phonetic/transliteration variants are the most complex rule — the v1 approach is a manually curated lookup table of the 20–30 most common variant spellings (Mohammed variants, Osama/Usama, Qaddafi variants), covering 80% of client questions.
+**Must have (table stakes — P1):**
+- Landing page hero with outcome-driven headline, subheadline, and single CTA ("Configure Your Test") linking to `/tool`
+- "How It Works" 3-step section (Configure → Run → Export) with icons
+- Inline helper text and tooltips on every form card — static text for routine fields, tooltip popover for the 10 degradation rules
+- Elevated catch-rate stat block above results table — promote from single `text-sm` line to a stat card with visual weight
+- Score interpretation legend (teal = caught at >=85%, coral = missed <85%)
 
-**Must have (table stakes):**
-- Synthetic SDN name library covering all entity types (individual, business, vessel, aircraft) and linguistic regions
-- Entity type count + linguistic region + degradation rule selection form
-- All 10 degradation rule categories with plain-English descriptions and tooltips
-- Side-by-side results table: Original Name, Entity Type, Region, Degraded Variant, Rule Applied
-- CSV download with UTF-8 BOM (Excel-safe)
-- Deterministic output (same inputs always produce same results)
-- Professional, clean UI reflecting Crowe brand
+**Should have (differentiators — P2):**
+- Stats section with real engine numbers (285 SDN entries, 10 rules, 4 entity types, 4 regions, ~53ms processing) with CountUp animation
+- Scroll-triggered section reveals via Anime.js `onScroll` + stagger
+- Form card stagger entrance on tool page load (4 cards, 80ms delay)
+- BlurText animated hero headline (React Bits)
+- Iconsax icon pass throughout (replacing Lucide Loader2 and Unicode symbols)
+- SpotlightCard on How It Works steps (React Bits)
 
-**Should have (v2 differentiators):**
-- Jaro-Winkler match score column — shows numeric proximity of degraded name to original
-- Catch rate summary stat — "X of Y degradations would be caught at 85% threshold"
-- Compound / chained degradation rules — multiple rules applied simultaneously per name
-- Rule severity / risk ratings — editorial content labeling rules High/Medium/Low risk
-
-**Defer (v2+ or indefinitely):**
-- Interactive threshold slider (requires scoring infrastructure)
-- PDF summary slide export (use browser print-to-PDF as workaround)
-- Screening system profile selector (requires vendor threshold research)
-- User authentication, database persistence, bulk async job queue, real SDN list integration
+**Defer to v3+ (explicitly out of v2.0 scope):**
+- Interactive threshold slider (requires state wiring to ResultsTable — architectural scope)
+- Row-level drill-down (virtual rows cannot expand without architecture refactor)
+- Mobile responsive layout (desktop-first per PROJECT.md)
+- PDF/print export (browser print-to-PDF is the accepted workaround)
 
 ### Architecture Approach
 
-The architecture is a single-route Next.js application where a client-side `ParameterForm` submits to a `runTest` Server Action, which filters a static `sdn.json` dataset through `sampler.ts` and applies transformation rules via `degrader.ts`. The result array is returned to the client and rendered in a virtualized `ResultsTable`. CSV export happens entirely client-side from the already-fetched result array — no second server round-trip. The degradation engine (rule registry + sampler + degrader) lives exclusively server-side to keep rule logic out of the client bundle and allow future rules to call external services without exposing credentials.
+The architecture uses the App Router "islands" pattern: static content sections (Hero, HowItWorks, FeatureStats, Footer) are Server Components for fast TTFB and zero hydration cost. Animations are added via a thin `AnimationShell` client component wrapper that receives server-rendered sections as `children` and attaches Anime.js `createScope` + `onScroll` listeners via `useEffect`. The tool page stays `'use client'` as it was in v1.0. Explanation components (tooltips, popovers) are separate client component files colocated in `src/app/_components/tool/`, keeping domain content out of the 255-line tool page. The server action (`src/app/actions/runTest.ts`) and all `lib/` utilities are completely unchanged.
 
 **Major components:**
-1. `ParameterForm` — collects entity counts, regions, rule selection, client name; invokes Server Action via `useTransition`
-2. `runTest` (Server Action) — validates params with Zod, calls sampler then degrader, returns `ResultRow[]`
-3. `sampler` / `degrader` + rule registry — pure functions; independently testable; rule order governed by `CANONICAL_ORDER` constant
-4. `ResultsTable` — virtualized display using `@tanstack/react-virtual`; renders only visible viewport rows
-5. `CSVDownloadButton` — client-side Blob generation; UTF-8 BOM; no server round-trip
-6. `sdn.json` — static synthetic dataset imported as a TypeScript module at build time; zero I/O latency
+1. `src/app/page.tsx` (NEW, Server Component) — landing page compositor; exports `metadata`; imports section components and `AnimationShell`
+2. `src/app/_components/landing/AnimationShell.tsx` (NEW, `'use client'`) — single animation wrapper; `createScope` + `revert()` lifecycle for hero, how-it-works, and stats section types
+3. `src/app/tool/page.tsx` (MOVED from `src/app/page.tsx`) — tool form; unchanged logic; gains explanation components and icon upgrades
+4. `src/app/_components/tool/RuleInfoPopover.tsx`, `EntityTypeTooltip.tsx`, `RegionTooltip.tsx`, `CatchRatePanel.tsx` (NEW, `'use client'`) — domain-specific explanation content; keeps `tool/page.tsx` manageable
+5. `src/app/actions/runTest.ts` (UNCHANGED) — stays at current path; import continues to work from `tool/page.tsx`
 
 ### Critical Pitfalls
 
-1. **Unicode corruption of non-Latin names** — Arabic, Chinese, and Cyrillic names silently mangled by Latin-targeting rules. Prevention: classify each name by script at ingestion; each rule declares `applicableScripts`; rules are no-ops when the script is not in scope. Address in transformation engine design, before any rule implementations.
+1. **Anime.js v4 SSR crash (`window is not defined`)** — Every file importing animejs must have `'use client'` at top; all `animate()` / `onScroll()` / `createScope()` calls must be inside `useEffect`. Violations crash `next build` with no graceful recovery.
 
-2. **Non-deterministic output from unstable rule ordering** — rules applied in object key iteration order or checkbox render order produce different outputs for the same inputs. Prevention: define a `CANONICAL_ORDER` constant (array, not object) before writing any rule; always apply in canonical order regardless of which rules are active. Address in transformation engine design.
+2. **Missing `scope.revert()` on unmount — zombie animations** — Every `createScope` must have a matching `return () => scope.current?.revert()` in the `useEffect` cleanup. Omitting this causes doubled/stuttering animations in React Strict Mode dev and memory leaks in production across route navigations.
 
-3. **CSV displaying as mojibake in Excel** — missing UTF-8 BOM causes Excel to misread UTF-8. Prevention: always prepend `\uFEFF` to CSV blob; validate by opening in actual Excel (not just a text editor). Address in CSV export phase.
+3. **Animating TanStack virtual rows with `translateY` — rows stack at y=0** — The virtualizer writes `transform: translateY(${virtualRow.start}px)` to every `<tr>` (confirmed in `ResultsTable.tsx` lines 149-151). Any animation that also writes `translateY` to `<tr>` overwrites virtualizer positioning. Animate only the results container wrapper — never individual rows.
 
-4. **Vercel serverless timeout at scale** — 500 names × 10+ rules with Unicode normalization may exceed function timeout. Prevention: benchmark worst-case input before Vercel deployment; if timeout risk is real, move transformation to client-side (10,000 string operations is <200ms in the browser). Address before first Vercel deployment.
+4. **Iconsax SVG forced to 16px inside shadcn Button (`[&_svg]:size-4`)** — shadcn's `button.tsx` (owned code) hardcodes `[&_svg]:size-4` on all SVG children. Remove or change to `[&_svg]:size-auto` in `button.tsx` before starting the icon pass — one-file fix, must come first.
 
-5. **React re-render cascade on checkbox interaction** — form state and results state in the same atom causes results table (2,000+ rows) to re-render on every checkbox click. Prevention: separate state atoms for form vs. results; `React.memo` on results component; virtualize from day one. Address in UI component architecture phase.
+5. **React Bits / 21st.dev components using Tailwind v3 syntax — silent visual breakage** — `bg-opacity-*` utilities and undefined color names from copy-pasted components render silently wrong in Tailwind v4. Audit every pasted component: replace `bg-opacity-*` with slash syntax, replace all non-Crowe color classes with project tokens, then run `next build` to surface any remaining issues.
 
 ---
 
 ## Implications for Roadmap
 
-Based on research, the build order follows a strict dependency chain: types first, then the core engine (independently testable), then the Server Action, then the UI shell, then form integration, then results display, then CSV. This order is non-negotiable — the shared `SdnEntry` and `ResultRow` types are the contract that every other module depends on.
+Based on the research dependency graph and pitfall severity, the recommended phase structure is:
 
-### Phase 1: Project Foundation and Type Contracts
+### Phase 1: Route Restructuring
 
-**Rationale:** Every other module depends on `SdnEntry` and `ResultRow` type definitions. Setting up the project scaffold and defining these contracts first prevents rework and establishes the shared language for all subsequent phases.
-**Delivers:** Initialized Next.js 15 TypeScript project with all dependencies installed; `SdnEntry`, `ResultRow`, and `RunParams` type definitions; directory structure matching the architecture spec.
-**Addresses:** TypeScript contract enforcement (STACK.md); shared type contract dependency (ARCHITECTURE.md)
-**Avoids:** Untyped SDN data (ARCHITECTURE.md anti-pattern #4); type drift between form, action, and result layers
+**Rationale:** Everything else depends on `/tool` existing and `/` being free for the landing page. This is a 1-session file move but it is the hard prerequisite — landing page content, CTA links, and `metadata` exports all require this to be correct first. Route correctness must be verified before any UI work starts.
+**Delivers:** Tool accessible at `/tool`; `/` returns a minimal placeholder; `next build` passes with the new structure; `tool/layout.tsx` (Server Component) in place to export route-specific `metadata` without conflicting with the `'use client'` tool page
+**Addresses:** Pitfall 3 (two copies of tool if move is incomplete), Pitfall 4 (Client Component cannot export `metadata`)
+**Avoids:** Building landing page content on top of an unchecked route structure
 
-### Phase 2: Synthetic SDN Dataset
+### Phase 2: Landing Page Static Structure
 
-**Rationale:** The degradation engine must be built against a real dataset. Linguistically invalid synthetic names are a critical pitfall that cannot be patched after the engine is built — it requires domain review of the data itself before anything is built on top of it.
-**Delivers:** `data/sdn.json` with entries spanning all entity types (individual, business, vessel, aircraft) and all linguistic regions (Latin, Arabic, CJK, Cyrillic); each entry typed against `SdnEntry`; names that pass domain review.
-**Addresses:** Synthetic SDN library (FEATURES.md table stakes); linguistic region coverage
-**Avoids:** Linguistically invalid synthetic names (Pitfall 5); UTF-8 handling failures (Pitfall 2)
-**Research flag:** NEEDS RESEARCH — sourcing culturally valid name components per script requires domain input. Review against public OFAC SDN list structure.
+**Rationale:** With the route in place, build all landing page sections as static Server Components first — no animations, no premium components. This lets the page ship and be reviewed before the animation layer complicates debugging.
+**Delivers:** Complete landing page at `/` with Hero, How It Works (3 steps), Stats (real engine numbers), expanded Footer with disclaimer; CTA links to `/tool`; page-level `metadata`
+**Addresses:** All P1 table-stakes landing features (hero, 3-step process, stats, footer disclaimer)
+**Uses:** `iconsax-react-19` for step icons and stat section (install here); Next.js `<Link>` for CTA
+**Avoids:** Pitfall 5 (landing page accidentally becoming a Client Component — keep `src/app/page.tsx` free of `'use client'`); Pitfall 7 (React Bits without `'use client'`)
 
-### Phase 3: Transformation Engine (Core, No UI)
+### Phase 3: Form Explanation Layer
 
-**Rationale:** The degradation engine is the core value of the tool. It must be built as pure functions with unit tests before any UI is attached — this makes it independently verifiable and keeps rule logic off the client bundle.
-**Delivers:** `lib/rules/index.ts` (rule registry with `CANONICAL_ORDER`); all 10 degradation rule modules; `lib/sampler.ts`; `lib/degrader.ts`; unit tests covering all rules against multi-script fixtures (at minimum 5 names per script per rule).
-**Addresses:** All 10 degradation rule categories (FEATURES.md); deterministic output requirement
-**Avoids:** Non-deterministic rule ordering (Pitfall 7 — canonical order defined first); Unicode corruption (Pitfall 2 — script classification + per-rule script declarations); rules as untestable monolith (ARCHITECTURE.md anti-pattern #3)
-**Research flag:** STANDARD PATTERNS for most rule categories. Phonetic/transliteration variants need curated lookup table — requires domain input for the top 20–30 variant spellings.
+**Rationale:** Independent of animation — static content and Radix UI primitives only. Addresses the highest user-value gap (10 degradation rules are opaque without explanation). Can be developed immediately after Phase 1 in parallel with Phase 2 if bandwidth allows.
+**Delivers:** Static helper text on all 4 form cards; 10 degradation rule tooltip popovers with the full description set from FEATURES.md; `CatchRatePanel` promoting catch-rate stat to visual prominence; score legend (teal/coral key)
+**Addresses:** P1 features — inline help, score interpretation legend, elevated catch-rate stat block
+**Uses:** `npx shadcn add tooltip popover`; InfoCircle Iconsax icon
 
-### Phase 4: Server Action Integration
+### Phase 4: Icon Pass
 
-**Rationale:** With types and engine complete, the Server Action is a thin validation + orchestration layer. Building it before the UI lets it be tested independently (e.g., via `curl` or direct function invocation) before any UI is involved.
-**Delivers:** `app/actions/runTest.ts` with Zod validation matching `RunParamsSchema`; confirmed working end-to-end from raw params to `ResultRow[]`; worst-case benchmark (500 names, all rules) run to validate Vercel timeout risk.
-**Addresses:** Server Action pattern (ARCHITECTURE.md Decision 1); Zod reuse for API validation (STACK.md)
-**Avoids:** Vercel timeout (Pitfall 1 — benchmark before deployment); Pages Router legacy pattern (STACK.md)
+**Rationale:** Icon replacement is cosmetic, independent, and zero logic risk. Do it after the explanation layer (which introduces new icon placements) so all placements are known before doing a systematic audit. Patch `button.tsx` as the very first step of this phase.
+**Delivers:** Consistent Iconsax icon language throughout — form card headers (People, Global, Setting4, Building), CTA buttons (ArrowRight, DocumentDownload), step icons (Setting2, Play, Export — TwoTone), caught/missed indicators (TickCircle/CloseCircle Bold), loading state; `lucide-react` fully replaced
+**Addresses:** P2 icon pass per the specific mapping table in FEATURES.md
+**Avoids:** Pitfall 9 (shadcn Button SVG forced to 16px) — patch `button.tsx` before touching any icons
 
-### Phase 5: Parameter Form UI
+### Phase 5: Animation Pass
 
-**Rationale:** Form is now wired to a working Server Action, making integration straightforward. State architecture must be correct from the start — form state and results state isolated, `useTransition` used for pending state.
-**Delivers:** `ParameterForm.tsx` with entity count inputs, region checkboxes, rule selection checkboxes (with plain-English descriptions), client name field; form state preserved across runs; processing state machine (`idle | processing | complete | error`); submit disabled during processing.
-**Addresses:** Parameter form (FEATURES.md table stakes); plain-English rule labels; client name labeling
-**Avoids:** Re-render cascade (Pitfall 3 — isolated state atoms); form state reset on re-run (Pitfall 9); no loading feedback (Pitfall 6 — state machine is Phase 5 work, not polish)
+**Rationale:** Animations are the last layer before the premium UI upgrade — they require all DOM elements (landing sections, form cards, results area) to exist. The `AnimationShell` pattern must be established once with correct scope + cleanup before any individual animations are written.
+**Delivers:** `AnimationShell.tsx` with `createScope` + `revert()` lifecycle; scroll-triggered reveals on How It Works and Stats sections (`onScroll` + stagger); hero entrance on page load; form card stagger on tool page mount; count-up on stat numbers via Anime.js `innerHTML` interpolation; results section fade-in on test completion; `prefers-reduced-motion` guard
+**Addresses:** P2 animation features
+**Uses:** `npm install animejs` (v4.3.6)
+**Avoids:** Pitfall 1 (SSR crash — `'use client'` + `useEffect` enforced from the start), Pitfall 2 (zombie animations — `revert()` required), Pitfall 10 (virtual row `translateY` conflict — animate container only), Pitfall 11 (global selectors — `createScope` required on every animation)
 
-### Phase 6: Results Table and CSV Export
+### Phase 6: Premium UI Upgrade
 
-**Rationale:** Results display and CSV are both consumers of the `ResultRow[]` shape — building them together ensures column names are consistent between UI and export, driven from a single `COLUMNS` constant.
-**Delivers:** `ResultsTable.tsx` with `@tanstack/react-virtual` virtualization (active from day one); `ResultsPanel.tsx` with React.memo; `CSVDownloadButton.tsx` with UTF-8 BOM; sorting with `useMemo`; error boundary around results table; column definitions shared between UI and CSV headers.
-**Addresses:** Side-by-side results table (FEATURES.md table stakes); CSV download; UTF-8/non-Latin script support
-**Avoids:** No table virtualization (ARCHITECTURE.md anti-pattern #6); CSV mojibake in Excel (Pitfall 4 — BOM + test in actual Excel); table freeze on sort/filter (Pitfall 8); CSV headers mismatching UI labels (Pitfall 13); white-screen on malformed name (Pitfall 12 — error boundary)
-
-### Phase 7: Polish, Branding, and Deployment
-
-**Rationale:** All functional requirements are complete. Final phase focuses on professional presentation and production readiness.
-**Delivers:** Crowe branding applied; loading skeleton during processing; rule help text/tooltips; error message UX; Vercel deployment with preview builds configured; final validation of CSV in actual Excel with non-Latin names.
-**Addresses:** Professional clean UI (FEATURES.md table stakes); Vercel deployment (STACK.md)
-**Avoids:** Late-discovered CSV encoding issues (acceptance criterion: open in actual Excel)
+**Rationale:** React Bits and 21st.dev components are an enhancement layer over already-working markup. Installing them last means the page is fully functional before any third-party component introduces Tailwind v4 class incompatibilities or peer dep surprises.
+**Delivers:** BlurText animated hero headline; SpotlightCard on How It Works steps; CountUp for stat numbers (replacing plain `innerHTML` Anime.js approach if desired); any 21st.dev hero or CTA button upgrades; full visual polish pass
+**Addresses:** P2/P3 differentiator features; premium Crowe brand presentation
+**Avoids:** Pitfall 6 (Tailwind v4 class breakage — audit every paste before committing); Pitfall 7 (`'use client'` required on all animated components)
 
 ### Phase Ordering Rationale
 
-- **Types before engine:** `SdnEntry` and `ResultRow` are the shared contract; every module depends on them. Writing any module before defining these guarantees rework.
-- **Dataset before engine:** The engine is built against dataset structure. Discovering that dataset names are linguistically invalid after the engine is complete is expensive.
-- **Engine before UI:** Pure functions are independently testable. Attaching untested rule logic to a UI makes debugging exponentially harder.
-- **Server Action before form:** Lets the action be verified in isolation; avoids debugging form + action simultaneously.
-- **Form before results display:** `useTransition` and state isolation must be correct before results rendering is added — adding results display to a broken state architecture creates compound bugs.
-- **Results + CSV together:** Shared `COLUMNS` constant prevents column name divergence (Pitfall 13).
+- Phases 1 and 2 are strictly sequential: routing unlocks landing page, landing page unlocks animations.
+- Phases 3 and 4 are independent of each other and of Phase 2, but both depend on Phase 1. They can run concurrently with Phase 2 if bandwidth allows.
+- Phase 5 (animation) is gated on Phases 2 and 3 — animations must target elements that already exist in the DOM.
+- Phase 6 (premium UI) is purely additive and lowest-risk when done last — it overlays on already-verified markup.
+- Pitfall-prevention actions (patch `button.tsx`, establish `AnimationShell` pattern, verify `next build` after each React Bits paste) are phase-level gates, not optional cleanup steps.
 
 ### Research Flags
 
-Phases likely needing deeper research during planning:
-- **Phase 2 (Synthetic Dataset):** Culturally valid name components per script; Arabic naming conventions (ism + nasab); Chinese surname-first patterns; Russian patronymic structure. Requires domain knowledge and reference to public OFAC SDN list structure.
-- **Phase 3 (Phonetic/transliteration rule):** Curated lookup table of top 20–30 variant spellings for high-frequency SDN name components. Needs compliance domain input to prioritize variants with highest real-world occurrence.
+Phases with well-documented patterns (skip `/gsd:research-phase`):
+- **Phase 1 (Route Restructuring):** Standard App Router file move — Next.js official docs cover this completely. ARCHITECTURE.md has the exact 4-step checklist.
+- **Phase 3 (Explanation Layer):** shadcn Tooltip and Popover are well-documented; the 10 rule descriptions are already fully written in FEATURES.md.
+- **Phase 4 (Icon Pass):** Direct replacement per the icon mapping table in FEATURES.md. One prerequisite patch to `button.tsx`.
 
-Phases with standard patterns (skip research-phase):
-- **Phase 1 (Foundation):** Next.js 15 scaffold with TypeScript, Tailwind, shadcn/ui is a documented one-command setup.
-- **Phase 4 (Server Action):** App Router Server Action + Zod pattern is well-documented with stable API.
-- **Phase 5 (Form UI):** React Hook Form + Zod resolver is the dominant standard; pattern is extensively documented.
-- **Phase 6 (Table + CSV):** TanStack Table v8 + react-virtual patterns are stable and well-documented; CSV Blob pattern is standard browser API.
+Phases that benefit from targeted pre-phase verification (not full research):
+- **Phase 2 (Landing Page):** Hero visual design choices (background treatment, stat layout) benefit from 30 minutes browsing the 21st.dev hero category before starting markup.
+- **Phase 5 (Animation Pass):** The Anime.js v4 `onScroll` callback name (`onEnter` vs `onEnterForward`) should be verified against the installed v4.3.6 package at implementation time — FEATURES.md shows both variants across examples.
+- **Phase 6 (Premium UI):** Each React Bits component may bring different peer dep requirements. Check the shadcn CLI output after each `add` command for unexpected packages (particularly `framer-motion`).
 
 ---
 
@@ -166,40 +152,47 @@ Phases with standard patterns (skip research-phase):
 
 | Area | Confidence | Notes |
 |------|------------|-------|
-| Stack | HIGH | RHF+Zod, TanStack Table v8, shadcn/ui, Vercel — all dominant standards with stable APIs. Next.js 15 version should be verified on npm before install. |
-| Features | HIGH | OFAC/sanctions compliance domain is well-established; degradation rule categories are documented evasion techniques. Competitor feature set is MEDIUM confidence. |
-| Architecture | HIGH | Next.js App Router patterns (Server Actions, useTransition, virtualization) are stable since Next.js 13.4. Data flow and component boundaries are well-established. |
-| Pitfalls | MEDIUM-HIGH | Core platform constraints (Vercel timeout, React re-render, UTF-8 BOM for Excel) are HIGH confidence. Unicode script handling edge cases are MEDIUM — real-world behavior may surface additional cases. |
+| Stack | HIGH | Versions confirmed from `package.json` codebase inspection; `iconsax-react` React 19 breakage confirmed via official GitHub issue tracker; `animejs` v4.3.6 confirmed on npm (published 2026-02-15) |
+| Features | HIGH | B2B landing page patterns confirmed from multiple sources; Anime.js v4 scroll API confirmed from official docs; icon style assignments are inferred from library docs — LOW confidence on exact style variant choices per context, but easily adjusted |
+| Architecture | HIGH | App Router server/client boundary patterns confirmed from official Next.js docs; `createScope` + `revert()` pattern confirmed from Anime.js v4 official docs; `position:absolute` virtualizer conflict confirmed from codebase inspection and TanStack community |
+| Pitfalls | HIGH | All 11 pitfalls confirmed from codebase inspection + official issue trackers (shadcn #6316, TanStack Virtual #476/#482, iconsax-react #18) + Next.js official docs |
 
 **Overall confidence:** HIGH
 
 ### Gaps to Address
 
-- **Synthetic dataset quality:** No automated validation exists for "linguistic authenticity" of synthetic names. Requires a human domain review step — flag as acceptance criterion for Phase 2 before Phase 3 begins.
-- **Phonetic variant coverage:** The curated lookup table for v1 needs prioritization from someone with compliance domain knowledge. The 20–30 variant spellings chosen must reflect actual SDN list patterns, not arbitrary examples.
-- **Vercel timeout threshold:** Current Vercel plan determines timeout limit (10s Hobby, 60s Pro, 300s Enterprise). This must be confirmed against the actual Crowe Vercel account before Phase 4 deployment. If on Hobby tier, client-side computation fallback becomes mandatory.
-- **Tailwind version:** Tailwind v4 was in RC at knowledge cutoff. Verify stable release status before installation; v3 is the safe choice if v4 is still in pre-release.
+- **`iconsax-react-19` package health:** Low weekly downloads — community fork, not officially maintained. Before committing to the install, verify the package is not deprecated and renders correctly in the dev environment. Fallback: pass explicit `size` and `color` to every original `iconsax-react` icon directly — this also fixes the React 19 issue without the fork.
+- **React Bits peer deps per component:** Each `npx shadcn add @react-bits/<Component>-TS-TW` command may install unexpected packages (notably `framer-motion` for text animation components). Review CLI output after each add to avoid duplicate animation libraries alongside Anime.js.
+- **Tailwind v4 `@theme` class generation for React Bits:** React Bits TS-TW components use Tailwind utility classes. Crowe custom color tokens are already in the `@theme` block in `globals.css` — verify after the first React Bits install that classes like `text-crowe-indigo-dark` resolve correctly.
+- **`onScroll` callback name:** FEATURES.md examples show both `onEnter` and `onEnterForward`. Verify exact callback signature against the installed v4.3.6 package at implementation time before writing any scroll-triggered animations.
 
 ---
 
 ## Sources
 
 ### Primary (HIGH confidence)
-- Next.js App Router official docs — Server Actions, useTransition, component boundaries
-- Vercel platform docs — function timeout limits, response size limits, Node.js runtime
-- React official docs — re-render behavior, memo, transitions
-- TanStack Table v8 + react-virtual — headless table API, virtualization patterns
-- ECMA-262 spec — Unicode normalization behavior in JavaScript
+- `package.json` codebase inspection — stack versions (Next.js 16.1.6, React 19.2.3, Tailwind v4, TanStack Virtualizer 3.13.19)
+- `src/app/page.tsx` codebase inspection — `'use client'` at line 1; existing tool component structure confirmed
+- `src/components/ResultsTable.tsx` lines 149-151 — `position: absolute; transform: translateY(${virtualRow.start}px)` on every virtual row confirmed
+- Next.js App Router official docs — route colocation, private `_` folders, server/client composition patterns, `metadata` export constraints
+- Anime.js v4 official docs — `createScope`, `onScroll`, `revert()`, `stagger`, named imports, React integration pattern
+- shadcn/ui GitHub issue #6316 and discussion #6250 — `[&_svg]:size-4` Button SVG override confirmed
+- iconsax-react GitHub issue #18 — React 19 `defaultProps` breakage confirmed on original package
+- TanStack Virtual GitHub discussions #476, #482 — `position:absolute` transform conflict with animation libraries confirmed
 
 ### Secondary (MEDIUM confidence)
-- npm ecosystem community consensus — React Hook Form 7 + Zod 3 as dominant form validation standard
-- shadcn/ui documentation — copy-on-demand component model, Radix UI primitives
-- OFAC SDN list public data — name component patterns, entity type categories, linguistic region distribution
+- animejs npm (last published 2026-02-15, v4.3.6) — version and release cadence
+- anime.js GitHub wiki "What's new in v4" — ES module architecture, scroll API
+- iconsax-react-19 GitHub (MohamedRagheb) — React 19 compatible fork, v1.2.5
+- react-bits GitHub (DavidHDev/react-bits) — shadcn CLI install pattern confirmed
+- B2B SaaS landing page best practices (flow-agency.com, saashero.net, caffeinemarketing.com) — hero structure, stats section patterns, CTA copy guidance
+- UX research on inline help vs tooltip (UX Movement, Userpilot, LogRocket) — static text for required info, tooltip for supplementary info
 
-### Tertiary (LOW confidence)
-- Competitor feature analysis — OFAC screening vendor capabilities (needs validation against current vendor docs)
-- Phonetic variant lookup table content — requires compliance domain expert review for accuracy
+### Tertiary (LOW confidence — validate at implementation)
+- `onScroll` `onEnterForward` vs `onEnter` callback name — seen in different examples; verify against installed package
+- Tailwind v4 `@theme` compatibility with React Bits utility classes — inferred from Tailwind v4 upgrade guide; verify empirically after first install
 
 ---
-*Research completed: 2026-03-03*
+
+*Research completed: 2026-03-05*
 *Ready for roadmap: yes*
