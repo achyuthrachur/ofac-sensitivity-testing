@@ -1,93 +1,68 @@
 # Requirements: OFAC Sensitivity Testing Tool
 
-**Defined:** 2026-03-03
+**Defined:** 2026-03-05
 **Core Value:** A consultant can run a live OFAC sensitivity testing demonstration from a single URL with zero file prep — and a client can see results in real time.
 
----
+## v2.0 Requirements
 
-## v1 Requirements
+Requirements for the v2.0 Production Face milestone. Each maps to roadmap phases.
 
-### Parameter Form
+### Landing Page
 
-- [x] **FORM-01**: User can set sample count per entity type (Individual, Business, Vessel, Aircraft — 0–500 each)
-- [x] **FORM-02**: User can select one or more linguistic regions to include (Arabic, Chinese, Russian/Cyrillic, Latin/European)
-- [x] **FORM-03**: User can select degradation rules to apply via checkboxes with a "Select All" option
-- [x] **FORM-04**: User can enter a client name used to label the output CSV
-- [x] **FORM-05**: Form shows a loading state while results are generating and disables the submit button to prevent duplicate submissions
+- [ ] **LAND-01**: User can view a landing page at "/" with a hero section and primary CTA button that navigates to the tool
+- [ ] **LAND-02**: User can read a "How It Works" 3-step methodology section explaining configure → run → export
+- [ ] **LAND-03**: User can view a features/stats section showing real engine numbers (285 entries, 10 rules, ~53ms, 4 regions)
+- [ ] **LAND-04**: User can see a Crowe-branded footer with navigation links
 
-### Synthetic Dataset
+### Explanations
 
-- [x] **DATA-01**: App includes built-in synthetic SDN names for Individual entity type
-- [x] **DATA-02**: App includes built-in synthetic SDN names for Business/Organization entity type
-- [x] **DATA-03**: App includes built-in synthetic SDN names for Vessel entity type
-- [x] **DATA-04**: App includes built-in synthetic SDN names for Aircraft entity type
-- [x] **DATA-05**: Synthetic names span Arabic, Chinese, Russian/Cyrillic, and Latin/European linguistic regions
-- [x] **DATA-06**: Synthetic names follow culturally authentic naming conventions per region (ism+nasab for Arabic, surname-first for Chinese, etc.)
+- [ ] **EXPL-01**: User can open a tooltip on each of the 10 degradation rules to read a plain-English description of what the rule does
+- [ ] **EXPL-02**: User can read static helper text on entity count inputs and region checkboxes explaining what each parameter means
+- [ ] **EXPL-03**: User can see an elevated catch-rate stat card with score interpretation legend in the results view (replaces buried summary line)
+- [ ] **EXPL-04**: User can read a methodology explanation on the landing "How It Works" section that educates clients before they see the form
 
-### Degradation Rules
+### Animation
 
-- [x] **RULE-01**: User can apply space removal / insertion (`AL QAEDA` → `ALQAEDA` or `A L Q A E D A`)
-- [x] **RULE-02**: User can apply character substitution — OCR/leet variants (`O`→`0`, `I`→`1`, `S`→`5`, `A`→`@`)
-- [x] **RULE-03**: User can apply diacritic removal / addition (`Müller` → `Muller`, `Jose` → `José`)
-- [x] **RULE-04**: User can apply word reordering (`Kim Jong Un` → `Jong Un Kim`)
-- [x] **RULE-05**: User can apply abbreviation (compress tokens by dropping vowels: `Mohammed` → `Mhd`)
-- [x] **RULE-06**: User can apply truncation (drop trailing name tokens)
-- [x] **RULE-07**: User can apply phonetic / transliteration variants (`Osama` → `Usama`, `Qaddafi` → `Gaddafi`)
-- [x] **RULE-08**: User can apply punctuation insertion / removal (`Al-Qaeda` → `Al Qaeda` → `AlQaeda`)
-- [x] **RULE-09**: User can apply prefix / suffix removal (`Mr. John Smith Jr.` → `John Smith`)
-- [x] **RULE-10**: User can apply nickname / alias substitution (`Mohammed` → `Mohamed` / `Muhammad` / `Mohamad`)
+- [ ] **ANIM-01**: Landing page sections animate in with scroll-triggered reveals as the user scrolls down
+- [ ] **ANIM-02**: Parameter form sections at /tool stagger in on page load
+- [ ] **ANIM-03**: Landing stats count up with a number animation when scrolled into view
+- [ ] **ANIM-04**: CTA buttons have an amber glow on hover; cards lift on hover
 
-### Results Display
+### Icon Pass
 
-- [x] **RSLT-01**: Results display in a table showing Original Name, Entity Type, Linguistic Region, Degraded Variant, and Rule Applied
-- [x] **RSLT-02**: Results table shows a Jaro-Winkler similarity score for each original → degraded name pair
-- [x] **RSLT-03**: Results page shows a catch-rate summary stat (e.g., "X of Y degraded variants would be caught at 85% match threshold")
-- [x] **RSLT-04**: Results table remains usable and responsive with thousands of rows (virtualized rendering)
+- [ ] **ICON-01**: Form section headings and rule checkboxes use Iconsax Linear icons
+- [ ] **ICON-02**: CTA buttons and navigation use Iconsax Bold icons (arrow, download, external link)
+- [ ] **ICON-03**: Results table match/no-match indicators use Iconsax TickCircle/CloseCircle replacing Unicode characters
+- [ ] **ICON-04**: Landing page How It Works and Stats sections use Iconsax TwoTone feature icons
 
-### Export
+### Premium UI
 
-- [x] **EXPO-01**: User can download all results as a CSV file
-- [x] **EXPO-02**: CSV file uses UTF-8 encoding with BOM so non-Latin characters display correctly in Excel
-- [x] **EXPO-03**: CSV filename includes the client name entered in the parameter form
+- [ ] **UIPOL-01**: Landing hero headline uses React Bits BlurText or 21st.dev animated headline component
+- [ ] **UIPOL-02**: Landing features/stats section uses React Bits TiltCard or 21st.dev premium card variant
+- [ ] **UIPOL-03**: Primary CTA button uses an animated amber glow treatment
+- [ ] **UIPOL-04**: Parameter form sections use SpotlightCard or premium card treatment
 
----
+## Future Requirements
 
-## v2 Requirements
+### Accessibility
 
-### Advanced Analysis
+- **A11Y-01**: Animations respect `prefers-reduced-motion` — all Anime.js animations disabled when OS setting is on
+- **A11Y-02**: All Iconsax icons include `aria-label` or are marked `aria-hidden` with adjacent visible label
 
-- **ANAL-01**: Interactive match threshold slider that live-updates which degraded variants are "caught" vs "missed"
-- **ANAL-02**: Compound / chained degradations (apply multiple rules simultaneously to show compounding evasion)
-- **ANAL-03**: Per-rule catch-rate breakdown table
-- **ANAL-04**: Rule severity / risk rating labels (High/Medium/Low based on real-world evasion frequency)
+### Content
 
-### Output Enhancements
-
-- **OUTP-01**: Exportable PDF summary slide auto-generated from results (browser print-to-PDF as interim workaround)
-- **OUTP-02**: Annotation / notes column (consultant adds notes before CSV export)
-
-### Configuration
-
-- **CONF-01**: Configurable match threshold parameter (default 85%, adjustable)
-- **CONF-02**: Save and restore form configuration across browser sessions
-
----
+- **CONT-01**: Landing page copy is reviewed and approved by Crowe marketing
+- **CONT-02**: Degradation rule descriptions are reviewed by OFAC compliance domain expert
 
 ## Out of Scope
 
 | Feature | Reason |
 |---------|--------|
-| Real OFAC SDN list integration | Legal/security risk in a demo context; synthetic data sufficient; "synthetic" labeled in UI |
-| Actual sanctions screening engine | Demo tool only — never positioned as a replacement for a real screening system |
-| User authentication / accounts | No sensitive data; adds friction with zero demo value |
-| ML/AI name matching model | Months-long project; turns demo into a product |
-| Multi-language UI (i18n) | English-only audience; UTF-8 data handling is separate from UI language |
-| Async job queue / background processing | Not needed for a demo of up to 2,000 names |
-| Database persistence of session data | Creates data governance obligations; CSV is the persistence mechanism |
-| Mobile-responsive design | Desktop-first for demo context |
-| Webhook / API integration with screening vendors | Requires vendor agreements, security review, complex auth |
-
----
+| Mobile-responsive landing page | Desktop-first for demo context — established in v1.0 |
+| Real OFAC SDN list integration | Synthetic data only — compliance constraint |
+| Video/animated demo embed | Overhead not justified for internal demo tool |
+| Dark mode | Not part of Crowe brand guidelines for this tool |
+| Multi-language support | English-only for Crowe US demo context |
 
 ## Traceability
 
@@ -95,40 +70,32 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FORM-01 | Phase 5 | Complete |
-| FORM-02 | Phase 5 | Complete |
-| FORM-03 | Phase 5 | Complete |
-| FORM-04 | Phase 5 | Complete |
-| FORM-05 | Phase 4 | Complete |
-| DATA-01 | Phase 2 | Complete |
-| DATA-02 | Phase 2 | Complete |
-| DATA-03 | Phase 2 | Complete |
-| DATA-04 | Phase 2 | Complete |
-| DATA-05 | Phase 2 | Complete |
-| DATA-06 | Phase 2 | Complete |
-| RULE-01 | Phase 3 | Complete |
-| RULE-02 | Phase 3 | Complete |
-| RULE-03 | Phase 3 | Complete |
-| RULE-04 | Phase 3 | Complete |
-| RULE-05 | Phase 3 | Complete |
-| RULE-06 | Phase 3 | Complete |
-| RULE-07 | Phase 3 | Complete |
-| RULE-08 | Phase 3 | Complete |
-| RULE-09 | Phase 3 | Complete |
-| RULE-10 | Phase 3 | Complete |
-| RSLT-01 | Phase 6 | Complete |
-| RSLT-02 | Phase 6 | Complete |
-| RSLT-03 | Phase 6 | Complete |
-| RSLT-04 | Phase 6 | Complete |
-| EXPO-01 | Phase 6 | Complete |
-| EXPO-02 | Phase 6 | Complete |
-| EXPO-03 | Phase 6 | Complete |
+| LAND-01 | Phase 10 | Pending |
+| LAND-02 | Phase 10 | Pending |
+| LAND-03 | Phase 10 | Pending |
+| LAND-04 | Phase 10 | Pending |
+| EXPL-01 | Phase 11 | Pending |
+| EXPL-02 | Phase 11 | Pending |
+| EXPL-03 | Phase 11 | Pending |
+| EXPL-04 | Phase 10 | Pending |
+| ANIM-01 | Phase 13 | Pending |
+| ANIM-02 | Phase 13 | Pending |
+| ANIM-03 | Phase 13 | Pending |
+| ANIM-04 | Phase 13 | Pending |
+| ICON-01 | Phase 12 | Pending |
+| ICON-02 | Phase 12 | Pending |
+| ICON-03 | Phase 12 | Pending |
+| ICON-04 | Phase 12 | Pending |
+| UIPOL-01 | Phase 14 | Pending |
+| UIPOL-02 | Phase 14 | Pending |
+| UIPOL-03 | Phase 14 | Pending |
+| UIPOL-04 | Phase 14 | Pending |
 
 **Coverage:**
-- v1 requirements: 27 total
-- Mapped to phases: 27
-- Unmapped: 0
+- v2.0 requirements: 20 total
+- Mapped to phases: 20
+- Unmapped: 0 ✓
 
 ---
-*Requirements defined: 2026-03-03*
-*Last updated: 2026-03-03 — traceability filled after roadmap creation*
+*Requirements defined: 2026-03-05*
+*Last updated: 2026-03-05 after initial definition*
