@@ -8,6 +8,18 @@ A Next.js web application that replaces Crowe's RPA pipeline (UiPath/Power Autom
 
 A consultant can run a live OFAC sensitivity testing demonstration from a single URL with zero file prep, no SharePoint, no email — and a client can see results in real time.
 
+## Current Milestone: v2.0 Production Face
+
+**Goal:** Transform the tool into a production-ready web app with a landing page, contextual explanations throughout, and a full premium animation and icon pass.
+
+**Target features:**
+- Landing page — Hero + CTA, How It Works (3-step), Features/stats, Crowe-branded footer
+- Inline form explanations — entity types, regions, rules, score interpretation
+- Results context — catch-rate guidance, score interpretation in results view
+- Full animation pass — Anime.js scroll reveals, stagger entrances, hover micro-interactions
+- Iconsax icon pass — replace all generic UI icons
+- Premium UI components — React Bits / 21st.dev cards, buttons, hero elements
+
 ## Current State (v1.0 — shipped 2026-03-05)
 
 - **Live URL:** https://ofac-sensitivity-testing.vercel.app
@@ -32,12 +44,14 @@ A consultant can run a live OFAC sensitivity testing demonstration from a single
 - ✓ User can download results as UTF-8 BOM CSV with client name in filename — v1.0
 - ✓ App deployed to Vercel and accessible via URL — v1.0
 
-### Active (v1.1 candidates)
+### Active (v2.0)
 
-- [ ] Explanation cards and onboarding guidance — user-facing context for each section of the form (what each rule does, what the regions mean, how to interpret results)
-- [ ] WOW animations — Anime.js scroll reveals, stagger entrances on form cards and results table
-- [ ] Icon pass — Iconsax icons replacing generic UI elements
-- [ ] UI component polish — React Bits / 21st.dev premium components for cards, buttons, hero section
+- [ ] Landing page — Hero + CTA, How It Works, Features/stats, Crowe-branded footer
+- [ ] Inline form explanations — contextual guidance for entity types, regions, and degradation rules
+- [ ] Results context — score interpretation panel and catch-rate guidance in results view
+- [ ] Full animation pass — Anime.js scroll reveals, stagger entrances, hover micro-interactions
+- [ ] Iconsax icon pass — replace all generic UI icons throughout the app
+- [ ] Premium UI components — React Bits / 21st.dev cards, buttons, hero elements
 
 ### Out of Scope
 
@@ -84,4 +98,4 @@ A consultant can run a live OFAC sensitivity testing demonstration from a single
 | @theme inline for Crowe tokens | Tailwind v4 requires @theme for utility class generation | ✓ Good — bg-crowe-* classes generated correctly |
 
 ---
-*Last updated: 2026-03-05 after v1.0 milestone*
+*Last updated: 2026-03-05 after v2.0 milestone started*
