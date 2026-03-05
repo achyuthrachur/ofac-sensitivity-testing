@@ -20,7 +20,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 6: Results Table and CSV Export** - Virtualized results table and UTF-8 BOM CSV download (completed 2026-03-04)
 - [x] **Phase 7: Polish and Deployment** - Crowe branding, UX refinements, and Vercel production deployment (completed 2026-03-05)
 - [x] **Phase 8: Table & Form UX Fixes** - Fix results table column rendering on Vercel and Select All toggle inversion (gap closure) (completed 2026-03-05)
-- [ ] **Phase 9: Verification Coverage** - Run gsd-verifier for phases 03 and 07; Nyquist wave-0 pass for transformation engine (gap closure)
+- [x] **Phase 9: Verification Coverage** - Run gsd-verifier for phases 03 and 07; Nyquist wave-0 pass for transformation engine (gap closure) (completed 2026-03-05)
 
 ## Phase Details
 
@@ -176,4 +176,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 6. Results Table and CSV Export | 2/2 | Complete    | 2026-03-04 |
 | 7. Polish and Deployment | 2/2 | Complete   | 2026-03-05 |
 | 8. Table & Form UX Fixes | 1/1 | Complete   | 2026-03-05 |
-| 9. Verification Coverage | 0/1 | Not started | - |
+| 9. Verification Coverage | 1/1 | Complete   | 2026-03-05 |
