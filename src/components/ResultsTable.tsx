@@ -23,7 +23,14 @@ interface ResultsTableProps {
 
 // ─── Column widths ────────────────────────────────────────────────────────────
 
-const COL_WIDTHS = ['22%', '12%', '16%', '22%', '18%', '10%'] as const;
+const COL_WIDTHS = [
+  { width: '22%', minWidth: '200px' }, // Original Name
+  { width: '12%', minWidth: '100px' }, // Entity Type
+  { width: '16%', minWidth: '140px' }, // Linguistic Region
+  { width: '22%', minWidth: '200px' }, // Degraded Variant
+  { width: '18%', minWidth: '160px' }, // Rule Applied
+  { width: '10%', minWidth: '80px' },  // Score (index 5)
+] as const;
 
 // ─── Column headers ───────────────────────────────────────────────────────────
 
@@ -98,12 +105,12 @@ export function ResultsTable({ rows, clientName }: ResultsTableProps) {
           {/* Column widths — REQUIRED for absolute-positioned rows */}
           <colgroup>
             {COL_WIDTHS.map((w, i) => (
-              <col key={i} style={{ width: w }} />
+              <col key={i} style={w} />
             ))}
           </colgroup>
 
           {/* Sticky header */}
-          <thead className="sticky top-0 z-10 bg-white">
+          <thead className="sticky top-0 z-10" style={{ background: 'var(--card)' }}>
             <tr>
               {COLUMN_LABELS.map((label) => (
                 <th
