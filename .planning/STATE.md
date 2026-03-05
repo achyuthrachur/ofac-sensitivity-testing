@@ -2,12 +2,12 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Production Face
-status: defining_requirements
-stopped_at: —
+status: ready_to_plan
+stopped_at: Phase 10 ready to plan
 last_updated: "2026-03-05T00:00:00.000Z"
-last_activity: "2026-03-05 — Milestone v2.0 started"
+last_activity: "2026-03-05 — v2.0 roadmap created (Phases 10–14)"
 progress:
-  total_phases: 0
+  total_phases: 5
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -18,116 +18,48 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-03)
+See: .planning/PROJECT.md (updated 2026-03-05)
 
 **Core value:** A consultant can run a live OFAC sensitivity testing demonstration from a single URL with zero file prep — and a client can see results in real time.
-**Current focus:** Phase 3 — Degradation Rules (Transformation Engine)
+**Current focus:** Phase 10 — Landing Page (v2.0 start)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-03-05 — Milestone v2.0 started
+Phase: 10 of 14 — Landing Page
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-03-05 — v2.0 roadmap created; 5 phases defined (10–14)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [░░░░░░░░░░] 0% (v2.0)
 
 ## Performance Metrics
 
-**Velocity:**
-- Total plans completed: 1
-- Average duration: 27 min
-- Total execution time: 27 min
-
-**By Phase:**
-
-| Phase | Plans | Total | Avg/Plan |
-|-------|-------|-------|----------|
-| 01-foundation | 1 | 27 min | 27 min |
+**Velocity (v1.0 baseline):**
+- Total plans completed: 17
+- Average duration: ~18 min
+- Total execution time: ~5 hours
 
 **Recent Trend:**
-- Last 5 plans: 27 min
-- Trend: —
+- Last 5 plans: 87, 4, 30, 25, 8 min
+- Trend: Stable (excluding Phase 8 outlier)
 
 *Updated after each plan completion*
-
-| Plan | Duration | Tasks | Files |
-|------|----------|-------|-------|
-| Phase 01-foundation P01 | 27 min | 2 tasks | 17 files |
-| Phase 01-foundation P02 | 6 min | 2 tasks | 12 files |
-| Phase 02-synthetic-dataset P01 | 4 | 2 tasks | 3 files |
-| Phase 02-synthetic-dataset P02 | 5 | 1 tasks | 1 files |
-| Phase 02-synthetic-dataset P03 | 1 | 1 tasks | 0 files |
-| Phase 03-transformation-engine P01 | ~20 min | 2 tasks | 13 files |
-| Phase 03-transformation-engine P02 | 5 | 2 tasks | 10 files |
-| Phase 03-transformation-engine P03 | 9 | 2 tasks | 3 files |
-| Phase 04-server-action P01 | 15 | 2 tasks | 6 files |
-| Phase 05-parameter-form P01 | 6 | 2 tasks | 2 files |
-| Phase 05-parameter-form P02 | 30 | 2 tasks | 2 files |
-| Phase 06-results-table-and-csv-export P01 | 8 | 2 tasks | 4 files |
-| Phase 06-results-table-and-csv-export P02 | 25 | 2 tasks | 2 files |
-| Phase 07-polish-and-deployment P01 | 3 | 3 tasks | 4 files |
-| Phase 07-polish-and-deployment P02 | 30 | 3 tasks | 1 file |
-| Phase 08-table-form-ux-fixes P01 | 87 | 4 tasks | 2 files |
-| Phase 09 P01 | 4 | 3 tasks | 4 files |
 
 ## Accumulated Context
 
 ### Decisions
 
 Decisions are logged in PROJECT.md Key Decisions table.
-Recent decisions affecting current work:
+Recent decisions affecting v2.0 work:
 
-- [Roadmap]: Next.js over separate Python backend — single Vercel deployment; degradation logic is all string transforms
-- [Roadmap]: Synthetic data only — client-facing demo needs no compliance risk from real sanctioned names
-- [Roadmap]: Reconstruct substitution tables — original Excel files unavailable; domain knowledge sufficient
-- [Roadmap]: CSV output over Excel — simpler implementation, sufficient for demo
-- [Phase 01-foundation]: Tailwind v4 installed — create-next-app@latest pulled v4.2.1; shadcn/ui compatibility must be verified in Plan 02
-- [Phase 01-foundation]: Scaffold workaround: create-next-app rejects directory names with spaces/capitals; scaffolded to sibling directory then moved files
-- [Phase 01-foundation]: shadcn/ui new-york style auto-selected by CLI v3.8.5 with Tailwind v4 — acceptable since Phase 7 applies Crowe brand CSS overrides
-- [Phase 01-foundation]: NODE_TLS_REJECT_UNAUTHORIZED=0 required for shadcn CLI on Crowe network — dev-time only, no production impact
-- [Phase 01-foundation]: Tailwind v4 confirmed compatible with shadcn/ui v3.8.5 — no downgrade needed
-- [Phase 02-synthetic-dataset]: Used @data/* tsconfig alias for clean JSON import path from any file depth
-- [Phase 02-synthetic-dataset]: Flat SdnEntry[] array (no wrapper object) validated by TypeScript resolveJsonModule
-- [Phase 02-synthetic-dataset]: Aircraft tagged region latin per locked CONTEXT.md decision — ICAO strings are Latin-script regardless of issuing country
-- [Phase 02-synthetic-dataset]: Vessel region set by script of vessel name not operator nationality; no cyrillic-tagged vessels
-- [Phase 02-synthetic-dataset]: DATA-06 satisfied by human domain reviewer approval — Arabic ism+nasab/kunya patterns, surname-first CJK order, and Russian three-token patronymic structure all confirmed authentic
-- [Phase 02-synthetic-dataset]: Phase 2 complete — all six requirements DATA-01 through DATA-06 addressed; data/sdn.json frozen for Phase 3
-- [Phase 03-transformation-engine]: Vitest 4 + vite-tsconfig-paths resolves @/ aliases in tests without Next.js bundler involvement
-- [Phase 03-transformation-engine]: RULE-05 CONNECTORS set: IBN, BINT, BIN, BT, ABU, ABI, UMM — Arabic genealogical particles preserved verbatim
-- [Phase 03-transformation-engine]: RULE-05 AL-XXXX nisba handling: vowels stripped from suffix only, AL- prefix preserved (AL-RSHD not L-RSHD)
-- [Phase 03-transformation-engine]: RuleFunction contract established — (entry: SdnEntry) => string | null; null means inapplicable or no-op, not empty string
-- [Phase 03-transformation-engine]: RULE-07 AL- prefix: strip before PHONETIC_MAP lookup, reconstitute as AL-<variant> — preserves nisba form
-- [Phase 03-transformation-engine]: RULE-09 double-strip order: prefix first (tokens[0]), then suffix (last remaining token) in single pass
-- [Phase 03-transformation-engine]: RULE-10 SKIP_FIRST set (ABU/ABD/AL): connector tokens skipped to find given name for alias lookup
-- [Phase 03-transformation-engine]: CANONICAL_RULE_ORDER is authoritative fixed sequence — Phase 4 uses this to guarantee deterministic output regardless of user checkbox order
-- [Phase 03-transformation-engine]: ruleMap uses Record<RuleId, RuleFunction> so TypeScript enforces all 10 rule IDs are present at compile time
-- [Phase 03-transformation-engine]: sampleEntries uses Mulberry32 inline (5 lines, no npm dep) — deterministic seeded PRNG, seed defaults to 42, sampling with replacement
-- [Phase 04-server-action]: talisman.d.ts shim required — no official TypeScript types, shim declares default export as (a, b) => number
-- [Phase 04-server-action]: Benchmark passes at ~53ms for 500 individuals + all 10 rules — MAX_ENTITY_COUNT stays at 500, no reduction needed
-- [Phase 04-server-action]: Vitest 4 changed it() timeout option to second argument (not third) — auto-fixed during TDD RED->GREEN transition
-- [Phase 05-parameter-form]: formUtils.ts uses length comparison for deriveSelectAllState — sufficient for UI tri-state without checking actual IDs
-- [Phase 05-parameter-form]: buildRunParams passes clientName through untrimmed — Zod handles server-side validation
-- [Phase 05-parameter-form]: parseEntityCount uses parseInt (not parseFloat) to match Zod .int() contract
-- [Phase 05-parameter-form]: No client-side inline field validation — deferred per CONTEXT.md; Zod handles server-side
-- [Phase 05-parameter-form]: rows: ResultRow[] exposed in page state so Phase 6 can mount ResultsTable without refactoring handleSubmit
-- [Phase 06-results-table-and-csv-export]: triggerCsvDownload has no typeof window guard — only called from onClick handlers, not SSR paths
-- [Phase 06-results-table-and-csv-export]: buildCsvString does not sort rows — caller controls ordering; function is a pure serializer
-- [Phase 06-results-table-and-csv-export]: Similarity Score in CSV is an integer (Math.round * 100), not a 0-1 float — matches human-readable expectations
-- [Phase 06-results-table-and-csv-export]: UTF-8 BOM prepended in triggerCsvDownload so Excel opens CSV with correct encoding on Windows
-- [Phase 06-results-table-and-csv-export]: colgroup with percentage column widths required for absolute-positioned virtualizer rows — columns collapse to zero without explicit dimensions
-- [Phase 06-results-table-and-csv-export]: Sticky thead requires explicit bg-white class — without background color rows scroll visibly beneath the transparent sticky header
-- [Phase 06-results-table-and-csv-export]: ResultsTable CSV export uses unsorted original rows not sortedRows — sort state is view-only, download always delivers full dataset
-- [Phase 07-polish-and-deployment]: Remove next/font/google entirely; substitute plain CSS font-family stack — Crowe TLS proxy blocks googleapis.com at build time
-- [Phase 07-polish-and-deployment]: Register Crowe color tokens in @theme inline (not just :root) so Tailwind v4 generates bg-crowe-* and text-crowe-* utility classes
-- [Phase 07-polish-and-deployment]: Replace entire :root block with hex values (no oklch) — RESEARCH.md warns against manual oklch conversion
-- [Phase 07-polish-and-deployment]: GitHub remote and Vercel link pre-existed — deployment required only git push + vercel --prod --yes, no interactive setup
-- [Phase 07-polish-and-deployment]: Results table formatting concern noted post-deployment — deferred to post-v1, core functionality confirmed working
-- [Phase 08-table-form-ux-fixes]: colgroup does not propagate to position:absolute virtual rows — every th/td must carry explicit px width; table set to fixed 1050px width
-- [Phase 08-table-form-ux-fixes]: handleSelectAll fix: checked === true maps to [...CANONICAL_RULE_ORDER]; original code had branches inverted
-- [Phase 08-table-form-ux-fixes]: ResultsTable moved outside max-w-2xl form container into its own max-w-screen-xl wrapper for full-width table layout
-- [Phase 09-verification-coverage]: Post-hoc VERIFICATION.md files derived from SUMMARY evidence are authoritative; no test re-run required for gap closure
-- [Phase 09-verification-coverage]: Phase 07 loading skeleton partial pass does not downgrade status; human checkpoint explicitly approved disposition
+- [Phase 08]: colgroup does not propagate to position:absolute virtual rows — every th/td needs explicit px width
+- [Phase 07]: Remove next/font/google — Crowe TLS proxy blocks googleapis.com at build time
+- [Phase 07]: Register Crowe color tokens in @theme inline block (not just :root) for Tailwind v4 utility generation
+- [Roadmap v2.0]: Phase 10 must restructure routes FIRST — move app/page.tsx to app/tool/page.tsx before any landing page work
+- [Roadmap v2.0]: iconsax-react-19 (React 19 fork) — verify package health before committing; fallback: pass explicit size+color to original iconsax-react
+- [Roadmap v2.0]: Anime.js v4 requires 'use client' + useEffect wrapping — every animation file must follow this pattern or next build crashes
+- [Roadmap v2.0]: Never animate TanStack virtual rows with translateY — virtualizer writes translateY to each tr; animate container wrapper only
+- [Roadmap v2.0]: Patch button.tsx [&_svg]:size-4 to [&_svg]:size-auto BEFORE starting Phase 12 icon pass
 
 ### Pending Todos
 
@@ -135,12 +67,12 @@ None yet.
 
 ### Blockers/Concerns
 
-- [Phase 2 — RESOLVED]: Synthetic dataset linguistic authenticity requires domain review before Phase 3 begins — RESOLVED: domain reviewer approved 2026-03-04
-- [Phase 3]: Phonetic/transliteration lookup table (RULE-07) needs prioritization from compliance domain knowledge — top 20-30 variant spellings
-- [Phase 4]: Vercel timeout threshold depends on actual Crowe account plan tier (10s Hobby / 60s Pro / 300s Enterprise) — must confirm before deployment
+- [Phase 12]: shadcn Button.tsx forces SVG children to 16px via [&_svg]:size-4 — must patch button.tsx as first step of Phase 12 before any icon work
+- [Phase 13]: Anime.js v4 onScroll callback name (onEnter vs onEnterForward) — verify against installed v4.3.6 at implementation time
+- [Phase 14]: React Bits components may install framer-motion alongside Anime.js — review CLI output after each add to avoid duplicate animation libraries
 
 ## Session Continuity
 
-Last session: 2026-03-05T14:12:55.649Z
-Stopped at: Completed 09-verification-coverage 09-01-PLAN.md — verification gap closure complete
+Last session: 2026-03-05T00:00:00.000Z
+Stopped at: v2.0 roadmap written — Phases 10–14 defined, REQUIREMENTS.md traceability confirmed
 Resume file: None
