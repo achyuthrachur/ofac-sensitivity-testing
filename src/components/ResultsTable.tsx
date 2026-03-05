@@ -11,6 +11,7 @@ import {
   triggerCsvDownload,
 } from '@/lib/resultsUtils';
 import { Button } from '@/components/ui/button';
+import { TickCircle, CloseCircle, DocumentDownload } from 'iconsax-reactjs';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -94,6 +95,7 @@ export function ResultsTable({ rows, clientName }: ResultsTableProps) {
           onClick={handleDownload}
           disabled={rows.length === 0}
         >
+          <DocumentDownload variant="Bold" size={16} color="currentColor" className="size-auto" />
           Download CSV
         </Button>
       </div>
@@ -163,11 +165,15 @@ export function ResultsTable({ rows, clientName }: ResultsTableProps) {
                   <td style={{ width: COL_WIDTHS[4].width, flexShrink: 0 }} className="px-3 py-2 text-sm truncate">{row.ruleLabel}</td>
                   <td
                     style={{ width: COL_WIDTHS[5].width, flexShrink: 0 }}
-                    className={`px-3 py-2 text-sm font-mono ${
+                    className={`px-3 py-2 text-sm font-mono flex items-center gap-1 ${
                       row.caught ? 'text-crowe-teal' : 'text-crowe-coral'
                     }`}
                   >
-                    {Math.round(row.similarityScore * 100)}% {row.caught ? '✓' : '✗'}
+                    {Math.round(row.similarityScore * 100)}%
+                    {row.caught
+                      ? <TickCircle variant="Bold" size={14} color="#05AB8C" />
+                      : <CloseCircle variant="Bold" size={14} color="#E5376B" />
+                    }
                   </td>
                 </tr>
               );
