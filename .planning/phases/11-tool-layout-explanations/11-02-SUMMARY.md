@@ -95,13 +95,13 @@ All state, handlers, and left panel content are unchanged.
 - `tool/page.tsx` imports both EngineExplanationPanel and Tabs
 - Pre-run renders `<EngineExplanationPanel />`, post-run renders `<Tabs defaultValue="results">`
 
-## Checkpoint Pending
+## Visual Checkpoint: APPROVED
 
-Task 3 is `checkpoint:human-verify` — awaiting visual confirmation from user that:
+Task 3 `checkpoint:human-verify` approved by user on 2026-03-05. All 8 verification checks passed:
 1. Two-panel layout renders correctly
-2. Dataset section content is accurate (285 entries, 4 entity types, 4 regions, seed=42)
-3. Scoring section shows 0.85 threshold and the dark indigo catch-rate callout card
-4. All 10 degradation rules visible with badges, descriptions, examples
+2. Dataset section content accurate (285 entries, 4 entity types, 4 regions, seed=42)
+3. Scoring section shows 0.85 threshold and dark indigo catch-rate callout card with "97%"
+4. All 10 degradation rules visible with region badges, descriptions, and examples
 5. After running a test, Results tab is default and Engine Docs tab switches back to docs
 6. Results table has no right-side gap
 7. Both panels scroll independently
