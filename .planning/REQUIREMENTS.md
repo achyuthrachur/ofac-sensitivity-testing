@@ -10,16 +10,16 @@ Requirements for the v2.0 Production Face milestone. Each maps to roadmap phases
 ### Landing Page
 
 - [x] **LAND-01**: User can view a landing page at "/" with a hero section and primary CTA button that navigates to the tool
-- [ ] **LAND-02**: User can read a "How It Works" 3-step methodology section explaining configure → run → export
-- [ ] **LAND-03**: User can view a features/stats section showing real engine numbers (285 entries, 10 rules, ~53ms, 4 regions)
-- [ ] **LAND-04**: User can see a Crowe-branded footer with navigation links
+- [x] **LAND-02**: User can read a "How It Works" 3-step methodology section explaining configure → run → export
+- [x] **LAND-03**: User can view a features/stats section showing real engine numbers (285 entries, 10 rules, ~53ms, 4 regions)
+- [x] **LAND-04**: User can see a Crowe-branded footer with navigation links
 
 ### Explanations
 
 - [ ] **EXPL-01**: User can open a tooltip on each of the 10 degradation rules to read a plain-English description of what the rule does
 - [ ] **EXPL-02**: User can read static helper text on entity count inputs and region checkboxes explaining what each parameter means
 - [ ] **EXPL-03**: User can see an elevated catch-rate stat card with score interpretation legend in the results view (replaces buried summary line)
-- [ ] **EXPL-04**: User can read a methodology explanation on the landing "How It Works" section that educates clients before they see the form
+- [x] **EXPL-04**: User can read a methodology explanation on the landing "How It Works" section that educates clients before they see the form
 
 ### Animation
 
@@ -71,13 +71,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | LAND-01 | Phase 10 | Complete |
-| LAND-02 | Phase 10 | Pending |
-| LAND-03 | Phase 10 | Pending |
-| LAND-04 | Phase 10 | Pending |
+| LAND-02 | Phase 10 | Complete |
+| LAND-03 | Phase 10 | Complete |
+| LAND-04 | Phase 10 | Complete |
 | EXPL-01 | Phase 11 | Pending |
 | EXPL-02 | Phase 11 | Pending |
 | EXPL-03 | Phase 11 | Pending |
-| EXPL-04 | Phase 10 | Pending |
+| EXPL-04 | Phase 10 | Complete |
 | ANIM-01 | Phase 13 | Pending |
 | ANIM-02 | Phase 13 | Pending |
 | ANIM-03 | Phase 13 | Pending |
