@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in_progress
-stopped_at: Gap closure phases 8-9 added from v1.0 audit
-last_updated: "2026-03-05T02:15:00.000Z"
-last_activity: "2026-03-05 — v1.0 audit complete; gap closure phases 8 (table/form UX) and 9 (verification coverage) added to roadmap"
+status: completed
+stopped_at: Completed 08-table-form-ux-fixes 08-01-PLAN.md — RSLT-04 and FORM-03 gaps closed
+last_updated: "2026-03-05T03:42:59.067Z"
+last_activity: "2026-03-05 — Completed Phase 7 Plan 02 (Vercel production deployment); live at https://ofac-sensitivity-testing.vercel.app"
 progress:
   total_phases: 9
-  completed_phases: 7
-  total_plans: 17
-  completed_plans: 15
-  percent: 83
+  completed_phases: 8
+  total_plans: 16
+  completed_plans: 16
+  percent: 100
 ---
 
 # Project State
@@ -68,6 +68,7 @@ Progress: [██████████] 100% (All phases complete)
 | Phase 06-results-table-and-csv-export P02 | 25 | 2 tasks | 2 files |
 | Phase 07-polish-and-deployment P01 | 3 | 3 tasks | 4 files |
 | Phase 07-polish-and-deployment P02 | 30 | 3 tasks | 1 file |
+| Phase 08-table-form-ux-fixes P01 | 87 | 4 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -121,6 +122,9 @@ Recent decisions affecting current work:
 - [Phase 07-polish-and-deployment]: Replace entire :root block with hex values (no oklch) — RESEARCH.md warns against manual oklch conversion
 - [Phase 07-polish-and-deployment]: GitHub remote and Vercel link pre-existed — deployment required only git push + vercel --prod --yes, no interactive setup
 - [Phase 07-polish-and-deployment]: Results table formatting concern noted post-deployment — deferred to post-v1, core functionality confirmed working
+- [Phase 08-table-form-ux-fixes]: colgroup does not propagate to position:absolute virtual rows — every th/td must carry explicit px width; table set to fixed 1050px width
+- [Phase 08-table-form-ux-fixes]: handleSelectAll fix: checked === true maps to [...CANONICAL_RULE_ORDER]; original code had branches inverted
+- [Phase 08-table-form-ux-fixes]: ResultsTable moved outside max-w-2xl form container into its own max-w-screen-xl wrapper for full-width table layout
 
 ### Pending Todos
 
@@ -134,6 +138,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T01:40:06Z
-Stopped at: Completed 07-polish-and-deployment-02-PLAN.md — project v1.0 complete
+Last session: 2026-03-05T03:42:59.059Z
+Stopped at: Completed 08-table-form-ux-fixes 08-01-PLAN.md — RSLT-04 and FORM-03 gaps closed
 Resume file: None
