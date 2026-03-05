@@ -81,7 +81,7 @@ export default function Home() {
   };
 
   const handleSelectAll = (checked: boolean | 'indeterminate') => {
-    setRuleIds(checked === true ? [] : [...CANONICAL_RULE_ORDER]);
+    setRuleIds(checked === true ? [...CANONICAL_RULE_ORDER] : []);
   };
 
   // ─── Render ─────────────────────────────────────────────────────────────────
