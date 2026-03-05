@@ -17,15 +17,15 @@ Requirements for the v2.0 Production Face milestone. Each maps to roadmap phases
 ### Tool Layout
 
 - [x] **LAYOUT-01**: User can configure test parameters in a left panel while the right panel displays engine documentation
-- [ ] **LAYOUT-02**: Right panel shows full engine explanation (all 10 rules, scoring methodology, dataset info) before a test is run
+- [x] **LAYOUT-02**: Right panel shows full engine explanation (all 10 rules, scoring methodology, dataset info) before a test is run
 - [x] **LAYOUT-03**: Right panel switches to results table after running a test, with an Explanation tab to return to engine docs
 - [x] **TABLE-01**: Results table rows extend to the right border of the table with no horizontal gap on the right side
 
 ### Explanations
 
-- [ ] **EXPL-01**: Right panel documents all 10 degradation rules with plain-English descriptions and how each transforms a name
-- [ ] **EXPL-02**: Right panel explains how the synthetic SDN dataset is constructed, what entity types and regions mean, and how sampling works
-- [ ] **EXPL-03**: Right panel explains Jaro-Winkler scoring — what the score means, what catch rate represents, and how to interpret results
+- [x] **EXPL-01**: Right panel documents all 10 degradation rules with plain-English descriptions and how each transforms a name
+- [x] **EXPL-02**: Right panel explains how the synthetic SDN dataset is constructed, what entity types and regions mean, and how sampling works
+- [x] **EXPL-03**: Right panel explains Jaro-Winkler scoring — what the score means, what catch rate represents, and how to interpret results
 - [x] **EXPL-04**: User can read a methodology explanation on the landing "How It Works" section that educates clients before they see the form
 
 ### Animation
@@ -82,12 +82,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | LAND-03 | Phase 10 | Complete |
 | LAND-04 | Phase 10 | Complete |
 | LAYOUT-01 | Phase 11 | Complete |
-| LAYOUT-02 | Phase 11 | Pending |
+| LAYOUT-02 | Phase 11 | Complete |
 | LAYOUT-03 | Phase 11 | Complete |
 | TABLE-01 | Phase 11 | Complete |
-| EXPL-01 | Phase 11 | Pending |
-| EXPL-02 | Phase 11 | Pending |
-| EXPL-03 | Phase 11 | Pending |
+| EXPL-01 | Phase 11 | Complete |
+| EXPL-02 | Phase 11 | Complete |
+| EXPL-03 | Phase 11 | Complete |
 | EXPL-04 | Phase 10 | Complete |
 | ANIM-01 | Phase 13 | Pending |
 | ANIM-02 | Phase 13 | Pending |
