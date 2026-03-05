@@ -62,7 +62,11 @@ Plans:
   3. After running, right panel switches to results table; user can click an Explanation tab to return to engine docs
   4. Results table rows extend to the right border with no horizontal gap
   5. Catch-rate score is prominently explained in context — user knows what a 97% score means without guessing
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 11-01-PLAN.md — Install shadcn Tabs + fix ResultsTable scroll container width (TABLE-01) + two-panel layout restructure (LAYOUT-01)
+- [ ] 11-02-PLAN.md — EngineExplanationPanel content (EXPL-01/02/03) + Tabs wiring (LAYOUT-02/03) + visual checkpoint
 
 ### Phase 12: Icon Pass
 **Goal**: Every icon in the application uses Iconsax with the correct style variant — no Lucide icons or Unicode symbols remain
@@ -113,8 +117,8 @@ Phases execute in numeric order: 10 → 11 → 12 → 13 → 14
 | 7. Polish and Deployment | v1.0 | 2/2 | Complete | 2026-03-05 |
 | 8. Table & Form UX Fixes | v1.0 | 1/1 | Complete | 2026-03-05 |
 | 9. Verification Coverage | v1.0 | 1/1 | Complete | 2026-03-05 |
-| 10. Landing Page | 2/2 | Complete    | 2026-03-05 | - |
-| 11. Explanations | v2.0 | 0/TBD | Not started | - |
+| 10. Landing Page | v2.0 | 2/2 | Complete | 2026-03-05 |
+| 11. Tool Layout + Explanations | v2.0 | 0/2 | Not started | - |
 | 12. Icon Pass | v2.0 | 0/TBD | Not started | - |
 | 13. Animation Pass | v2.0 | 0/TBD | Not started | - |
 | 14. Premium UI | v2.0 | 0/TBD | Not started | - |
