@@ -77,7 +77,11 @@ Plans:
   2. CTA buttons and navigation use Iconsax Bold icons (ArrowRight, DocumentDownload, ExternalLink)
   3. Results table match/no-match indicators show Iconsax TickCircle (green) and CloseCircle (coral) instead of Unicode characters
   4. Landing page How It Works steps and stats section use Iconsax TwoTone feature icons
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 12-01-PLAN.md — Install iconsax-reactjs + form heading icons (ICON-01) + Refresh2 spinner + Download icon (ICON-02) + TickCircle/CloseCircle results table (ICON-03)
+- [ ] 12-02-PLAN.md — HowItWorksSection TwoTone step icons + FeatureStatsSection Bold amber icons + visual checkpoint (ICON-04)
 
 ### Phase 13: Animation Pass
 **Goal**: The landing page and tool form feel alive — sections reveal on scroll, cards stagger in on load, stats count up, and interactive elements respond with motion
@@ -119,6 +123,6 @@ Phases execute in numeric order: 10 → 11 → 12 → 13 → 14
 | 9. Verification Coverage | v1.0 | 1/1 | Complete | 2026-03-05 |
 | 10. Landing Page | v2.0 | 2/2 | Complete | 2026-03-05 |
 | 11. Tool Layout + Explanations | v2.0 | Complete    | 2026-03-05 | 2026-03-05 |
-| 12. Icon Pass | v2.0 | 0/TBD | Not started | - |
+| 12. Icon Pass | v2.0 | 0/2 | In progress | - |
 | 13. Animation Pass | v2.0 | 0/TBD | Not started | - |
 | 14. Premium UI | v2.0 | 0/TBD | Not started | - |
