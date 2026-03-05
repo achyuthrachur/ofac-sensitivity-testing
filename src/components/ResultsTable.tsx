@@ -23,13 +23,18 @@ interface ResultsTableProps {
 
 // ─── Column widths ────────────────────────────────────────────────────────────
 
+// Explicit pixel widths are required for correct alignment when tbody rows are
+// absolutely positioned (TanStack virtualizer pattern). Percentage widths cause
+// the browser to resolve column geometry against a different reference than the
+// absolute-positioned rows, producing misaligned header/data columns.
+// Total: 260 + 110 + 130 + 300 + 160 + 90 = 1050px (fits comfortably in max-w-screen-xl)
 const COL_WIDTHS = [
-  { width: '22%', minWidth: '200px' }, // Original Name
-  { width: '12%', minWidth: '100px' }, // Entity Type
-  { width: '16%', minWidth: '140px' }, // Linguistic Region
-  { width: '22%', minWidth: '200px' }, // Degraded Variant
-  { width: '18%', minWidth: '160px' }, // Rule Applied
-  { width: '10%', minWidth: '80px' },  // Score (index 5)
+  { width: '260px', minWidth: '260px' }, // Original Name
+  { width: '110px', minWidth: '110px' }, // Entity Type
+  { width: '130px', minWidth: '130px' }, // Linguistic Region
+  { width: '300px', minWidth: '300px' }, // Degraded Variant
+  { width: '160px', minWidth: '160px' }, // Rule Applied
+  { width: '90px',  minWidth: '90px'  }, // Score
 ] as const;
 
 // ─── Column headers ───────────────────────────────────────────────────────────
