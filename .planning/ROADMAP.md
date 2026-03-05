@@ -29,7 +29,7 @@ Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
 **Milestone Goal:** Transform the tool into a production-ready web app with a landing page, contextual explanations throughout, and a full premium animation and icon pass.
 
 - [x] **Phase 10: Landing Page** - Route restructuring + complete static landing page at "/" (completed 2026-03-05)
-- [ ] **Phase 11: Tool Layout + Explanations** - Two-panel layout (configurator left, engine docs right), table row fix, full engine explanation panel with rules/scoring/methodology
+- [x] **Phase 11: Tool Layout + Explanations** - Two-panel layout (configurator left, engine docs right), table row fix, full engine explanation panel with rules/scoring/methodology (completed 2026-03-05)
 - [ ] **Phase 12: Icon Pass** - Full Iconsax replacement throughout form, results, and landing
 - [ ] **Phase 13: Animation Pass** - Anime.js scroll reveals, stagger entrances, count-up numbers, hover effects
 - [ ] **Phase 14: Premium UI** - React Bits / 21st.dev hero elements, animated CTA button, SpotlightCard form sections
@@ -118,7 +118,7 @@ Phases execute in numeric order: 10 → 11 → 12 → 13 → 14
 | 8. Table & Form UX Fixes | v1.0 | 1/1 | Complete | 2026-03-05 |
 | 9. Verification Coverage | v1.0 | 1/1 | Complete | 2026-03-05 |
 | 10. Landing Page | v2.0 | 2/2 | Complete | 2026-03-05 |
-| 11. Tool Layout + Explanations | 1/2 | In Progress|  | - |
+| 11. Tool Layout + Explanations | 2/2 | Complete   | 2026-03-05 | - |
 | 12. Icon Pass | v2.0 | 0/TBD | Not started | - |
 | 13. Animation Pass | v2.0 | 0/TBD | Not started | - |
 | 14. Premium UI | v2.0 | 0/TBD | Not started | - |

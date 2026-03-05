@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Production Face
 status: planning
-stopped_at: Completed 11-tool-layout-explanations-01-PLAN.md
-last_updated: "2026-03-05T18:11:53.358Z"
+stopped_at: "Checkpoint: 11-02 human-verify — awaiting visual approval of EngineExplanationPanel layout"
+last_updated: "2026-03-05T18:29:11.312Z"
 last_activity: 2026-03-05 — v2.0 roadmap created; 5 phases defined (10–14)
 progress:
   total_phases: 5
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 4
-  completed_plans: 3
+  completed_plans: 4
   percent: 0
 ---
 
@@ -67,6 +67,8 @@ Recent decisions affecting v2.0 work:
 - [Phase 10-landing-page]: stat-number className + data-value attribute pre-wired in FeatureStatsSection for Phase 13 count-up animation targeting
 - [Phase 11-tool-layout-explanations]: Pin ResultsTable scroll container to width:1050px matching inner table to fix virtualizer right-side gap
 - [Phase 11-tool-layout-explanations]: tool/page.tsx two-panel: left w-[420px] flex-shrink-0, right flex-1, outer h-[calc(100vh-48px)] to account for footer
+- [Phase 11-tool-layout-explanations]: EngineExplanationPanel is a pure Server Component (no use client) — safe to render in both pre-run path and Engine Docs tab without duplication concerns
+- [Phase 11-tool-layout-explanations]: Tabs defaultValue=results ensures Results tab is active immediately after a run, matching user expectation
 
 ### Pending Todos
 
@@ -80,6 +82,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T18:11:53.347Z
-Stopped at: Completed 11-tool-layout-explanations-01-PLAN.md
+Last session: 2026-03-05T18:29:11.306Z
+Stopped at: Checkpoint: 11-02 human-verify — awaiting visual approval of EngineExplanationPanel layout
 Resume file: None
