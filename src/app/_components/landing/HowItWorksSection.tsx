@@ -1,3 +1,5 @@
+import { Setting4, Refresh, DocumentDownload } from 'iconsax-reactjs';
+
 const STEPS = [
   {
     number: 1,
@@ -16,6 +18,8 @@ const STEPS = [
   },
 ];
 
+const STEP_ICONS = [Setting4, Refresh, DocumentDownload] as const;
+
 export function HowItWorksSection() {
   return (
     <section className="bg-page py-20 px-6">
@@ -23,19 +27,22 @@ export function HowItWorksSection() {
         How It Works
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-        {STEPS.map((step) => (
-          <div
-            key={step.number}
-            className="bg-white rounded-xl p-8"
-            style={{ boxShadow: '0 4px 8px rgba(1,30,65,0.06), 0 1px 3px rgba(1,30,65,0.04)' }}
-          >
-            <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-crowe-amber text-crowe-indigo-dark font-bold text-lg mb-4">
-              {step.number}
+        {STEPS.map((step, index) => {
+          const StepIcon = STEP_ICONS[index];
+          return (
+            <div
+              key={step.number}
+              className="bg-white rounded-xl p-8"
+              style={{ boxShadow: '0 4px 8px rgba(1,30,65,0.06), 0 1px 3px rgba(1,30,65,0.04)' }}
+            >
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-crowe-amber/10 mb-4">
+                <StepIcon variant="TwoTone" size={28} color="var(--crowe-indigo-dark)" />
+              </div>
+              <h3 className="text-xl font-bold text-crowe-indigo-dark mb-3">{step.title}</h3>
+              <p className="text-crowe-tint-700 text-base leading-relaxed">{step.copy}</p>
             </div>
-            <h3 className="text-xl font-bold text-crowe-indigo-dark mb-3">{step.title}</h3>
-            <p className="text-crowe-tint-700 text-base leading-relaxed">{step.copy}</p>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
