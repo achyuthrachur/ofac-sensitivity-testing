@@ -37,9 +37,9 @@ Requirements for the v2.0 Production Face milestone. Each maps to roadmap phases
 
 ### Icon Pass
 
-- [ ] **ICON-01**: Form section headings and rule checkboxes use Iconsax Linear icons
-- [ ] **ICON-02**: CTA buttons and navigation use Iconsax Bold icons (arrow, download, external link)
-- [ ] **ICON-03**: Results table match/no-match indicators use Iconsax TickCircle/CloseCircle replacing Unicode characters
+- [x] **ICON-01**: Form section headings and rule checkboxes use Iconsax Linear icons
+- [x] **ICON-02**: CTA buttons and navigation use Iconsax Bold icons (arrow, download, external link)
+- [x] **ICON-03**: Results table match/no-match indicators use Iconsax TickCircle/CloseCircle replacing Unicode characters
 - [ ] **ICON-04**: Landing page How It Works and Stats sections use Iconsax TwoTone feature icons
 
 ### Premium UI
@@ -93,9 +93,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ANIM-02 | Phase 13 | Pending |
 | ANIM-03 | Phase 13 | Pending |
 | ANIM-04 | Phase 13 | Pending |
-| ICON-01 | Phase 12 | Pending |
-| ICON-02 | Phase 12 | Pending |
-| ICON-03 | Phase 12 | Pending |
+| ICON-01 | Phase 12 | Complete |
+| ICON-02 | Phase 12 | Complete |
+| ICON-03 | Phase 12 | Complete |
 | ICON-04 | Phase 12 | Pending |
 | UIPOL-01 | Phase 14 | Pending |
 | UIPOL-02 | Phase 14 | Pending |

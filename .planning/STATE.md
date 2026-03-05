@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Production Face
 status: planning
-stopped_at: Completed 11-02-PLAN.md — visual checkpoint approved, Phase 11 complete
-last_updated: "2026-03-05T20:41:24.205Z"
+stopped_at: Completed 12-01-PLAN.md — icon pass complete
+last_updated: "2026-03-05T22:36:51.020Z"
 last_activity: 2026-03-05 — v2.0 roadmap created; 5 phases defined (10–14)
 progress:
   total_phases: 5
   completed_phases: 2
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 6
+  completed_plans: 5
   percent: 0
 ---
 
@@ -69,6 +69,8 @@ Recent decisions affecting v2.0 work:
 - [Phase 11-tool-layout-explanations]: tool/page.tsx two-panel: left w-[420px] flex-shrink-0, right flex-1, outer h-[calc(100vh-48px)] to account for footer
 - [Phase 11-tool-layout-explanations]: EngineExplanationPanel is a pure Server Component (no use client) — safe to render in both pre-run path and Engine Docs tab without duplication concerns
 - [Phase 11-tool-layout-explanations]: Tabs defaultValue=results ensures Results tab is active immediately after a run, matching user expectation
+- [Phase 12-icon-pass]: Iconsax inside shadcn Button requires className='size-auto' to bypass [&_svg:not([class*='size-'])]:size-4 selector
+- [Phase 12-icon-pass]: No animate-* or transform on icons in TanStack virtualizer tr children — virtualizer writes translateY to tr directly
 
 ### Pending Todos
 
@@ -82,6 +84,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T18:29:11.306Z
-Stopped at: Completed 11-02-PLAN.md — visual checkpoint approved, Phase 11 complete
+Last session: 2026-03-05T22:36:51.015Z
+Stopped at: Completed 12-01-PLAN.md — icon pass complete
 Resume file: None
