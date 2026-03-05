@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: complete
-stopped_at: Completed 07-polish-and-deployment-02-PLAN.md
-last_updated: "2026-03-05T01:40:06Z"
-last_activity: 2026-03-05 — Completed Phase 7 Plan 02 (Vercel deployment); project v1.0 delivered
+status: completed
+stopped_at: Completed 07-polish-and-deployment-02-PLAN.md — project v1.0 complete
+last_updated: "2026-03-05T01:45:23.746Z"
+last_activity: "2026-03-05 — Completed Phase 7 Plan 02 (Vercel production deployment); live at https://ofac-sensitivity-testing.vercel.app"
 progress:
   total_phases: 7
   completed_phases: 7
