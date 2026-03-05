@@ -19,13 +19,6 @@ export default function RootLayout({
         </header>
 
         {children}
-
-        {/* Minimal Crowe indigo footer */}
-        <footer className="bg-crowe-indigo-dark px-6 py-4 text-center">
-          <p className="text-white/70 text-xs">
-            &copy; 2026 Crowe LLP. For demonstration purposes only.
-          </p>
-        </footer>
       </body>
     </html>
   );
