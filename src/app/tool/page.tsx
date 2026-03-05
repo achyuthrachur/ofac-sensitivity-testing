@@ -87,13 +87,16 @@ export default function Home() {
   // ─── Render ─────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-page py-10">
-      <div className="mx-auto max-w-2xl space-y-6 px-4">
-        {/* Page heading */}
-        <h1 className="text-3xl font-bold text-crowe-indigo-dark">OFAC Sensitivity Testing</h1>
-        <p className="text-sm text-muted-foreground">
-          Synthetic name degradation demo — Crowe AML Practice
-        </p>
+    <div className="bg-page flex h-[calc(100vh-48px)]">
+
+      {/* LEFT PANEL — fixed width, independently scrollable */}
+      <div className="w-[420px] flex-shrink-0 overflow-y-auto border-r border-border p-6 space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold text-crowe-indigo-dark">OFAC Sensitivity Testing</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Synthetic name degradation demo — Crowe AML Practice
+          </p>
+        </div>
 
         {/* Card 1 — Entity Counts */}
         <Card>
@@ -244,12 +247,20 @@ export default function Home() {
 
       </div>
 
-      {/* ── Results section — full-width container ── */}
-      {rows.length > 0 && (
-        <div className="mx-auto max-w-screen-xl px-6 pt-6">
-          <ResultsTable rows={rows} clientName={clientName} />
-        </div>
-      )}
+      {/* RIGHT PANEL — flex-1, independently scrollable */}
+      <div className="flex-1 overflow-y-auto p-6">
+        {rows.length === 0 ? (
+          <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
+            Run a test to see results here — or explore the Engine Documentation above.
+          </div>
+        ) : (
+          <div>
+            {/* Tabs placeholder — filled in Plan 02 */}
+            <ResultsTable rows={rows} clientName={clientName} />
+          </div>
+        )}
+      </div>
+
     </div>
   );
 }
