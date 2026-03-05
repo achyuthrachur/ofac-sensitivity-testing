@@ -26,7 +26,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { Loader2 } from 'lucide-react';
+import { People, Global, Setting4, Building, Refresh2, ClipboardTick } from 'iconsax-reactjs';
 import { ResultsTable } from '@/components/ResultsTable';
 import { EngineExplanationPanel } from '@/components/EngineExplanationPanel';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -103,7 +103,10 @@ export default function Home() {
         {/* Card 1 — Entity Counts */}
         <Card>
           <CardHeader>
-            <CardTitle>Entity Counts</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <People variant="Linear" size={18} color="var(--crowe-indigo-dark)" />
+              Entity Counts
+            </CardTitle>
             <CardDescription>
               Number of names to sample per entity type (0–{MAX_ENTITY_COUNT} each)
             </CardDescription>
@@ -136,7 +139,10 @@ export default function Home() {
         {/* Card 2 — Linguistic Regions */}
         <Card>
           <CardHeader>
-            <CardTitle>Linguistic Regions</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Global variant="Linear" size={18} color="var(--crowe-indigo-dark)" />
+              Linguistic Regions
+            </CardTitle>
             <CardDescription>Include names from these regions in the sample</CardDescription>
           </CardHeader>
           <CardContent>
@@ -163,7 +169,10 @@ export default function Home() {
         {/* Card 3 — Degradation Rules */}
         <Card>
           <CardHeader>
-            <CardTitle>Degradation Rules</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Setting4 variant="Linear" size={18} color="var(--crowe-indigo-dark)" />
+              Degradation Rules
+            </CardTitle>
             <CardDescription>Select which name degradation rules to apply</CardDescription>
           </CardHeader>
           <CardContent>
@@ -197,7 +206,10 @@ export default function Home() {
                       }
                     }}
                   />
-                  <Label htmlFor={`rule-${ruleId}`}>{RULE_LABELS[ruleId as RuleId]}</Label>
+                  <Label htmlFor={`rule-${ruleId}`} className="flex items-center gap-1 cursor-pointer">
+                    <ClipboardTick variant="Linear" size={16} color="currentColor" />
+                    {RULE_LABELS[ruleId as RuleId]}
+                  </Label>
                 </div>
               ))}
             </div>
@@ -207,7 +219,10 @@ export default function Home() {
         {/* Card 4 — Client Name */}
         <Card>
           <CardHeader>
-            <CardTitle>Client Name</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Building variant="Linear" size={18} color="var(--crowe-indigo-dark)" />
+              Client Name
+            </CardTitle>
             <CardDescription>Used to label the output CSV file</CardDescription>
           </CardHeader>
           <CardContent>
@@ -237,7 +252,7 @@ export default function Home() {
             >
               {isPending ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Refresh2 size={16} color="currentColor" className="size-auto animate-spin" />
                   Running...
                 </>
               ) : (
