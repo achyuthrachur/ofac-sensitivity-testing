@@ -16,10 +16,10 @@ Requirements for the v2.0 Production Face milestone. Each maps to roadmap phases
 
 ### Tool Layout
 
-- [ ] **LAYOUT-01**: User can configure test parameters in a left panel while the right panel displays engine documentation
+- [x] **LAYOUT-01**: User can configure test parameters in a left panel while the right panel displays engine documentation
 - [ ] **LAYOUT-02**: Right panel shows full engine explanation (all 10 rules, scoring methodology, dataset info) before a test is run
-- [ ] **LAYOUT-03**: Right panel switches to results table after running a test, with an Explanation tab to return to engine docs
-- [ ] **TABLE-01**: Results table rows extend to the right border of the table with no horizontal gap on the right side
+- [x] **LAYOUT-03**: Right panel switches to results table after running a test, with an Explanation tab to return to engine docs
+- [x] **TABLE-01**: Results table rows extend to the right border of the table with no horizontal gap on the right side
 
 ### Explanations
 
@@ -81,10 +81,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | LAND-02 | Phase 10 | Complete |
 | LAND-03 | Phase 10 | Complete |
 | LAND-04 | Phase 10 | Complete |
-| LAYOUT-01 | Phase 11 | Pending |
+| LAYOUT-01 | Phase 11 | Complete |
 | LAYOUT-02 | Phase 11 | Pending |
-| LAYOUT-03 | Phase 11 | Pending |
-| TABLE-01 | Phase 11 | Pending |
+| LAYOUT-03 | Phase 11 | Complete |
+| TABLE-01 | Phase 11 | Complete |
 | EXPL-01 | Phase 11 | Pending |
 | EXPL-02 | Phase 11 | Pending |
 | EXPL-03 | Phase 11 | Pending |

@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Production Face
 status: planning
-stopped_at: Completed 10-landing-page-02-PLAN.md
-last_updated: "2026-03-05T16:45:14.241Z"
+stopped_at: Completed 11-tool-layout-explanations-01-PLAN.md
+last_updated: "2026-03-05T18:11:53.358Z"
 last_activity: 2026-03-05 — v2.0 roadmap created; 5 phases defined (10–14)
 progress:
   total_phases: 5
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  total_plans: 4
+  completed_plans: 3
   percent: 0
 ---
 
@@ -65,6 +65,8 @@ Recent decisions affecting v2.0 work:
 - [Phase 10-landing-page]: No metadata export on tool/page.tsx (has use client) — metadata lives in tool/layout.tsx only
 - [Phase 10-landing-page]: All landing sections are pure Server Components — animations deferred to Phase 13 (Anime.js v4 with use client + useEffect)
 - [Phase 10-landing-page]: stat-number className + data-value attribute pre-wired in FeatureStatsSection for Phase 13 count-up animation targeting
+- [Phase 11-tool-layout-explanations]: Pin ResultsTable scroll container to width:1050px matching inner table to fix virtualizer right-side gap
+- [Phase 11-tool-layout-explanations]: tool/page.tsx two-panel: left w-[420px] flex-shrink-0, right flex-1, outer h-[calc(100vh-48px)] to account for footer
 
 ### Pending Todos
 
@@ -78,6 +80,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T16:32:30.141Z
-Stopped at: Completed 10-landing-page-02-PLAN.md
+Last session: 2026-03-05T18:11:53.347Z
+Stopped at: Completed 11-tool-layout-explanations-01-PLAN.md
 Resume file: None
