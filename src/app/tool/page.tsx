@@ -28,6 +28,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Loader2 } from 'lucide-react';
 import { ResultsTable } from '@/components/ResultsTable';
+import { EngineExplanationPanel } from '@/components/EngineExplanationPanel';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 // ─── Module-level constants ────────────────────────────────────────────────────
 
@@ -250,14 +252,20 @@ export default function Home() {
       {/* RIGHT PANEL — flex-1, independently scrollable */}
       <div className="flex-1 overflow-y-auto p-6">
         {rows.length === 0 ? (
-          <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
-            Run a test to see results here — or explore the Engine Documentation above.
-          </div>
+          <EngineExplanationPanel />
         ) : (
-          <div>
-            {/* Tabs placeholder — filled in Plan 02 */}
-            <ResultsTable rows={rows} clientName={clientName} />
-          </div>
+          <Tabs defaultValue="results">
+            <TabsList className="mb-4">
+              <TabsTrigger value="results">Results</TabsTrigger>
+              <TabsTrigger value="explanation">Engine Docs</TabsTrigger>
+            </TabsList>
+            <TabsContent value="results">
+              <ResultsTable rows={rows} clientName={clientName} />
+            </TabsContent>
+            <TabsContent value="explanation">
+              <EngineExplanationPanel />
+            </TabsContent>
+          </Tabs>
         )}
       </div>
 
