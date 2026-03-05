@@ -102,7 +102,7 @@ export function ResultsTable({ rows, clientName }: ResultsTableProps) {
       <div
         ref={parentRef}
         className="rounded-md border"
-        style={{ height: '600px', overflowY: 'auto' }}
+        style={{ height: '600px', overflowY: 'auto', width: '1050px', overflowX: 'auto' }}
       >
         {/* Fixed 1050px table: explicit width on every th/td is the only reliable
             alignment strategy when tbody rows are position:absolute (virtualizer).
