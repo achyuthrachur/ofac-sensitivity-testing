@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Completed 07-polish-and-deployment-02-PLAN.md — project v1.0 complete
-last_updated: "2026-03-05T01:45:23.746Z"
-last_activity: "2026-03-05 — Completed Phase 7 Plan 02 (Vercel production deployment); live at https://ofac-sensitivity-testing.vercel.app"
+status: in_progress
+stopped_at: Gap closure phases 8-9 added from v1.0 audit
+last_updated: "2026-03-05T02:15:00.000Z"
+last_activity: "2026-03-05 — v1.0 audit complete; gap closure phases 8 (table/form UX) and 9 (verification coverage) added to roadmap"
 progress:
-  total_phases: 7
+  total_phases: 9
   completed_phases: 7
-  total_plans: 15
+  total_plans: 17
   completed_plans: 15
-  percent: 100
+  percent: 83
 ---
 
 # Project State

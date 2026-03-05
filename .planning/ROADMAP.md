@@ -19,6 +19,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 5: Parameter Form** - Entity counts, region selection, rule checkboxes, and client name input (completed 2026-03-04)
 - [x] **Phase 6: Results Table and CSV Export** - Virtualized results table and UTF-8 BOM CSV download (completed 2026-03-04)
 - [x] **Phase 7: Polish and Deployment** - Crowe branding, UX refinements, and Vercel production deployment (completed 2026-03-05)
+- [ ] **Phase 8: Table & Form UX Fixes** - Fix results table column rendering on Vercel and Select All toggle inversion (gap closure)
+- [ ] **Phase 9: Verification Coverage** - Run gsd-verifier for phases 03 and 07; Nyquist wave-0 pass for transformation engine (gap closure)
 
 ## Phase Details
 
@@ -132,10 +134,37 @@ Plans:
 - [ ] 07-01-PLAN.md — Fix build-blocking Geist import, apply Crowe brand tokens, add header/footer, amber button, score color-coding
 - [ ] 07-02-PLAN.md — Push to GitHub, deploy to Vercel production, human verify live URL
 
+### Phase 8: Table & Form UX Fixes
+**Goal**: Results table renders correctly on Vercel with proper column widths, and the Select All rule toggle behaves intuitively
+**Depends on**: Phase 7
+**Requirements**: RSLT-04 (production concern), FORM-03 (Select All UX)
+**Gap Closure**: Closes tech debt items from v1.0 audit
+**Success Criteria** (what must be TRUE):
+  1. Opening the live Vercel URL and running a test shows the results table with properly sized columns — Original Name, Entity Type, Linguistic Region, Degraded Variant, Rule Applied, and Score columns all visible and proportionate
+  2. Clicking "Select All" when no rules are checked selects all rules; clicking again deselects all — matches natural toggle expectation
+**Plans**: 1 plan
+
+Plans:
+- [ ] 08-01-PLAN.md — Fix ResultsTable colgroup widths and thead sticky bg; fix handleSelectAll logic; human verify on live URL
+
+### Phase 9: Verification Coverage
+**Goal**: Phases 03 and 07 have formal VERIFICATION.md reports; transformation engine has Nyquist wave-0 test coverage
+**Depends on**: Phase 8
+**Requirements**: None (planning quality gap closure)
+**Gap Closure**: Closes verification gaps from v1.0 audit
+**Success Criteria** (what must be TRUE):
+  1. `.planning/phases/03-transformation-engine/03-VERIFICATION.md` exists with status `passed`
+  2. `.planning/phases/07-polish-and-deployment/07-VERIFICATION.md` exists with status `passed` or `human_needed` (with human items pre-approved)
+  3. Phase 03 VALIDATION.md updated to `nyquist_compliant: true` after wave-0 tests run
+**Plans**: 1 plan
+
+Plans:
+- [ ] 09-01-PLAN.md — Run gsd-verifier for phases 03 and 07; run /gsd:validate-phase 3 for Nyquist wave-0
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -146,3 +175,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 5. Parameter Form | 2/2 | Complete    | 2026-03-04 |
 | 6. Results Table and CSV Export | 2/2 | Complete    | 2026-03-04 |
 | 7. Polish and Deployment | 2/2 | Complete   | 2026-03-05 |
+| 8. Table & Form UX Fixes | 0/1 | Not started | - |
+| 9. Verification Coverage | 0/1 | Not started | - |
