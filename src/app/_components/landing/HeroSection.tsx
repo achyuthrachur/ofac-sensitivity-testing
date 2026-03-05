@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ArrowRight } from 'iconsax-reactjs';
 
 export function HeroSection() {
   return (
@@ -13,9 +14,10 @@ export function HeroSection() {
         </p>
         <Link
           href="/tool"
-          className="mt-10 inline-flex bg-crowe-amber text-crowe-indigo-dark font-bold px-8 py-4 rounded-lg hover:bg-crowe-amber-dark transition-colors duration-200 shadow-lg"
+          className="mt-10 inline-flex items-center gap-1 bg-crowe-amber text-crowe-indigo-dark font-bold px-8 py-4 rounded-lg hover:bg-crowe-amber-dark transition-colors duration-200 shadow-lg"
         >
           Configure Your Test
+          <ArrowRight variant="Bold" size={18} color="currentColor" />
         </Link>
       </div>
     </section>

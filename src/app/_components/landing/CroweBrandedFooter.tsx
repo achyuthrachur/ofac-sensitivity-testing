@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ExportSquare } from 'iconsax-reactjs';
 
 export function CroweBrandedFooter() {
   return (
@@ -22,9 +23,10 @@ export function CroweBrandedFooter() {
             href="https://www.crowe.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white/70 hover:text-crowe-amber transition-colors text-sm"
+            className="text-white/70 hover:text-crowe-amber transition-colors text-sm inline-flex items-center gap-1"
           >
             Crowe.com
+            <ExportSquare variant="Linear" size={14} color="currentColor" />
           </a>
         </div>
 
