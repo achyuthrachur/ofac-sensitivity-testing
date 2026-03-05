@@ -46,7 +46,11 @@ Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
   3. User can see a stats section displaying real engine numbers: 285 SDN entries, 10 rules, 4 regions, ~53ms processing
   4. User can see a Crowe-branded footer with navigation links at the bottom of the landing page
   5. Existing tool functionality is accessible at "/tool" with no regressions — `next build` passes
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 10-01-PLAN.md — Route restructuring: move tool to /tool, create tool/layout.tsx, remove footer from root layout
+- [ ] 10-02-PLAN.md — Landing page static content: HeroSection, HowItWorksSection, FeatureStatsSection, CroweBrandedFooter
 
 ### Phase 11: Explanations
 **Goal**: Users understand every parameter in the form and every number in the results without needing to ask
