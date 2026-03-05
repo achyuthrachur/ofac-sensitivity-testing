@@ -242,8 +242,14 @@ export default function Home() {
           </CardFooter>
         </Card>
 
-        <ResultsTable rows={rows} clientName={clientName} />
       </div>
+
+      {/* ── Results section — full-width container ── */}
+      {rows.length > 0 && (
+        <div className="mx-auto max-w-screen-xl px-6 pt-6">
+          <ResultsTable rows={rows} clientName={clientName} />
+        </div>
+      )}
     </div>
   );
 }

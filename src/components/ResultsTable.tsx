@@ -76,7 +76,7 @@ export function ResultsTable({ rows, clientName }: ResultsTableProps) {
   };
 
   return (
-    <div className="mx-auto max-w-5xl space-y-3 px-4">
+    <div className="space-y-3">
       {/* Summary row */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
