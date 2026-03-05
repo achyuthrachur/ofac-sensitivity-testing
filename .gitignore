@@ -46,3 +46,5 @@ next-env.d.ts
 
 # Project-specific: binary design doc (no version-control value)
 Sensitivity Degradation Sample Prep PDD V0.9.docx
+
+.vercel
