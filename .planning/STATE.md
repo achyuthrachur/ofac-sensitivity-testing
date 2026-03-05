@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Production Face
 status: planning
-stopped_at: Completed 10-landing-page-01-PLAN.md
-last_updated: "2026-03-05T16:00:20.609Z"
+stopped_at: Completed 10-landing-page-02-PLAN.md
+last_updated: "2026-03-05T16:32:30.151Z"
 last_activity: 2026-03-05 — v2.0 roadmap created; 5 phases defined (10–14)
 progress:
   total_phases: 5
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -63,6 +63,8 @@ Recent decisions affecting v2.0 work:
 - [Phase 10-landing-page]: git mv used for page.tsx move to preserve git rename history
 - [Phase 10-landing-page]: tool/layout.tsx is authoritative footer owner — root layout.tsx is now header-only
 - [Phase 10-landing-page]: No metadata export on tool/page.tsx (has use client) — metadata lives in tool/layout.tsx only
+- [Phase 10-landing-page]: All landing sections are pure Server Components — animations deferred to Phase 13 (Anime.js v4 with use client + useEffect)
+- [Phase 10-landing-page]: stat-number className + data-value attribute pre-wired in FeatureStatsSection for Phase 13 count-up animation targeting
 
 ### Pending Todos
 
@@ -76,6 +78,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T16:00:20.602Z
-Stopped at: Completed 10-landing-page-01-PLAN.md
+Last session: 2026-03-05T16:32:30.141Z
+Stopped at: Completed 10-landing-page-02-PLAN.md
 Resume file: None
