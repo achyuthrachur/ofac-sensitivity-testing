@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Production Face
 status: planning
-stopped_at: Completed 12-01-PLAN.md — icon pass complete
-last_updated: "2026-03-05T22:36:51.020Z"
+stopped_at: Completed 12-02-PLAN.md — awaiting human visual checkpoint
+last_updated: "2026-03-05T22:40:41.799Z"
 last_activity: 2026-03-05 — v2.0 roadmap created; 5 phases defined (10–14)
 progress:
   total_phases: 5
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 6
-  completed_plans: 5
+  completed_plans: 6
   percent: 0
 ---
 
@@ -71,6 +71,7 @@ Recent decisions affecting v2.0 work:
 - [Phase 11-tool-layout-explanations]: Tabs defaultValue=results ensures Results tab is active immediately after a run, matching user expectation
 - [Phase 12-icon-pass]: Iconsax inside shadcn Button requires className='size-auto' to bypass [&_svg:not([class*='size-'])]:size-4 selector
 - [Phase 12-icon-pass]: No animate-* or transform on icons in TanStack virtualizer tr children — virtualizer writes translateY to tr directly
+- [Phase 12-icon-pass]: TwoTone variant for HowItWorksSection (white cards), Bold variant for FeatureStatsSection (dark indigo bg) — TwoTone dims on dark, Bold gives full amber fill
 
 ### Pending Todos
 
@@ -84,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T22:36:51.015Z
-Stopped at: Completed 12-01-PLAN.md — icon pass complete
+Last session: 2026-03-05T22:40:41.795Z
+Stopped at: Completed 12-02-PLAN.md — awaiting human visual checkpoint
 Resume file: None
