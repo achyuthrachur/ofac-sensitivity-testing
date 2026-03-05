@@ -104,22 +104,19 @@ export function ResultsTable({ rows, clientName }: ResultsTableProps) {
         className="rounded-md border"
         style={{ height: '600px', overflowY: 'auto' }}
       >
+        {/* Fixed 1050px table: explicit width on every th/td is the only reliable
+            alignment strategy when tbody rows are position:absolute (virtualizer).
+            colgroup does NOT propagate to absolutely-positioned rows. */}
         <table
-          style={{ tableLayout: 'fixed', width: '100%', borderCollapse: 'collapse' }}
+          style={{ tableLayout: 'fixed', width: '1050px', borderCollapse: 'collapse' }}
         >
-          {/* Column widths — REQUIRED for absolute-positioned rows */}
-          <colgroup>
-            {COL_WIDTHS.map((w, i) => (
-              <col key={i} style={w} />
-            ))}
-          </colgroup>
-
-          {/* Sticky header */}
+          {/* Sticky header — each th gets an explicit pixel width */}
           <thead className="sticky top-0 z-10" style={{ background: 'var(--card)' }}>
             <tr>
-              {COLUMN_LABELS.map((label) => (
+              {COLUMN_LABELS.map((label, i) => (
                 <th
                   key={label}
+                  style={{ width: COL_WIDTHS[i].width }}
                   className="border-b px-3 py-2 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide"
                 >
                   {label}
@@ -127,6 +124,7 @@ export function ResultsTable({ rows, clientName }: ResultsTableProps) {
               ))}
               {/* Score column — sortable */}
               <th
+                style={{ width: COL_WIDTHS[5].width }}
                 className="border-b px-3 py-2 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide cursor-pointer select-none"
                 onClick={() => setSortDir((d) => (d === 'desc' ? 'asc' : 'desc'))}
               >
@@ -135,7 +133,7 @@ export function ResultsTable({ rows, clientName }: ResultsTableProps) {
             </tr>
           </thead>
 
-          {/* Virtualized body */}
+          {/* Virtualized body — each td gets the matching explicit pixel width */}
           <tbody
             style={{
               height: `${virtualizer.getTotalSize()}px`,
@@ -151,18 +149,20 @@ export function ResultsTable({ rows, clientName }: ResultsTableProps) {
                     position: 'absolute',
                     top: 0,
                     left: 0,
-                    width: '100%',
+                    width: '1050px',
                     transform: `translateY(${virtualRow.start}px)`,
                     height: `${virtualRow.size}px`,
+                    display: 'flex',
                   }}
                   className="border-b last:border-0"
                 >
-                  <td className="px-3 py-2 text-sm truncate">{row.originalName}</td>
-                  <td className="px-3 py-2 text-sm capitalize">{row.entityType}</td>
-                  <td className="px-3 py-2 text-sm capitalize">{row.region}</td>
-                  <td className="px-3 py-2 text-sm truncate">{row.degradedVariant}</td>
-                  <td className="px-3 py-2 text-sm truncate">{row.ruleLabel}</td>
+                  <td style={{ width: COL_WIDTHS[0].width, flexShrink: 0 }} className="px-3 py-2 text-sm truncate">{row.originalName}</td>
+                  <td style={{ width: COL_WIDTHS[1].width, flexShrink: 0 }} className="px-3 py-2 text-sm capitalize">{row.entityType}</td>
+                  <td style={{ width: COL_WIDTHS[2].width, flexShrink: 0 }} className="px-3 py-2 text-sm capitalize">{row.region}</td>
+                  <td style={{ width: COL_WIDTHS[3].width, flexShrink: 0 }} className="px-3 py-2 text-sm truncate">{row.degradedVariant}</td>
+                  <td style={{ width: COL_WIDTHS[4].width, flexShrink: 0 }} className="px-3 py-2 text-sm truncate">{row.ruleLabel}</td>
                   <td
+                    style={{ width: COL_WIDTHS[5].width, flexShrink: 0 }}
                     className={`px-3 py-2 text-sm font-mono ${
                       row.caught ? 'text-crowe-teal' : 'text-crowe-coral'
                     }`}
