@@ -228,7 +228,7 @@ export default function Home() {
               type="button"
               onClick={handleSubmit}
               disabled={isPending}
-              className="w-full"
+              className="w-full bg-crowe-amber text-crowe-indigo-dark font-semibold hover:bg-crowe-amber-dark hover:shadow-[0_4px_16px_rgba(245,168,0,0.30)] transition-all"
             >
               {isPending ? (
                 <>
@@ -241,13 +241,6 @@ export default function Home() {
             </Button>
           </CardFooter>
         </Card>
-
-        {/* Success placeholder — shown after a successful run */}
-        {result?.ok && (
-          <p className="text-center text-sm text-muted-foreground">
-            {rows.length} result{rows.length !== 1 ? 's' : ''} generated
-          </p>
-        )}
 
         <ResultsTable rows={rows} clientName={clientName} />
       </div>

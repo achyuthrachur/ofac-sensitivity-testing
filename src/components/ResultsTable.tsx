@@ -150,7 +150,11 @@ export function ResultsTable({ rows, clientName }: ResultsTableProps) {
                   <td className="px-3 py-2 text-sm capitalize">{row.region}</td>
                   <td className="px-3 py-2 text-sm truncate">{row.degradedVariant}</td>
                   <td className="px-3 py-2 text-sm truncate">{row.ruleLabel}</td>
-                  <td className="px-3 py-2 text-sm font-mono">
+                  <td
+                    className={`px-3 py-2 text-sm font-mono ${
+                      row.caught ? 'text-crowe-teal' : 'text-crowe-coral'
+                    }`}
+                  >
                     {Math.round(row.similarityScore * 100)}% {row.caught ? '✓' : '✗'}
                   </td>
                 </tr>
