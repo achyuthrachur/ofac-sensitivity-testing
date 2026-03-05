@@ -14,11 +14,18 @@ Requirements for the v2.0 Production Face milestone. Each maps to roadmap phases
 - [x] **LAND-03**: User can view a features/stats section showing real engine numbers (285 entries, 10 rules, ~53ms, 4 regions)
 - [x] **LAND-04**: User can see a Crowe-branded footer with navigation links
 
+### Tool Layout
+
+- [ ] **LAYOUT-01**: User can configure test parameters in a left panel while the right panel displays engine documentation
+- [ ] **LAYOUT-02**: Right panel shows full engine explanation (all 10 rules, scoring methodology, dataset info) before a test is run
+- [ ] **LAYOUT-03**: Right panel switches to results table after running a test, with an Explanation tab to return to engine docs
+- [ ] **TABLE-01**: Results table rows extend to the right border of the table with no horizontal gap on the right side
+
 ### Explanations
 
-- [ ] **EXPL-01**: User can open a tooltip on each of the 10 degradation rules to read a plain-English description of what the rule does
-- [ ] **EXPL-02**: User can read static helper text on entity count inputs and region checkboxes explaining what each parameter means
-- [ ] **EXPL-03**: User can see an elevated catch-rate stat card with score interpretation legend in the results view (replaces buried summary line)
+- [ ] **EXPL-01**: Right panel documents all 10 degradation rules with plain-English descriptions and how each transforms a name
+- [ ] **EXPL-02**: Right panel explains how the synthetic SDN dataset is constructed, what entity types and regions mean, and how sampling works
+- [ ] **EXPL-03**: Right panel explains Jaro-Winkler scoring — what the score means, what catch rate represents, and how to interpret results
 - [x] **EXPL-04**: User can read a methodology explanation on the landing "How It Works" section that educates clients before they see the form
 
 ### Animation
@@ -74,6 +81,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | LAND-02 | Phase 10 | Complete |
 | LAND-03 | Phase 10 | Complete |
 | LAND-04 | Phase 10 | Complete |
+| LAYOUT-01 | Phase 11 | Pending |
+| LAYOUT-02 | Phase 11 | Pending |
+| LAYOUT-03 | Phase 11 | Pending |
+| TABLE-01 | Phase 11 | Pending |
 | EXPL-01 | Phase 11 | Pending |
 | EXPL-02 | Phase 11 | Pending |
 | EXPL-03 | Phase 11 | Pending |
@@ -92,8 +103,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UIPOL-04 | Phase 14 | Pending |
 
 **Coverage:**
-- v2.0 requirements: 20 total
-- Mapped to phases: 20
+- v2.0 requirements: 24 total
+- Mapped to phases: 24
 - Unmapped: 0 ✓
 
 ---

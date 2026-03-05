@@ -29,7 +29,7 @@ Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
 **Milestone Goal:** Transform the tool into a production-ready web app with a landing page, contextual explanations throughout, and a full premium animation and icon pass.
 
 - [x] **Phase 10: Landing Page** - Route restructuring + complete static landing page at "/" (completed 2026-03-05)
-- [ ] **Phase 11: Explanations** - Form tooltips, inline help, and elevated catch-rate panel in results view
+- [ ] **Phase 11: Tool Layout + Explanations** - Two-panel layout (configurator left, engine docs right), table row fix, full engine explanation panel with rules/scoring/methodology
 - [ ] **Phase 12: Icon Pass** - Full Iconsax replacement throughout form, results, and landing
 - [ ] **Phase 13: Animation Pass** - Anime.js scroll reveals, stagger entrances, count-up numbers, hover effects
 - [ ] **Phase 14: Premium UI** - React Bits / 21st.dev hero elements, animated CTA button, SpotlightCard form sections
@@ -52,14 +52,16 @@ Plans:
 - [ ] 10-01-PLAN.md — Route restructuring: move tool to /tool, create tool/layout.tsx, remove footer from root layout
 - [ ] 10-02-PLAN.md — Landing page static content: HeroSection, HowItWorksSection, FeatureStatsSection, CroweBrandedFooter
 
-### Phase 11: Explanations
-**Goal**: Users understand every parameter in the form and every number in the results without needing to ask
+### Phase 11: Tool Layout + Explanations
+**Goal**: The tool page has a two-panel layout — configurator on the left, engine documentation on the right — and users understand what every rule, score, and parameter means without asking
 **Depends on**: Phase 10
-**Requirements**: EXPL-01, EXPL-02, EXPL-03
+**Requirements**: LAYOUT-01, LAYOUT-02, LAYOUT-03, TABLE-01, EXPL-01, EXPL-02, EXPL-03
 **Success Criteria** (what must be TRUE):
-  1. User can hover or click an info icon on any of the 10 degradation rule checkboxes and read a plain-English description of what that rule does
-  2. User can read static helper text beneath entity count inputs and region checkboxes explaining what each parameter controls
-  3. User can see a catch-rate stat card above the results table — prominently sized with a color-coded score legend (teal = caught at >=85%, coral = missed <85%)
+  1. User sees a left panel with all configuration controls (entity counts, regions, rules, client name, run button) and a right panel for engine docs/results
+  2. Right panel shows full engine documentation before running — all 10 rules with plain-English descriptions, dataset explanation, scoring methodology
+  3. After running, right panel switches to results table; user can click an Explanation tab to return to engine docs
+  4. Results table rows extend to the right border with no horizontal gap
+  5. Catch-rate score is prominently explained in context — user knows what a 97% score means without guessing
 **Plans**: TBD
 
 ### Phase 12: Icon Pass
