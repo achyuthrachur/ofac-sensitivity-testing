@@ -9,7 +9,7 @@ Requirements for the v2.0 Production Face milestone. Each maps to roadmap phases
 
 ### Landing Page
 
-- [ ] **LAND-01**: User can view a landing page at "/" with a hero section and primary CTA button that navigates to the tool
+- [x] **LAND-01**: User can view a landing page at "/" with a hero section and primary CTA button that navigates to the tool
 - [ ] **LAND-02**: User can read a "How It Works" 3-step methodology section explaining configure → run → export
 - [ ] **LAND-03**: User can view a features/stats section showing real engine numbers (285 entries, 10 rules, ~53ms, 4 regions)
 - [ ] **LAND-04**: User can see a Crowe-branded footer with navigation links
@@ -70,7 +70,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| LAND-01 | Phase 10 | Pending |
+| LAND-01 | Phase 10 | Complete |
 | LAND-02 | Phase 10 | Pending |
 | LAND-03 | Phase 10 | Pending |
 | LAND-04 | Phase 10 | Pending |

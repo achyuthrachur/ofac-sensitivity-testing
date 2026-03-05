@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Production Face
-status: ready_to_plan
-stopped_at: Phase 10 ready to plan
-last_updated: "2026-03-05T00:00:00.000Z"
-last_activity: "2026-03-05 — v2.0 roadmap created (Phases 10–14)"
+status: planning
+stopped_at: Completed 10-landing-page-01-PLAN.md
+last_updated: "2026-03-05T16:00:20.609Z"
+last_activity: 2026-03-05 — v2.0 roadmap created; 5 phases defined (10–14)
 progress:
   total_phases: 5
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 2
+  completed_plans: 1
   percent: 0
 ---
 
@@ -60,6 +60,9 @@ Recent decisions affecting v2.0 work:
 - [Roadmap v2.0]: Anime.js v4 requires 'use client' + useEffect wrapping — every animation file must follow this pattern or next build crashes
 - [Roadmap v2.0]: Never animate TanStack virtual rows with translateY — virtualizer writes translateY to each tr; animate container wrapper only
 - [Roadmap v2.0]: Patch button.tsx [&_svg]:size-4 to [&_svg]:size-auto BEFORE starting Phase 12 icon pass
+- [Phase 10-landing-page]: git mv used for page.tsx move to preserve git rename history
+- [Phase 10-landing-page]: tool/layout.tsx is authoritative footer owner — root layout.tsx is now header-only
+- [Phase 10-landing-page]: No metadata export on tool/page.tsx (has use client) — metadata lives in tool/layout.tsx only
 
 ### Pending Todos
 
@@ -73,6 +76,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-05T00:00:00.000Z
-Stopped at: v2.0 roadmap written — Phases 10–14 defined, REQUIREMENTS.md traceability confirmed
+Last session: 2026-03-05T16:00:20.602Z
+Stopped at: Completed 10-landing-page-01-PLAN.md
 Resume file: None
