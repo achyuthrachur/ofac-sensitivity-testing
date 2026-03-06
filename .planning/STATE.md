@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Screening Engine
-status: in_progress
-stopped_at: "Phase 15 complete — benchmark confirmed, Phase 16 ready to plan"
-last_updated: "2026-03-06T20:00:00.000Z"
-last_activity: 2026-03-06 — Phase 15 complete (benchmark: Web Worker + server action both confirmed; Web Worker primary for Phase 16)
+status: completed
+stopped_at: Completed 16-01-PLAN.md — type contracts updated, Wave 0 test scaffold written
+last_updated: "2026-03-06T22:56:47.029Z"
+last_activity: 2026-03-06 — Phase 15 complete (scroll fix deployed; benchmark results committed)
 progress:
   total_phases: 9
   completed_phases: 1
   total_plans: 4
-  completed_plans: 4
+  completed_plans: 3
   percent: 11
 ---
 
@@ -108,6 +108,9 @@ Decisions are logged in PROJECT.md Key Decisions table.
 - [Phase 15-01]: screenNames/runSimulation return never in Phase 15 stubs — signals unimplemented path to TypeScript callers
 - [Phase 15-architecture-foundation]: BenchmarkPanel catches Phase 15 stub 'Not implemented' error and interprets it as worker roundtrip confirmed — correct interpretation for Phase 15 connectivity test
 - [Phase 15-architecture-foundation]: Outer tabs defaultValue=sensitivity ensures zero behavior change on first load — Screening Mode tab is additive, not breaking
+- [Phase 16-scoring-engine]: effectiveTier: RiskTier added to MatchResult — post-penalty tier for Phase 18 UI (separated from riskTier to show both raw and compliance-effective tiers)
+- [Phase 16-scoring-engine]: ScreeningWorkerApi.screenNames changed to Promise<MatchResult[]> — MatchResultStub retained during Plan 02 wave, removed after
+- [Phase 16-scoring-engine]: Wave 0 TDD: scorer.test.ts written before scorer.ts exists — module-not-found failure is the intentional RED state; 29 tests specify the behavioral contract for Plan 02
 
 ### Pending Todos
 
@@ -123,7 +126,7 @@ Decisions are logged in PROJECT.md Key Decisions table.
 
 ## Session Continuity
 
-Last session: 2026-03-06T20:00:00.000Z
-Stopped at: Phase 15 complete — benchmark confirmed, scroll fix deployed
+Last session: 2026-03-06T22:56:47.023Z
+Stopped at: Completed 16-01-PLAN.md — type contracts updated, Wave 0 test scaffold written
 Resume file: None
 Next action: Run /gsd:plan-phase 16 to plan Phase 16: Scoring Engine
