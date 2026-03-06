@@ -15,13 +15,13 @@ import {
   buildRunParams,
 } from '@/lib/formUtils';
 import {
-  Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
   CardFooter,
 } from '@/components/ui/card';
+import SpotlightCard from '@/components/ui/spotlight-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -118,7 +118,10 @@ export default function Home() {
         </div>
 
         {/* Card 1 — Entity Counts */}
-        <Card className="form-card">
+        <SpotlightCard
+          className="form-card rounded-xl bg-card text-card-foreground shadow-crowe-sm"
+          spotlightColor="rgba(245, 168, 0, 0.08)"
+        >
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <People variant="Linear" size={18} color="var(--crowe-indigo-dark)" />
@@ -151,10 +154,13 @@ export default function Home() {
               ))}
             </div>
           </CardContent>
-        </Card>
+        </SpotlightCard>
 
         {/* Card 2 — Linguistic Regions */}
-        <Card className="form-card">
+        <SpotlightCard
+          className="form-card rounded-xl bg-card text-card-foreground shadow-crowe-sm"
+          spotlightColor="rgba(245, 168, 0, 0.08)"
+        >
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Global variant="Linear" size={18} color="var(--crowe-indigo-dark)" />
@@ -181,10 +187,13 @@ export default function Home() {
               ))}
             </div>
           </CardContent>
-        </Card>
+        </SpotlightCard>
 
         {/* Card 3 — Degradation Rules */}
-        <Card className="form-card">
+        <SpotlightCard
+          className="form-card rounded-xl bg-card text-card-foreground shadow-crowe-sm"
+          spotlightColor="rgba(245, 168, 0, 0.08)"
+        >
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Setting4 variant="Linear" size={18} color="var(--crowe-indigo-dark)" />
@@ -231,10 +240,13 @@ export default function Home() {
               ))}
             </div>
           </CardContent>
-        </Card>
+        </SpotlightCard>
 
         {/* Card 4 — Client Name */}
-        <Card className="form-card">
+        <SpotlightCard
+          className="form-card rounded-xl bg-card text-card-foreground shadow-crowe-sm"
+          spotlightColor="rgba(245, 168, 0, 0.08)"
+        >
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Building variant="Linear" size={18} color="var(--crowe-indigo-dark)" />
@@ -277,7 +289,7 @@ export default function Home() {
               )}
             </Button>
           </CardFooter>
-        </Card>
+        </SpotlightCard>
 
       </div>
 

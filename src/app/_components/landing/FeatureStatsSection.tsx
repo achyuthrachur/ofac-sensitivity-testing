@@ -1,4 +1,5 @@
 import { Document, Setting4, Global, Refresh2 } from 'iconsax-reactjs';
+import { StatTiltCard } from '@/components/ui/stat-tilt-card';
 
 const STATS = [
   { value: 285, prefix: '',  suffix: '',   label: 'Synthetic SDN Entries',  sublabel: 'fully synthetic test dataset' },
@@ -17,18 +18,20 @@ export function FeatureStatsSection() {
         {STATS.map((stat, index) => {
           const StatIcon = STAT_ICONS[index];
           return (
-            <div key={stat.label} className="rounded-xl p-8 text-center bg-white/10">
-              <StatIcon variant="Bold" size={32} color="var(--crowe-amber-core)" />
-              <span className="stat-number text-5xl font-bold text-crowe-amber block mt-2">
-                {stat.prefix && <span className="stat-prefix">{stat.prefix}</span>}
-                <span className="stat-value" data-value={String(stat.value)}>
-                  {stat.value}
+            <StatTiltCard key={stat.label} className="rounded-xl">
+              <div className="p-8 text-center bg-white/15 rounded-xl [transform-style:preserve-3d]">
+                <StatIcon variant="Bold" size={32} color="var(--crowe-amber-core)" />
+                <span className="stat-number text-5xl font-bold text-crowe-amber block mt-2">
+                  {stat.prefix && <span className="stat-prefix">{stat.prefix}</span>}
+                  <span className="stat-value" data-value={String(stat.value)}>
+                    {stat.value}
+                  </span>
+                  {stat.suffix && <span className="stat-suffix">{stat.suffix}</span>}
                 </span>
-                {stat.suffix && <span className="stat-suffix">{stat.suffix}</span>}
-              </span>
-              <p className="text-white font-semibold mt-2 text-sm">{stat.label}</p>
-              <p className="text-white/60 text-xs mt-1">{stat.sublabel}</p>
-            </div>
+                <p className="text-white font-semibold mt-2 text-sm">{stat.label}</p>
+                <p className="text-white/60 text-xs mt-1">{stat.sublabel}</p>
+              </div>
+            </StatTiltCard>
           );
         })}
       </div>
