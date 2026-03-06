@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Production Face
 status: planning
-stopped_at: Phase 14 context gathered
-last_updated: "2026-03-06T02:10:17.526Z"
+stopped_at: Completed 14-premium-ui/14-01-PLAN.md
+last_updated: "2026-03-06T02:36:08.382Z"
 last_activity: 2026-03-05 — Phase 12 icon pass complete; all 4 iconsax target files updated; visual checkpoint approved
 progress:
   total_phases: 5
   completed_phases: 4
-  total_plans: 10
-  completed_plans: 10
+  total_plans: 15
+  completed_plans: 11
   percent: 100
 ---
 
@@ -79,6 +79,8 @@ Recent decisions affecting v2.0 work:
 - [Phase 13-animation-pass]: ReturnType<typeof animate> used for glow animation ref type — animate() returns JSAnimation class instance, avoids Animatable type import uncertainty
 - [Phase 13-animation-pass]: AnimationShell pattern: className='contents' wrapper div is layout-neutral; createScope + revert() in useEffect is mandatory for all Anime.js Client Components
 - [Phase 13-animation-pass]: All 7 Phase 13 visual checks passed on first review — scroll reveals, count-up, CTA glow, form card stagger all confirmed working
+- [Phase 14-premium-ui]: React.JSX.IntrinsicElements (not JSX.IntrinsicElements) required for React 19 — global JSX namespace removed
+- [Phase 14-premium-ui]: motion package (v12) installed as canonical framer-motion replacement — motion/react import path required by BlurText and StatTiltCard
 
 ### Pending Todos
 
@@ -91,6 +93,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-06T02:10:17.520Z
-Stopped at: Phase 14 context gathered
-Resume file: .planning/phases/14-premium-ui/14-CONTEXT.md
+Last session: 2026-03-06T02:36:02.204Z
+Stopped at: Completed 14-premium-ui/14-01-PLAN.md
+Resume file: None
