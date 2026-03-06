@@ -8,3 +8,7 @@ export const DEFAULT_CATCH_THRESHOLD = 0.85;
 
 /** Maximum names per entity type the form allows. */
 export const MAX_ENTITY_COUNT = 500;
+
+// ─── v3.0 additions — Phase 15 ────────────────────────────────────────────────
+
+export { TIER_THRESHOLDS, MAX_SCREENING_NAMES, COST_OF_MISS_MULTIPLIER } from '@/types/screening';
