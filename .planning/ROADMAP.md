@@ -105,11 +105,18 @@ Plans:
 **Depends on**: Phase 13
 **Requirements**: UIPOL-01, UIPOL-02, UIPOL-03, UIPOL-04
 **Success Criteria** (what must be TRUE):
-  1. Landing hero headline renders with an animated text entrance (BlurText or equivalent) — text reveals character-by-character or word-by-word on page load
-  2. Landing features/stats section cards use TiltCard or a premium 21st.dev card variant with hover depth effect
+  1. Landing hero headline renders with an animated text entrance (BlurText or equivalent) — text reveals word-by-word on page load
+  2. Landing features/stats section cards use StatTiltCard with hover depth effect
   3. Primary CTA button carries a persistent amber glow treatment that draws the eye as the dominant action
-  4. Parameter form section cards use SpotlightCard or a premium card treatment — a light follows the cursor across the card surface
-**Plans**: TBD
+  4. Parameter form section cards use SpotlightCard — a light follows the cursor across the card surface
+**Plans**: 5 plans
+
+Plans:
+- [ ] 14-01-PLAN.md — Install motion + create BlurText, SpotlightCard, StatTiltCard component files (Wave 1)
+- [ ] 14-02-PLAN.md — UIPOL-01: ClientHeroHeadline + BlurText hero headline wiring (Wave 2)
+- [ ] 14-03-PLAN.md — UIPOL-02: StatTiltCard wrapping of stats section cards (Wave 2)
+- [ ] 14-04-PLAN.md — UIPOL-03: Always-on CTA amber glow — HeroAnimationShell update (Wave 3)
+- [ ] 14-05-PLAN.md — UIPOL-04: SpotlightCard replacing shadcn Card on 4 tool form cards + visual checkpoint (Wave 2)
 
 ## Progress
 
@@ -131,4 +138,4 @@ Phases execute in numeric order: 10 → 11 → 12 → 13 → 14
 | 11. Tool Layout + Explanations | v2.0 | Complete    | 2026-03-05 | 2026-03-05 |
 | 12. Icon Pass | 2/2 | Complete    | 2026-03-06 | - |
 | 13. Animation Pass | 4/4 | Complete    | 2026-03-06 | - |
-| 14. Premium UI | v2.0 | 0/TBD | Not started | - |
+| 14. Premium UI | v2.0 | 0/5 | Not started | - |
