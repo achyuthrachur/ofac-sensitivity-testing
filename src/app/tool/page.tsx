@@ -101,7 +101,7 @@ export default function Home() {
         </div>
 
         {/* Card 1 — Entity Counts */}
-        <Card>
+        <Card className="form-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <People variant="Linear" size={18} color="var(--crowe-indigo-dark)" />
@@ -137,7 +137,7 @@ export default function Home() {
         </Card>
 
         {/* Card 2 — Linguistic Regions */}
-        <Card>
+        <Card className="form-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Global variant="Linear" size={18} color="var(--crowe-indigo-dark)" />
@@ -167,7 +167,7 @@ export default function Home() {
         </Card>
 
         {/* Card 3 — Degradation Rules */}
-        <Card>
+        <Card className="form-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Setting4 variant="Linear" size={18} color="var(--crowe-indigo-dark)" />
@@ -217,7 +217,7 @@ export default function Home() {
         </Card>
 
         {/* Card 4 — Client Name */}
-        <Card>
+        <Card className="form-card">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Building variant="Linear" size={18} color="var(--crowe-indigo-dark)" />

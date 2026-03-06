@@ -32,7 +32,7 @@ export function HowItWorksSection() {
           return (
             <div
               key={step.number}
-              className="bg-white rounded-xl p-8"
+              className="how-it-works-card bg-white rounded-xl p-8"
               style={{ boxShadow: '0 4px 8px rgba(1,30,65,0.06), 0 1px 3px rgba(1,30,65,0.04)' }}
             >
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-crowe-amber/10 mb-4">
