@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect, useRef } from 'react';
 import { runTest } from '@/app/actions/runTest';
 import type { ActionResult, ResultRow, Region } from '@/types';
 import { REGION_VALUES } from '@/types';
@@ -30,6 +30,7 @@ import { People, Global, Setting4, Building, Refresh2, ClipboardTick } from 'ico
 import { ResultsTable } from '@/components/ResultsTable';
 import { EngineExplanationPanel } from '@/components/EngineExplanationPanel';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { createScope, animate, stagger } from 'animejs';
 
 // ─── Module-level constants ────────────────────────────────────────────────────
 
@@ -69,6 +70,22 @@ export default function Home() {
   const [result, setResult] = useState<ActionResult | null>(null);
   const [isPending, startTransition] = useTransition();
 
+  const toolRoot = useRef<HTMLDivElement>(null);
+  const scope = useRef<ReturnType<typeof createScope> | null>(null);
+
+  useEffect(() => {
+    scope.current = createScope({ root: toolRoot }).add(() => {
+      animate('.form-card', {
+        opacity: [0, 1],
+        translateY: [50, 0],
+        duration: 700,
+        delay: stagger(80),
+        ease: 'outQuint',
+      });
+    });
+    return () => scope.current?.revert();
+  }, []);
+
   const rows: ResultRow[] = result?.ok ? result.rows : [];
 
   // ─── Handlers ───────────────────────────────────────────────────────────────
@@ -92,7 +109,7 @@ export default function Home() {
     <div className="bg-page flex h-[calc(100vh-48px)]">
 
       {/* LEFT PANEL — fixed width, independently scrollable */}
-      <div className="w-[420px] flex-shrink-0 overflow-y-auto border-r border-border p-6 space-y-6">
+      <div ref={toolRoot} className="w-[420px] flex-shrink-0 overflow-y-auto border-r border-border p-6 space-y-6">
         <div>
           <h1 className="text-2xl font-bold text-crowe-indigo-dark">OFAC Sensitivity Testing</h1>
           <p className="text-sm text-muted-foreground mt-1">
