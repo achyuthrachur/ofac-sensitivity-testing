@@ -1,538 +1,580 @@
-# Architecture Research
+# Architecture Patterns — v3.0 Screening Engine
 
-**Domain:** Form-driven data processing tool — v2.0 Production Face (landing page + animation + explanation layer)
-**Researched:** 2026-03-05
-**Confidence:** HIGH — App Router routing patterns and Anime.js v4 scope patterns are stable and verified against official docs.
+**Domain:** OFAC screening engine — Screening Mode + Longitudinal Simulation Mode
+**Researched:** 2026-03-06
+**Confidence:** HIGH — based on direct codebase inspection plus verified external library and platform constraints.
+**Supersedes:** Prior ARCHITECTURE.md dated 2026-03-05 (v2.0 Production Face milestone)
 
 ---
 
-## Context: What Already Exists (v1.0)
-
-The codebase is a single-route Next.js 15 App Router app. The entire product lives at `"/"`:
+## Context: What Already Exists (v2.0)
 
 ```
 src/app/
-  layout.tsx          ← slim indigo header + footer (server component)
-  page.tsx            ← "use client" — full form + inline results (one component, ~255 lines)
+  layout.tsx                        ← slim indigo nav header (server component)
+  page.tsx                          ← landing page (server component, animation shells)
+  tool/
+    page.tsx                        ← "use client" — two-panel layout, form state, useTransition
+    layout.tsx                      ← tool route layout
   actions/
-    runTest.ts        ← "use server" server action — Zod validation, sampler, rules, Jaro-Winkler
-  globals.css         ← Tailwind v4 @theme inline block with Crowe tokens
+    runTest.ts                      ← "use server" — Zod validation, sampler, rules, JW scoring
+  _components/
+    landing/                        ← HeroSection, HowItWorks, FeatureStats, Footer (server)
+    tool/                           ← EntityTypeTooltip, RuleInfoPopover, etc. ("use client")
 
 src/components/
-  ResultsTable.tsx    ← "use client" — TanStack virtualizer, sort, CSV download
-  ui/                 ← shadcn base components (Button, Card, Checkbox, Input, Label)
+  ResultsTable.tsx                  ← "use client" — TanStack virtual, sort, CSV export
+  EngineExplanationPanel.tsx        ← documentation panel
+  ui/                               ← shadcn Button, Card, Checkbox, Input, Label, Tabs, etc.
 
 src/lib/
-  constants.ts / formUtils.ts / resultsUtils.ts / sampler.ts / utils.ts
-  rules/              ← 10 pure-function rule modules + index.ts (CANONICAL_RULE_ORDER, ruleMap)
+  constants.ts                      ← DEFAULT_CATCH_THRESHOLD = 0.85, MAX_ENTITY_COUNT = 500
+  rules/                            ← 10 pure-function rule modules + index.ts (ruleMap, CANONICAL_RULE_ORDER)
+  sampler.ts                        ← Mulberry32 PRNG, seeded sampling
+  formUtils.ts / resultsUtils.ts    ← form helpers, CSV builder
 
-src/types/index.ts    ← SdnEntry, ResultRow, RunParams, ActionResult, Region, EntityType
-data/sdn.json         ← 285 synthetic SDN entries (imported via @data/* tsconfig alias)
+src/types/index.ts                  ← SdnEntry, ResultRow, RunParams, ActionResult, Region, EntityType
+data/sdn.json                       ← 285 synthetic SDN entries (imported via @data/* alias)
 ```
 
-The v2.0 task is additive: introduce a landing page at `"/"`, move the tool to `"/tool"`, add contextual explanations, animate everything, and upgrade UI components.
+The tool page uses `Tabs` (already installed from shadcn) to switch between Results and Engine Docs. v3.0 adds two new tabs — or new routes — to this surface. The decision is addressed in Question 1 below.
 
 ---
 
-## System Overview
+## System Overview — v3.0 Target
 
 ```
-┌──────────────────────────────────────────────────────────────────────────┐
-│                              Browser                                     │
-│                                                                          │
-│  "/" — Landing Page (server-rendered sections, client animation shell)   │
-│    ├── HeroSection (SC + client AnimationShell for scroll reveals)       │
-│    ├── HowItWorksSection (SC — 3 steps, stagger on scroll)              │
-│    ├── FeatureStatsSection (SC — 4 stat cards, count-up animation)      │
-│    └── CroweBrandedFooter (SC, replaces layout.tsx slim footer)         │
-│                                                                          │
-│  "/tool" — The Tool (unchanged logic, upgraded UI + explanations)       │
-│    ├── ToolPage (client component — form state + useTransition)         │
-│    │     ├── EntityCountsCard + EntityTypeTooltip                       │
-│    │     ├── LinguisticRegionsCard + RegionTooltip                      │
-│    │     ├── DegradationRulesCard + RuleInfoPopover                     │
-│    │     └── ClientNameCard + RunButton                                 │
-│    └── ResultsTable + CatchRatePanel (score interpretation)             │
-│                                                                          │
-└──────────────────────────────────────────────────────────────────────────┘
-                          ↕ server action (unchanged)
-┌──────────────────────────────────────────────────────────────────────────┐
-│                           Next.js Server                                 │
-│                                                                          │
-│  app/actions/runTest.ts  (no changes needed for v2.0)                   │
-│    ├── lib/sampler.ts                                                    │
-│    ├── lib/rules/ (10 rule modules)                                      │
-│    └── @data/sdn.json                                                    │
-└──────────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                                  Browser                                     │
+│                                                                              │
+│  "/" — Landing page (unchanged — Server Components + AnimationShells)       │
+│                                                                              │
+│  "/tool" — Tool (extended with 3 tabs: Sensitivity | Screening | Simulate)  │
+│    ├── Tab: Sensitivity Test (existing — unchanged form + results table)     │
+│    ├── Tab: Screening Mode                                                   │
+│    │     ├── ScreeningInputPanel ("use client" — file/paste input)          │
+│    │     ├── ScreeningResultsPanel ("use client" — tier table, detail card) │
+│    │     └── ScreeningDashboard ("use client" — tier badges, FP/FN, CoM)   │
+│    └── Tab: Longitudinal Simulation                                          │
+│          ├── SimulationConfigPanel ("use client" — preset selector)         │
+│          ├── SimulationChart ("use client" — Recharts multi-line)           │
+│          └── WaterfallTable ("use client" — per-snapshot decomposition)     │
+│                                                                              │
+│  Shared components (used in both Screening + Simulation tabs):              │
+│    ├── ThresholdSlider — shadcn Slider, debounced 200ms                     │
+│    ├── CostOfMissCalculator — input + formula display                       │
+│    └── TierBadge — EXACT/HIGH/MEDIUM/LOW/CLEAR color chip                  │
+└──────────────────────────────────────────────────────────────────────────────┘
+                    ↕ server action           ↕ Route Handler
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                              Next.js Server                                  │
+│                                                                              │
+│  app/actions/runTest.ts        ← UNCHANGED                                  │
+│  app/actions/runScreening.ts   ← NEW "use server" — validates + runs engine │
+│                                   Returns raw MatchResult[] (all scores)    │
+│                                                                              │
+│  app/api/pdf/route.ts          ← NEW Route Handler — PDF generation         │
+│    (POST — accepts MatchResult[], threshold, clientName → returns PDF blob) │
+└──────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Question 1: Routing — File Moves and New Files
+## Question 1: Route Structure
 
-### The Core Decision
+**Decision: Three tabs within `/tool`, NOT new routes `/screen` and `/simulate`.**
 
-"/" becomes the landing page. "/tool" becomes the tool. This is a pure file-system move in App Router — no configuration required beyond creating the new directory.
+The existing `/tool/page.tsx` already uses `<Tabs>` from shadcn (imported and rendered). Adding two new `<TabsTrigger>` + `<TabsContent>` entries to the existing tab set is the lowest-friction integration. It requires no new route files, no changes to `layout.tsx`, and preserves navigation context — the consultant stays on `/tool` throughout a demo session, switching modes without page transitions.
 
-### What Moves
+**Why not `/screen` and `/simulate` routes:**
+- New routes require new page files, new layouts, and a navigation mechanism (header links or sidebar). The existing header is minimal and not designed for multi-route navigation.
+- The demo narrative flows between modes (run sensitivity → run screening → show simulation). Tab switching keeps all three accessible in one context without back/forward navigation.
+- The existing Tabs component and its state are already managed in `tool/page.tsx`. Extending tab count is a 10-line change vs. a new route being a 50+ line new page.
 
-| Current | New Location | Change Type |
-|---------|-------------|-------------|
-| `src/app/page.tsx` | `src/app/tool/page.tsx` | Move — minimal edits needed |
-| `src/app/layout.tsx` | `src/app/layout.tsx` | Stay — but strip the slim header/footer; landing page owns its own footer |
+**What changes in `tool/page.tsx`:**
+- Add `TabsTrigger value="screening"` and `TabsTrigger value="simulation"` to the `<TabsList>`
+- Add `TabsContent value="screening"` pointing to `<ScreeningMode />` component
+- Add `TabsContent value="simulation"` pointing to `<SimulationMode />` component
+- Rename existing tab trigger from `"results"` to `"sensitivity"` for clarity (cosmetic only)
 
-The tool page (`page.tsx`) keeps its `"use client"` directive, all imports, and all state logic unchanged. The only required edit is removing the outer `<div className="min-h-screen bg-page py-10">` wrapper that duplicated layout concerns — that wrapper will belong to the route layout instead.
+**Tab labels:**
+- "Sensitivity Test" (existing)
+- "Screening Mode" (new)
+- "Simulation" (new)
 
-### New Files Required
+---
+
+## Question 2: Screening Mode Data Flow
+
+**Decision: New "use server" action `runScreening.ts`. No Web Workers. No API route handler for the computation itself.**
+
+The data flow for Screening Mode is:
 
 ```
-src/app/
-  page.tsx                          ← NEW: landing page (replaces current tool page at "/")
-  tool/
-    page.tsx                        ← MOVED: current src/app/page.tsx
-    layout.tsx                      ← NEW (optional): tool-specific layout if header variant needed
-  _components/                      ← NEW: route-private components (underscore = Next.js colocation)
-    landing/
-      HeroSection.tsx               ← server component
-      HowItWorksSection.tsx         ← server component
-      FeatureStatsSection.tsx       ← server component
-      AnimationShell.tsx            ← "use client" wrapper for Anime.js scroll reveals
-    tool/
-      EntityTypeTooltip.tsx         ← "use client" (popover needs interaction)
-      RegionTooltip.tsx             ← "use client"
-      RuleInfoPopover.tsx           ← "use client"
-      CatchRatePanel.tsx            ← "use client" or server (display only)
+User uploads CSV / pastes names
+  → Client parses text into string[] (fully client-side, no server round-trip)
+  → Client calls runScreening(inputNames: string[], threshold: number)  ← server action
+  → Server: normalize each input name (Unicode NFC + toUpperCase)
+  → Server: for each (inputName × 285 sdnEntry) pair:
+      - score_jw = jaroWinkler(inputName, sdnEntry.name)
+      - score_dm = doubleMetaphoneMatch(inputName, sdnEntry.name) → 0 or 1
+      - score_ts = tokenSortRatio(inputName, sdnEntry.name)
+      - composite = max(score_jw, score_ts) boosted by dm_match
+      - Record (inputName, sdnEntry, composite, winning_algorithm)
+  → Server: keep only the best-scoring SDN match per input name
+  → Server: return MatchResult[] — one record per input name (best match only)
+  → Client stores MatchResult[] in useState
+  → Client re-tiers using threshold: purely a filter on MatchResult[].composite_score
+  → Threshold slider change → client re-tiers (no server round-trip, under 200ms)
+```
 
+**Why a server action and not a Web Worker:**
+The official Next.js documentation notes that the `worker` script strategy is not yet stable and does not work with the App Router. Web Workers in Next.js require manual webpack configuration for worker bundles, which is fragile and poorly documented for App Router. The computation fits within the Vercel Hobby 10s timeout for the required input size (analysis in Question 3 and 4). Server action is the established pattern in this codebase.
+
+**Why not an API Route Handler for the computation:**
+API Route Handlers (`app/api/*/route.ts`) are appropriate for external HTTP clients and streaming. A server action is simpler for a same-origin Client → Server call with a typed return value. The existing `runTest.ts` uses a server action — keeping the same pattern reduces cognitive load.
+
+**File parsing is client-side:**
+CSV and plain text parsing happens in the browser before the server call. The server action receives `string[]` — a clean, uniform input regardless of whether the user uploaded a file or pasted names. This keeps the server action's validation boundary simple. Excel (.xlsx) parsing requires `xlsx` or `exceljs` on the client — the parsed output is also `string[]` passed to the server action.
+
+**Return shape: best match per input name, not full matrix:**
+The server returns one `MatchResult` per input name (the highest-scoring SDN entry). This keeps the response payload small. The full 2.85M comparison matrix is computed server-side and discarded — only the winning row per input name is returned.
+
+---
+
+## Question 3: Multi-Algorithm Scoring Engine
+
+**Decision: New `src/lib/screeningScorer.ts` — composites JW + DM + Token Sort into one score per (input, sdn) pair.**
+
+```
+src/lib/screeningScorer.ts    ← NEW
+src/lib/scorer.ts             ← NOTE: scorer.ts does not exist in current codebase;
+                                 JW scoring is done inline in runTest.ts via talisman import.
+                                 screeningScorer.ts follows the same inline pattern.
+```
+
+**Algorithm architecture:**
+
+```typescript
+// Pseudocode — not implementation, illustrates the scoring model
+function scoreNamePair(input: string, candidate: string): ScoringResult {
+  // 1. Normalize both (Unicode NFC + uppercase) — done before this function
+  // 2. Jaro-Winkler (existing: talisman/metrics/jaro-winkler)
+  const jw = jaroWinkler(input, candidate);
+  // 3. Double Metaphone phonetic match (double-metaphone npm package)
+  //    Returns 1.0 if primary codes match, 0.85 if secondary codes match, 0.0 otherwise
+  const dm = doubleMetaphoneScore(input, candidate);
+  // 4. Token Sort Ratio (fuzzball npm package — fuzz.token_sort_ratio / 100)
+  const ts = tokenSortRatio(input, candidate);
+  // 5. Composite: take maximum, with DM as a boost not a standalone score
+  const composite = Math.max(jw, ts, dm > 0 ? jw * 1.05 : 0);
+  const clampedComposite = Math.min(1.0, composite);
+  // 6. Name-length penalty: names ≤6 chars escalate tier by 1 (apply at tier assignment, not here)
+  // 7. Winning algorithm: whichever produced the highest individual score
+  const winningAlgorithm = ... ;
+  return { composite: clampedComposite, jw, dm, ts, winningAlgorithm };
+}
+```
+
+**Library choices:**
+- Jaro-Winkler: `talisman/metrics/jaro-winkler` — already installed and used in `runTest.ts`
+- Double Metaphone: `double-metaphone` npm package (ESM, TypeScript typed, from the `words/` family — well-maintained). Note: this is a phonetic encoder, not a scorer. The score is derived by comparing the two-code output arrays.
+- Token Sort Ratio: `fuzzball` npm package (JavaScript port of Python's thefuzz library). `fuzz.token_sort_ratio` sorts tokens alphabetically before comparing, catching word-order variations like "HUSSEIN SADDAM" vs "SADDAM HUSSEIN".
+
+**Important caveat — Double Metaphone is English-optimized:**
+Double Metaphone was designed for English and Romance language phonetics. It degrades gracefully for CJK and Arabic (returns empty codes → no phonetic boost, which is correct behavior). For the 285-entry synthetic dataset with Arabic, CJK, Cyrillic, and Latin names, DM will boost Latin matches and be neutral for non-Latin — this is the correct behavior for a real compliance tool.
+
+---
+
+## Question 4: Performance Analysis — 2.85M Comparisons
+
+**Decision: Full matrix computation server-side is feasible for up to 10,000 inputs under the Vercel Hobby 10s timeout at a batch ceiling of approximately 3,500–5,000 names. Above that, the architecture needs adjustment.**
+
+### Raw compute estimate
+
+The existing `runTest.ts` handles 500 names × 10 rules = 5,000 JW comparisons in ~53ms (from PROJECT.md). That is approximately 94,000 JW operations/second on the Vercel server environment.
+
+Scaling to Screening Mode:
+- 3 algorithms instead of 1 — roughly 3× compute per pair
+- At 3,500 input names × 285 SDN entries = 997,500 pairs × 3 = ~3M operations
+- Estimated time: ~32 seconds at the same rate → **EXCEEDS 10s Hobby timeout**
+
+Adjusted estimate (accounting for Double Metaphone being faster than JW for non-Latin and Token Sort being a simple sort + dice ratio):
+- Effective operations/second for 3-algorithm composite: approximately 200,000–400,000/second
+- At 2,000 inputs × 285 × 3 = 1.71M operations: ~4–9 seconds → borderline
+- At 1,000 inputs × 285 × 3 = 855,000 operations: ~2–4 seconds → safe
+
+**Concrete recommendation: cap server action input at 2,000 names per call, not 10,000.**
+
+The 10,000 name limit is a UI feature, not a single server call limit. Architecture to make it work:
+
+### Architecture for large lists: client-side batching
+
+```
+User uploads 8,000 names
+  → Client splits into batches of 1,000
+  → Client calls runScreening() 8 times in sequence (not parallel — avoid Vercel cold start cascade)
+  → Client accumulates MatchResult[] across all batches
+  → Client shows progress bar (batch N of M)
+  → All 8,000 results available in client state for threshold slider re-tiering
+```
+
+This stays within the timeout on each call and handles the 10,000 name requirement without a streaming architecture or a paid Vercel plan.
+
+### Client-side threshold slider re-tiering
+
+After all batches complete, the client holds `MatchResult[]` in `useState`. Each entry has a `composite` score (0–1). The threshold slider moves a cutoff value in state. Re-tiering is a pure client-side `.map()`:
+
+```typescript
+// O(N) scan of stored results — no server round-trip
+const tiered = results.map(r => ({
+  ...r,
+  tier: assignTier(r.composite, threshold, r.inputName.length <= 6)
+}));
+```
+
+At 10,000 results, this `.map()` takes under 5ms in V8. The 200ms target is easily achievable.
+
+### Memory ceiling
+
+Each `MatchResult` object has approximately 15 fields. At 10,000 results × 500 bytes per object = ~5MB in client JavaScript heap. Modern browsers handle this without issue. The full 2.85M comparison matrix is **never** stored — only the best match per input name is returned from the server.
+
+---
+
+## Question 5: PDF Generation
+
+**Decision: Client-side with jsPDF, triggered from a button in the Screening results panel. NOT a server-side Route Handler.**
+
+**Why client-side:**
+- jsPDF is designed for browser use. Server-side use requires the Node.js variant and careful import management. The client already has all the data needed for the PDF (MatchResult[] is in useState).
+- No server round-trip needed — all PDF data is already in the browser.
+- Simpler: `import('jspdf')` as a dynamic import (to avoid SSR issues) → call `doc.save()` → triggers browser download.
+- Avoids adding a Route Handler and dealing with binary response headers in Next.js.
+
+**Why not a Route Handler:**
+A POST route handler at `app/api/pdf/route.ts` would require serializing all MatchResult[] data to JSON, sending it to the server, generating the PDF there, and streaming the binary response back. This is unnecessary round-trip complexity when jsPDF can do everything client-side.
+
+**Implementation pattern:**
+
+```typescript
+// In ScreeningResultsPanel.tsx ("use client")
+const handleExportPDF = async () => {
+  const { jsPDF } = await import('jspdf');  // dynamic import — avoids SSR
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  // Crowe LLP header: indigo rectangle, Helvetica Now fallback (Arial), amber accent line
+  // Match records table: jsPDF autoTable plugin
+  // Sort by risk tier (EXACT first, CLEAR last)
+  doc.save(`OFAC-Compliance-Memo-${clientName}-${date}.pdf`);
+};
+```
+
+**Install:** `npm install jspdf jspdf-autotable`
+
+The `jspdf-autotable` plugin is the standard companion for structured table output in jsPDF. It handles column widths, pagination, and row striping automatically.
+
+---
+
+## Question 6: Longitudinal Simulation — Where Does Computation Live?
+
+**Decision: Fully client-side state machine in a custom hook `useSimulation`. No server action, no Web Worker.**
+
+The simulation generates synthetic data — it does not query the SDN dataset, does not call external APIs, and does not depend on the 285 SDN entries except as a count reference. The entire computation is deterministic math over a configurable snapshot model.
+
+**Why not a server action:**
+The simulation produces hundreds of snapshots per run. Sending each snapshot to the server is unnecessary network overhead for purely synthetic computation. The data model is small (N snapshots × 285 entities × tier classification = well under 1MB at SURGE velocity for 60 snapshots).
+
+**Why not a Web Worker:**
+Web Worker support in Next.js App Router requires manual webpack configuration and is documented as unstable. The simulation math (iterating snapshots, applying evasion tier degradation probabilities, computing catch rates per threshold) runs in under 200ms client-side for any realistic snapshot count. It does not block the UI thread long enough to justify a Worker.
+
+**Simulation state machine:**
+
+```
+useSimulation(preset: VelocityPreset, recalibrationSnapshot: number | null)
+  → returns: SimulationSnapshot[], isRunning: boolean, reset()
+
+SimulationSnapshot = {
+  snapshotIndex: number,
+  sdnAddCount: number,         // cumulative SDN entries added
+  catchRate_075: number,       // catch rate at 0.75 threshold
+  catchRate_085: number,       // catch rate at 0.85 threshold
+  catchRate_095: number,       // catch rate at 0.95 threshold
+  cumulativeMissCount: number, // absolute misses
+  activeEvasionTier: 1 | 2 | 3,
+  entities: EntitySnapshot[],  // per-entity tracking (tier1/2/3 variants)
+}
+```
+
+The hook runs the state machine synchronously on `useEffect` when preset changes, stores the full snapshot array in state, and passes it to the chart component and waterfall table.
+
+---
+
+## Question 7: Shared Components
+
+**Decision: Shared components live in `src/components/screening/` — NOT in `src/app/_components/tool/`.**
+
+The `src/app/_components/tool/` convention (established in v2.0 ARCHITECTURE.md) is for tool-route-specific components. Components shared across two modes within the tool warrant their own directory at the `src/components/` level — this matches the existing pattern where `ResultsTable.tsx` and `EngineExplanationPanel.tsx` live in `src/components/`.
+
+```
 src/components/
-  ui/
-    tooltip.tsx                     ← NEW: shadcn Tooltip component (npx shadcn add tooltip)
-    popover.tsx                     ← NEW: shadcn Popover component (npx shadcn add popover)
+  ResultsTable.tsx              ← UNCHANGED
+  EngineExplanationPanel.tsx    ← UNCHANGED
+  screening/                    ← NEW directory for v3.0 shared components
+    ThresholdSlider.tsx         ← "use client" — shadcn Slider, debounced onChange
+    TierBadge.tsx               ← "use client" or server — color chip (EXACT/HIGH/etc.)
+    CostOfMissCalculator.tsx    ← "use client" — transaction value input + formula display
+    MatchScoreBar.tsx           ← server or "use client" — visual score indicator
 ```
 
-**Why `_components/` not `components/`:** App Router treats files in `app/` folders as route segments unless prefixed with `_`. Using `src/app/_components/landing/` keeps landing sections colocated with the landing route without accidentally creating a route at `/landing/`.
+**ThresholdSlider:**
+Uses `shadcn/ui` Slider component (install: `npx shadcn add slider`). The `onChange` must be debounced at 200ms — use `useMemo` + a debounce utility or the `use-debounce` npm package. Lifting the debounced threshold value into the parent component via a callback triggers the re-tiering `.map()` in Question 4.
 
-### Navigation
+**TierBadge:**
+A pure display component — maps a `RiskTier` string to a background color and label. Can be a server component if used in server-rendered contexts, but since it will always be used within "use client" components (the results panels), it does not need to be constrained.
 
-The landing page CTA button navigates to `"/tool"` using Next.js `<Link href="/tool">`. No router configuration needed. The global layout (`src/app/layout.tsx`) can optionally add a nav link. Since this is a single-CTA demo tool, a minimal "Try it" link in the header is sufficient — no full nav menu needed.
-
-The slim indigo header in `layout.tsx` currently reads "OFAC Sensitivity Testing" on the right. For v2.0 it should add a `<Link href="/tool">` CTA on the right when on the landing page, and a `<Link href="/">` back-link when on the tool page. This can be handled with `usePathname()` in a client component wrapper for the header, or more simply by keeping the header server-rendered with static content and a persistent link.
+**CostOfMissCalculator:**
+Stateful: holds `transactionValue` in local state, displays `transactionValue × 4.0`. Used in both Screening results panel and the Simulation sidebar. The `× 4.0` multiplier and compliance copy strings are constants imported from `src/lib/constants.ts` (add them there).
 
 ---
 
-## Question 2: Anime.js v4 Animation Architecture in App Router
+## Question 8: Compute Time — Realistic Estimate
 
-### The Pattern: "AnimationShell" Client Wrapper
+**Based on existing measured performance (53ms for 5,000 JW ops) and scaling analysis.**
 
-App Router server components cannot use `useEffect`, `useRef`, or any browser API. Anime.js v4's `createScope` and `revert()` are browser-only. The correct pattern is a thin `"use client"` wrapper that owns all animation lifecycle, wrapping server-rendered markup.
+| Scenario | Inputs | Pairs | Algorithms | Est. Operations | Est. Time | Verdict |
+|----------|--------|-------|-----------|----------------|-----------|---------|
+| Small batch | 200 | 57,000 | 3 | 171,000 | ~1s | Safe |
+| Medium batch | 1,000 | 285,000 | 3 | 855,000 | ~4s | Safe |
+| Max recommended | 2,000 | 570,000 | 3 | 1.71M | ~8s | Borderline |
+| Full 10K (single call) | 10,000 | 2.85M | 3 | 8.55M | ~40s | Exceeds timeout |
 
-```typescript
-// src/app/_components/landing/AnimationShell.tsx
-'use client';
+**The 10s timeout is the binding constraint.** The correct architecture is client-side batching (1,000 names per server action call). The UI shows a progress indicator ("Screening batch 3 of 10...").
 
-import { useEffect, useRef } from 'react';
-import { animate, stagger, onScroll, createScope } from 'animejs';
+**No streaming results needed.** Each batch completes in under 10s and returns its results. The client accumulates results in a ref during batching, then sets state once all batches are complete. This is simpler than streaming (which would require a Route Handler with `ReadableStream`, not a server action).
 
-interface AnimationShellProps {
-  children: React.ReactNode;
-  animationType: 'hero' | 'how-it-works' | 'stats';
-}
-
-export function AnimationShell({ children, animationType }: AnimationShellProps) {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const scopeRef = useRef<ReturnType<typeof createScope> | null>(null);
-
-  useEffect(() => {
-    if (!rootRef.current) return;
-
-    scopeRef.current = createScope({ root: rootRef }).add(() => {
-      if (animationType === 'hero') {
-        animate('.hero-headline', {
-          opacity: [0, 1],
-          translateY: [30, 0],
-          duration: 800,
-          delay: 200,
-          ease: 'outQuint',
-        });
-        animate('.hero-sub', {
-          opacity: [0, 1],
-          translateY: [20, 0],
-          duration: 700,
-          delay: 400,
-          ease: 'outQuint',
-        });
-      }
-
-      if (animationType === 'how-it-works') {
-        onScroll({
-          target: rootRef.current!,
-          enter: 'bottom 80%',
-          onEnter: () => {
-            animate('.step-card', {
-              opacity: [0, 1],
-              translateY: [40, 0],
-              duration: 600,
-              delay: stagger(120),
-              ease: 'outQuint',
-            });
-          },
-        });
-      }
-
-      if (animationType === 'stats') {
-        onScroll({
-          target: rootRef.current!,
-          enter: 'bottom 80%',
-          onEnter: () => {
-            animate('.stat-number', {
-              innerHTML: (el) => [0, parseInt(el.getAttribute('data-value') ?? '0')],
-              round: 1,
-              duration: 1800,
-              delay: stagger(100),
-              ease: 'outExpo',
-            });
-          },
-        });
-      }
-    });
-
-    return () => {
-      scopeRef.current?.revert();
-    };
-  }, [animationType]);
-
-  return <div ref={rootRef}>{children}</div>;
-}
-```
-
-**Why `createScope` is mandatory:** `createScope` scopes all Anime.js selectors to the `root` element. Without it, `.step-card` would match every `.step-card` in the document, not just the ones in this section. `revert()` in cleanup removes all animation instances and restores the original DOM state — critical for React StrictMode (double mount) and React's fast-refresh cycle.
-
-**Alternative — section-specific hooks:** Each animated section can have its own dedicated `useAnimationEffect` hook instead of a generic `AnimationShell`. This avoids the `animationType` switch and is cleaner for complex sections, but means more files. For 3-4 landing sections, a shared `AnimationShell` with a type prop is the right balance.
-
-### Tool-Route Animation
-
-The tool page already uses `"use client"` for form state. Micro-interactions (button hover, card entrance) can be added directly in the existing `page.tsx` or in `ResultsTable.tsx` using the same `useEffect` + `createScope` + `revert()` pattern. No new wrapper needed.
-
-For hover micro-interactions on the Run button (amber glow pulse), Tailwind `transition-all` + the existing inline hover classes in `page.tsx` are sufficient — Anime.js is overkill for simple hover states. Reserve Anime.js for scroll reveals and stagger entrances.
-
-### Scroll Reveal on Tool Page
-
-Result rows appearing after a test run can be revealed with a staggered entrance via `useEffect` that fires when `rows.length > 0`. This is a `useEffect` with `[rows.length]` dependency in `page.tsx` (or `ResultsTable.tsx`), using `createScope` scoped to the results container ref.
+**Optimization available if needed:**
+If benchmarking shows single-batch time exceeds 8s, the server action can short-circuit: for each input name, once a JW score > 0.97 is found, skip the remaining SDN entries for that input (an EXACT match cannot be beaten). This early-exit optimization can reduce effective comparisons by 20–40% for lists with many near-exact matches.
 
 ---
 
-## Question 3: Explanation Components — Shared vs Inline Per-Section
+## Component Boundaries — Complete v3.0 Map
 
-### Decision: Shared Tooltip + Popover Primitives, Per-Section Content Components
-
-**Pattern:** shadcn Tooltip for short inline labels (one sentence), shadcn Popover for richer explanations (paragraph + examples). Both are shared primitives. The content (what the tooltip/popover says) lives in dedicated per-section components.
-
-```
-Shared primitives (install once):
-  src/components/ui/tooltip.tsx       ← shadcn Tooltip
-  src/components/ui/popover.tsx       ← shadcn Popover
-
-Per-section content components:
-  src/app/_components/tool/EntityTypeTooltip.tsx
-  src/app/_components/tool/RegionTooltip.tsx
-  src/app/_components/tool/RuleInfoPopover.tsx
-  src/app/_components/tool/CatchRatePanel.tsx
-```
-
-**Why not inline:** If explanation content is written inline in `page.tsx`, the already-255-line component grows unmanageably. Extracting content to named components also makes the content updatable without touching form logic.
-
-**Why not fully shared generic components:** The explanations are domain-specific. A `<RuleInfoPopover ruleId="rule-01" />` that knows about the 10 rules is more readable than a generic `<Popover content={RULE_DESCRIPTIONS[ruleId]} />`. The per-section component pattern is the right granularity.
-
-### Tooltip Use Cases (short, 1-sentence)
-
-- Entity type label hover: "Individual — a natural person listed on the SDN"
-- Region label hover: "CJK — Chinese, Japanese, Korean character sets"
-- Score column header hover: "Jaro-Winkler similarity — higher = more similar to original"
-
-### Popover Use Cases (richer, triggered by an info icon)
-
-- Each degradation rule: rule name, what it does, example input→output, why OFAC screening cares
-- Score interpretation in results: what 85% means, where the 80% threshold came from
-
-### `"use client"` Requirement
-
-Both Tooltip and Popover from shadcn require `"use client"` because they use Radix UI primitives that manage focus, open/close state, and portal rendering. Wrapping them in the per-section components means those components are also client components. This is correct — the explanation components are small and add negligible bundle size.
+| Component | `"use client"` | New/Modified | Reason |
+|-----------|---------------|-------------|--------|
+| `app/tool/page.tsx` | Yes | MODIFIED | Add Screening + Simulation tab triggers/content |
+| `ScreeningMode.tsx` | Yes | NEW | Top-level wrapper for screening tab |
+| `ScreeningInputPanel.tsx` | Yes | NEW | File upload, paste textarea, submit button |
+| `ScreeningResultsPanel.tsx` | Yes | NEW | Split-pane: tier list + detail card on click |
+| `ScreeningDashboard.tsx` | Yes | NEW | Summary: tier breakdown, FP/FN counters |
+| `SimulationMode.tsx` | Yes | NEW | Top-level wrapper for simulation tab |
+| `SimulationConfigPanel.tsx` | Yes | NEW | Velocity preset picker, recalibration input |
+| `SimulationChart.tsx` | Yes | NEW | Recharts LineChart with 3 threshold bands |
+| `WaterfallTable.tsx` | Yes | NEW | Per-snapshot entity decomposition table |
+| `ThresholdSlider.tsx` | Yes | NEW | shadcn Slider + 200ms debounce |
+| `TierBadge.tsx` | No | NEW | Pure display, no state |
+| `CostOfMissCalculator.tsx` | Yes | NEW | Local state for transaction value |
+| `MatchScoreBar.tsx` | No | NEW | Pure display |
+| `app/actions/runTest.ts` | N/A | UNCHANGED | Existing degradation test action |
+| `app/actions/runScreening.ts` | N/A | NEW | Multi-algorithm screening action |
+| `src/lib/screeningScorer.ts` | N/A | NEW | JW + DM + TokenSort composite scorer |
+| `src/lib/screeningParser.ts` | N/A | NEW | CSV/paste text → string[] parser |
+| `src/lib/simulationEngine.ts` | N/A | NEW | Snapshot generator (pure function) |
+| `src/lib/constants.ts` | N/A | MODIFIED | Add tier thresholds, CoM multiplier, compliance copy |
+| `src/types/index.ts` | N/A | MODIFIED | Add MatchResult, SimulationSnapshot, RiskTier |
+| `ResultsTable.tsx` | Yes | UNCHANGED | Existing degradation results |
+| `EngineExplanationPanel.tsx` | N/A | UNCHANGED | Existing engine docs |
 
 ---
 
-## Question 4: Landing Page — Server vs Client Components
+## Data Flow — Complete v3.0
 
-### Decision: Sections Are Server Components, Animation Wrapping Is Client
-
-The landing page sections are largely static content (marketing copy, stats, step descriptions). They should be server components by default — faster TTFB, no hydration cost for content that never changes.
-
-| Section | Component Type | Reason |
-|---------|---------------|--------|
-| HeroSection | Server Component (content) + `AnimationShell` (client wrapper) | Hero text is static; animations add motion without client state |
-| HowItWorksSection | Server Component (content) + `AnimationShell` (client wrapper) | 3-step content is static; stagger reveal on scroll needs client |
-| FeatureStatsSection | Server Component (content) + `AnimationShell` (client wrapper) | Numbers are hardcoded; count-up animation needs client |
-| CroweBrandedFooter | Server Component | Pure HTML/CSS, no interaction needed |
-| LandingCTA Button | Client Component (`"use client"` `<Link>`) | Could be a server `<Link>` — Next.js `Link` is a server-compatible component, no `"use client"` needed |
-
-**The "islands" pattern:** Render the full section as a server component, then wrap it in `AnimationShell` (client component) which adds `useEffect` scroll reveal without making the content itself a client component. Next.js supports this — a server component can be a child of a client component, but only if passed as `children` or props (not imported directly inside the client component).
-
-```typescript
-// src/app/page.tsx — Landing page, server component
-import { HeroSection } from './_components/landing/HeroSection';
-import { AnimationShell } from './_components/landing/AnimationShell';
-
-export default function LandingPage() {
-  return (
-    <main>
-      <AnimationShell animationType="hero">
-        <HeroSection />   {/* ← server component passed as children */}
-      </AnimationShell>
-      <AnimationShell animationType="how-it-works">
-        <HowItWorksSection />
-      </AnimationShell>
-      <AnimationShell animationType="stats">
-        <FeatureStatsSection />
-      </AnimationShell>
-      <CroweBrandedFooter />
-    </main>
-  );
-}
-```
-
-**Important constraint:** `HeroSection`, `HowItWorksSection`, and `FeatureStatsSection` must be server components that do NOT contain any `"use client"` code — they're passed through `AnimationShell` as `children`, not imported by it. If they need client features, they should be split further (server shell + client interactive part).
-
-### Component Boundaries Summary
-
-| Component | `"use client"` | Reason |
-|-----------|---------------|--------|
-| `app/page.tsx` (landing) | No | Static layout, delegates to sections |
-| `HeroSection.tsx` | No | Static content |
-| `HowItWorksSection.tsx` | No | Static content |
-| `FeatureStatsSection.tsx` | No | Numbers are hardcoded constants |
-| `AnimationShell.tsx` | Yes | `useEffect`, `useRef`, Anime.js |
-| `CroweBrandedFooter.tsx` | No | Static content |
-| `app/tool/page.tsx` | Yes | Form state, `useTransition` (existing) |
-| `ResultsTable.tsx` | Yes | Virtualizer, sort state (existing) |
-| `EntityTypeTooltip.tsx` | Yes | Radix/shadcn Tooltip needs client |
-| `RegionTooltip.tsx` | Yes | Radix/shadcn Tooltip needs client |
-| `RuleInfoPopover.tsx` | Yes | Radix/shadcn Popover needs client |
-| `CatchRatePanel.tsx` | No | Display-only, no interaction |
-
----
-
-## Question 5: Build Order — Phases and Dependencies
-
-### Dependency Graph
+### Screening Mode Flow
 
 ```
-Landing page content (server, static)
-    ← no deps beyond Tailwind/Crowe tokens
-
-Landing page CTA navigation
-    ← depends on /tool route existing
-
-Tool page at /tool
-    ← depends on page.tsx move (trivial, ~30min)
-
-Explanation content (tooltips/popovers)
-    ← depends on shadcn Tooltip + Popover installed
-    ← independent of animation
-
-Iconsax icon pass
-    ← independent of everything, purely cosmetic
-
-Animation pass (Anime.js scroll reveals)
-    ← depends on landing page sections existing
-    ← can be added to any already-shipped section
-
-Premium UI components (React Bits / 21st.dev)
-    ← enhancement layer, can overlay on existing markup
+User → ScreeningInputPanel (paste/upload names)
+  → screeningParser.ts (client) → string[]
+  → [batch 1 of N] runScreening(batch, threshold=0.85) → server action
+  → screeningScorer.ts (server): normalize → JW + DM + TS per pair → best match per input
+  → MatchResult[] returned to client
+  → Client accumulates batches → setResults(allMatchResults)
+  → ScreeningResultsPanel renders tier list (sorted by composite desc)
+  → ScreeningDashboard renders tier breakdown + FP/FN counters
+  → ThresholdSlider onChange (debounced 200ms) → client re-tiers in-memory results
+  → User clicks row → detail card shows all 19 match schema fields
+  → User clicks Export PDF → jsPDF (dynamic import) → browser download
 ```
 
-### Recommended Build Order
-
-**Phase A: Route Migration** (prerequisite for everything — 1 session)
-1. Create `src/app/tool/` directory
-2. Move `src/app/page.tsx` to `src/app/tool/page.tsx` (git mv)
-3. Update any internal `href="/"` links that should now point to `"/tool"` (there are none in v1.0)
-4. Create new `src/app/page.tsx` as a minimal placeholder ("Coming soon" or direct redirect) — deploy and verify `/tool` works before building the landing page
-
-**Phase B: Landing Page — Static Structure** (can ship before animations)
-1. Install: `npm install iconsax-react` (needed for hero icons)
-2. Build `HeroSection.tsx` — headline, sub, CTA button linking to `/tool`, hero visual
-3. Build `HowItWorksSection.tsx` — 3 steps: Configure → Run → Download
-4. Build `FeatureStatsSection.tsx` — 4 stats: 285 names, 10 rules, 4 entity types, ~53ms runtime
-5. Build `CroweBrandedFooter.tsx` — replace layout.tsx slim footer for landing page context
-6. Assemble in `src/app/page.tsx`
-7. Deploy and verify — landing page ships before any animation work
-
-**Phase C: Explanation Layer** (independent of landing, can run in parallel with B)
-1. `npx shadcn add tooltip popover` (one command)
-2. Build `EntityTypeTooltip.tsx`, `RegionTooltip.tsx`, `RuleInfoPopover.tsx`
-3. Integrate into `src/app/tool/page.tsx` — add info icons next to form labels
-4. Build `CatchRatePanel.tsx` — score interpretation below results summary row
-
-**Phase D: Animation Pass**
-1. Install: `npm install animejs` (if not already installed)
-2. Build `AnimationShell.tsx` with `createScope` + `revert()` cleanup
-3. Add hero entrance animation (page load, no scroll trigger needed)
-4. Add scroll-reveal stagger for HowItWorksSection steps
-5. Add count-up for FeatureStatsSection numbers
-6. Add hover micro-interactions to Run button (amber glow — Tailwind transitions sufficient, no Anime.js)
-7. Add results stagger reveal in `ResultsTable.tsx` when rows first appear
-8. Test `prefers-reduced-motion` — add `@media` guard
-
-**Phase E: Premium UI Upgrade**
-1. Upgrade hero button with React Bits animated CTA component
-2. Upgrade step cards with React Bits TiltCard or 21st.dev card variant
-3. Iconsax pass on tool page — replace Lucide `Loader2` and any `lucide-react` icons
-4. Iconsax pass on landing page — icons in step cards, feature stats, footer
-
----
-
-## Recommended File Structure (v2.0 Target)
+### Longitudinal Simulation Flow
 
 ```
-src/
-  app/
-    layout.tsx                        ← MODIFIED: header updated, slim footer removed
-    globals.css                       ← UNCHANGED
-    page.tsx                          ← NEW: landing page (server component)
-    _components/
-      landing/
-        HeroSection.tsx               ← NEW (server)
-        HowItWorksSection.tsx         ← NEW (server)
-        FeatureStatsSection.tsx       ← NEW (server)
-        CroweBrandedFooter.tsx        ← NEW (server)
-        AnimationShell.tsx            ← NEW ("use client" — Anime.js scope wrapper)
-      tool/
-        EntityTypeTooltip.tsx         ← NEW ("use client" — shadcn Tooltip)
-        RegionTooltip.tsx             ← NEW ("use client" — shadcn Tooltip)
-        RuleInfoPopover.tsx           ← NEW ("use client" — shadcn Popover)
-        CatchRatePanel.tsx            ← NEW (server or client — display only)
-    tool/
-      page.tsx                        ← MOVED from src/app/page.tsx
-    actions/
-      runTest.ts                      ← UNCHANGED
-
-  components/
-    ResultsTable.tsx                  ← MODIFIED: CatchRatePanel integrated, icons upgraded
-    ui/
-      button.tsx                      ← UNCHANGED
-      card.tsx                        ← UNCHANGED
-      checkbox.tsx                    ← UNCHANGED
-      input.tsx                       ← UNCHANGED
-      label.tsx                       ← UNCHANGED
-      tooltip.tsx                     ← NEW (shadcn add tooltip)
-      popover.tsx                     ← NEW (shadcn add popover)
-
-  lib/                                ← UNCHANGED (all pure functions)
-  types/                              ← UNCHANGED
-  data/                               ← UNCHANGED (via @data/* alias)
+User → SimulationConfigPanel (picks preset: BASELINE/ELEVATED/SURGE)
+  → useSimulation(preset, recalibrationAt) hook
+  → simulationEngine.ts (pure function, synchronous, client-side)
+     → generates SimulationSnapshot[] deterministically
+  → SimulationChart receives snapshot array → Recharts renders
+     - 3 threshold band lines (0.75, 0.85, 0.95)
+     - catch rate primary Y-axis
+     - cumulative miss bar overlay secondary Y-axis
+     - vertical dashed evasion tier markers
+     - recovery line after recalibration snapshot
+  → WaterfallTable receives selected snapshot index → renders entity decomposition
+  → ThresholdSlider changes → SimulationChart re-renders with updated band highlight
 ```
 
 ---
 
-## Data Flow — v2.0 Changes
+## New Files Required (Build Order)
 
-The core data flow (form → server action → results) is completely unchanged. v2.0 adds two new flows:
+```
+Phase 1 — Types and constants foundation (prerequisite for everything)
+  src/types/index.ts              MODIFY — add RiskTier, MatchResult, SimulationSnapshot
+  src/lib/constants.ts            MODIFY — add TIER_THRESHOLDS, COST_OF_MISS_MULTIPLIER, compliance strings
 
-**Landing → Tool Navigation:**
-```
-User lands at "/" (landing page, server-rendered)
-  → Clicks "Run a Test" CTA
-  → Next.js Link navigates to "/tool" (client-side navigation, no page reload)
-  → Tool page hydrates with existing form state (empty, fresh session)
+Phase 2 — Core scoring library (prerequisite for server action)
+  src/lib/screeningScorer.ts      NEW — JW + DM + TokenSort composite
+  src/lib/screeningParser.ts      NEW — CSV/paste text to string[]
+  src/lib/simulationEngine.ts     NEW — snapshot generator (pure function)
+
+Phase 3 — Server action (prerequisite for Screening UI)
+  src/app/actions/runScreening.ts NEW — Zod-validated, calls screeningScorer.ts
+
+Phase 4 — Shared components (prerequisite for mode panels)
+  src/components/screening/ThresholdSlider.tsx   NEW
+  src/components/screening/TierBadge.tsx          NEW
+  src/components/screening/CostOfMissCalculator.tsx NEW
+  src/components/screening/MatchScoreBar.tsx       NEW
+
+Phase 5 — Screening Mode UI (depends on Phase 3 + Phase 4)
+  src/app/_components/tool/ScreeningMode.tsx       NEW
+  src/app/_components/tool/ScreeningInputPanel.tsx NEW
+  src/app/_components/tool/ScreeningResultsPanel.tsx NEW
+  src/app/_components/tool/ScreeningDashboard.tsx  NEW
+
+Phase 6 — Simulation Mode UI (depends on Phase 2 + Phase 4)
+  src/app/_components/tool/SimulationMode.tsx      NEW
+  src/app/_components/tool/SimulationConfigPanel.tsx NEW
+  src/app/_components/tool/SimulationChart.tsx     NEW (install: npm install recharts)
+  src/app/_components/tool/WaterfallTable.tsx      NEW
+  src/lib/hooks/useSimulation.ts                   NEW
+
+Phase 7 — Integration into tool/page.tsx
+  src/app/tool/page.tsx           MODIFY — add 2 new TabsTrigger + TabsContent entries
+
+Phase 8 — PDF export
+  (jsPDF dynamic import inside ScreeningResultsPanel — no new file needed)
+  npm install jspdf jspdf-autotable
 ```
 
-**Explanation Content:**
-```
-User hovers info icon next to "Entity Counts" label
-  → EntityTypeTooltip renders (Radix Tooltip portal)
-  → Tooltip content: static string constant from constants.ts or inline
-  → No server round-trip, no state change
-```
+---
+
+## Integration Points — New vs Modified
+
+### Modified (existing files touched)
+
+| File | Change | Impact |
+|------|--------|--------|
+| `src/app/tool/page.tsx` | Add 2 tab triggers + content wrappers | Low — additive only, no existing logic changed |
+| `src/types/index.ts` | Add `RiskTier`, `MatchResult`, `SimulationSnapshot` types | Low — additive, no existing types changed |
+| `src/lib/constants.ts` | Add tier thresholds, CoM multiplier, compliance copy | Low — additive |
+
+### New (no existing files changed)
+
+All server action logic, scoring logic, simulation engine, shared components, and mode panels are new files. The existing `runTest.ts`, `sampler.ts`, `rules/`, and `ResultsTable.tsx` are untouched.
+
+### Existing integration points that must be preserved
+
+| Integration | Status | Risk |
+|-------------|--------|------|
+| `@data/sdn.json` tsconfig alias | Must remain — `runScreening.ts` imports same dataset | Low |
+| `talisman/metrics/jaro-winkler` | Already installed — `screeningScorer.ts` reuses same import | Low |
+| TanStack virtualizer explicit px widths | WaterfallTable may need TanStack Virtual — same constraint applies | Medium |
+| Vitest test suite | New `screeningScorer.ts` and `simulationEngine.ts` are pure functions → easy to test | Low |
+| Tailwind v4 `@theme` | No new tokens needed — existing Crowe palette covers all tier colors | Low |
 
 ---
 
 ## Anti-Patterns to Avoid
 
-### Anti-Pattern 1: Making Landing Sections Client Components
+### Anti-Pattern 1: Computing the Full 2.85M Matrix Client-Side
 
-**What people do:** Add `"use client"` to `HeroSection.tsx` to use Anime.js directly inside the component.
+**What it looks like:** Passing the 285 SDN entries to the client and running the triple-algorithm scoring in the browser.
 
-**Why it's wrong:** Forces the entire section tree to hydrate on the client, defeating the SEO and TTFB benefits of server rendering. The marketing content is static — there's no reason to ship it as a client component.
+**Why it's wrong:** Downloads 285 SDN entries to the browser (minor), but more importantly, 2.85M string comparisons in the main JS thread will block rendering for 10–40 seconds. Web Workers would help but require fragile Next.js configuration (documented as unstable in App Router).
 
-**Do this instead:** Keep sections as server components. Wrap them in `AnimationShell` (client) as `children`. Anime.js targets DOM elements by class name after mount — it doesn't need the component to be a client component.
+**Do this instead:** Run all comparisons server-side in the server action. Return only the best match per input name. Client-side threshold re-tiering is then O(N) on a small in-memory array.
 
-### Anti-Pattern 2: Skipping `createScope` in Anime.js
+### Anti-Pattern 2: Re-Running the Server Action on Every Threshold Slider Move
 
-**What people do:** Call `animate('.step-card', {...})` directly in `useEffect` without `createScope`.
+**What it looks like:** The threshold slider `onChange` handler calls `runScreening()` with the new threshold. The server recomputes everything.
 
-**Why it's wrong:** Without scope, the selector matches ALL `.step-card` elements in the document. If the user navigates back to the landing page, React re-mounts and a second animation runs on already-animated elements. Also breaks if multiple `AnimationShell` instances have overlapping class names.
+**Why it's wrong:** At 200ms debounce, this means the user would wait 200ms + network latency + server compute time on every slider move. The 200ms target is for the full UI update, not just the debounce timer.
 
-**Do this instead:** Always wrap Anime.js animations in `createScope({ root: rootRef })` and call `scopeRef.current?.revert()` in the `useEffect` cleanup.
+**Do this instead:** The server action returns raw scores. The threshold is applied client-side as a tier assignment function on the cached `MatchResult[]`. Slider moves never hit the server.
 
-### Anti-Pattern 3: One Giant Tooltip Component With All Explanation Content
+### Anti-Pattern 3: New Routes `/screen` and `/simulate`
 
-**What people do:** Build a single `<ExplanationTooltip type="entity" | "region" | "rule" />` with a giant switch statement of content.
+**What it looks like:** Creating `src/app/screen/page.tsx` and `src/app/simulate/page.tsx`.
 
-**Why it's wrong:** Creates a single file that owns all domain explanation content — hard to update, hard to test, large import footprint. Also couples explanation delivery mechanism (tooltip vs popover) to a single component decision.
+**Why it's wrong:** Requires nav changes to the global header (currently minimal), forces page transitions between modes during a demo, and splits related state that the consultant needs simultaneously (running a screening then immediately transitioning to cost-of-miss context).
 
-**Do this instead:** Separate components per form section. `EntityTypeTooltip.tsx` uses a Tooltip. `RuleInfoPopover.tsx` uses a Popover (different delivery mechanism because rule explanations are longer). Keep content co-located with the relevant component.
+**Do this instead:** Tabs within `/tool`. The existing `<Tabs>` component is already present and working.
 
-### Anti-Pattern 4: Moving `runTest.ts` During Route Migration
+### Anti-Pattern 4: Server-Side PDF Generation via Route Handler
 
-**What people do:** Move `src/app/actions/runTest.ts` to `src/app/tool/actions/runTest.ts` to keep it colocated with the `/tool` route.
+**What it looks like:** Posting all MatchResult[] to `app/api/pdf/route.ts`, generating the PDF on the server, returning `application/pdf` binary.
 
-**Why it's wrong:** All 57+ tests import from the current path. `page.tsx` imports from `@/app/actions/runTest`. Moving it requires updating every test file and every import. Zero benefit — server actions don't need to be colocated with their invoking route in App Router.
+**Why it's wrong:** Adds a Route Handler, binary response headers, and streaming complexity. The client already has all the data. jsPDF is designed for browser use and works cleanly with a dynamic import.
 
-**Do this instead:** Leave `src/app/actions/runTest.ts` exactly where it is. The import `import { runTest } from '@/app/actions/runTest'` in `tool/page.tsx` works fine from any route.
+**Do this instead:** Dynamic import of jsPDF inside the "use client" results panel component. Call `doc.save()` directly.
 
-### Anti-Pattern 5: Adding Animation to Every Interactive Element
+### Anti-Pattern 5: useSimulation as a Heavy useEffect with Expensive Async Logic
 
-**What people do:** Reach for Anime.js for every hover state and button press.
+**What it looks like:** `useSimulation` fires an async `useEffect` that awaits a server action to generate simulation snapshots.
 
-**Why it's wrong:** Tailwind CSS transitions are zero-JS, GPU-composited, and respect `prefers-reduced-motion` automatically when using standard Tailwind transition utilities. Adding Anime.js for hover states adds JavaScript overhead with no visual advantage.
+**Why it's wrong:** The simulation is synthetic — it generates data algorithmically, not fetches it. The computation runs in under 200ms client-side. Involving the server adds unnecessary latency and complexity.
 
-**Do this instead:** Use Tailwind `transition-all duration-200` for hover states. Use Anime.js only for: page/section entrance animations, scroll-triggered reveals, staggered list entrances, and the count-up number animation.
+**Do this instead:** `simulationEngine.ts` is a pure function. `useSimulation` calls it synchronously in a `useMemo` keyed on the preset and recalibration inputs. No async, no server.
+
+### Anti-Pattern 6: Installing a Separate Jaro-Winkler Package for Screening
+
+**What it looks like:** `npm install jaro-winkler` alongside `talisman`.
+
+**Why it's wrong:** `talisman/metrics/jaro-winkler` is already installed and verified (57+ passing tests depend on its output). Introducing a second JW implementation risks subtle scoring differences between the existing degradation test and the new screening engine, making the demo narrative inconsistent.
+
+**Do this instead:** `screeningScorer.ts` imports `jaroWinkler` from `talisman/metrics/jaro-winkler` — the same import already in `runTest.ts`.
 
 ---
 
-## Integration Points
+## New Dependencies Required
 
-### Unchanged Integration Points
+| Package | Purpose | Install |
+|---------|---------|---------|
+| `double-metaphone` | Phonetic encoding for DM algorithm | `npm install double-metaphone` |
+| `fuzzball` | Token Sort Ratio algorithm | `npm install fuzzball` |
+| `recharts` | Simulation catch rate chart | `npm install recharts` |
+| `jspdf` | Client-side PDF generation | `npm install jspdf jspdf-autotable` |
+| `use-debounce` | 200ms threshold slider debounce | `npm install use-debounce` |
 
-| Integration | Status | Notes |
-|-------------|--------|-------|
-| `@data/sdn.json` tsconfig alias | Unchanged | `runTest.ts` import unaffected by route migration |
-| Tailwind v4 `@theme` inline block | Unchanged | All Crowe color tokens still generate utility classes |
-| shadcn/ui components in `src/components/ui/` | Unchanged | Add Tooltip + Popover via shadcn CLI |
-| TanStack virtualizer in `ResultsTable.tsx` | Unchanged | Explicit px widths still required |
-| Vitest test suite | Unchanged | Tests target `@/lib/*` and `@/app/actions/*` — not affected by route move |
-
-### New Integration Points
-
-| Integration | How | Notes |
-|-------------|-----|-------|
-| Anime.js v4 | `npm install animejs` | Import modularly — only `animate`, `stagger`, `onScroll`, `createScope` |
-| Iconsax | `npm install iconsax-react` | Replace Lucide `Loader2` — use `Refresh2` or `Loading` variant from Iconsax |
-| shadcn Tooltip | `npx shadcn add tooltip` (with `NODE_TLS_REJECT_UNAUTHORIZED=0`) | Radix-based, needs `"use client"` in consuming component |
-| shadcn Popover | `npx shadcn add popover` (with `NODE_TLS_REJECT_UNAUTHORIZED=0`) | Radix-based, needs `"use client"` in consuming component |
-| React Bits / 21st.dev components | Copy-paste, no install | Apply Crowe token overrides after copying |
+Shadcn components to add:
+```bash
+NODE_TLS_REJECT_UNAUTHORIZED=0 npx shadcn add slider
+```
+(Slider is used by ThresholdSlider. All other required shadcn components — Tabs, Badge — are already installed.)
 
 ---
 
 ## Sources
 
-- Next.js App Router documentation — route colocation, private folders (`_`), server vs client components: https://nextjs.org/docs/app/building-your-application/routing/colocation
-- Next.js — passing server components as children to client components: https://nextjs.org/docs/app/building-your-application/rendering/composition-patterns#passing-server-components-to-client-components-as-props
-- Anime.js v4 `createScope` documentation: https://animejs.com/documentation/scope/
-- Anime.js v4 `onScroll` documentation: https://animejs.com/documentation/scroll/
-- shadcn/ui Tooltip: https://ui.shadcn.com/docs/components/tooltip
-- shadcn/ui Popover: https://ui.shadcn.com/docs/components/popover
+- Next.js App Router — Server Actions: https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations
+- Next.js — Web Worker script strategy (unstable in App Router): https://nextjs.org/docs/pages/guides/scripts
+- Vercel Hobby plan function timeout (10s serverless, 60s Fluid Compute): https://vercel.com/docs/functions/limitations
+- `double-metaphone` npm package (words/ family, ESM, TypeScript): https://www.npmjs.com/package/double-metaphone
+- `fuzzball` npm package (JavaScript port of thefuzz, includes token_sort_ratio): https://www.npmjs.com/package/fuzzball
+- jsPDF — client-side only by default, dynamic import required in Next.js: https://www.npmjs.com/package/jspdf
+- Recharts — React chart library: https://recharts.org/en-US/
+- Talisman — existing JW implementation: https://yomguithereal.github.io/talisman/
 
 ---
 
-*Architecture research for: OFAC Sensitivity Testing Tool — v2.0 Production Face milestone*
-*Researched: 2026-03-05*
-*Supersedes: prior ARCHITECTURE.md dated 2026-03-03 (v1.0 greenfield architecture)*
+*Architecture research for: OFAC Sensitivity Testing Tool — v3.0 Screening Engine milestone*
+*Researched: 2026-03-06*
+*Supersedes: prior ARCHITECTURE.md dated 2026-03-05 (v2.0 Production Face)*

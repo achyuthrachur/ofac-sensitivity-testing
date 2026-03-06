@@ -1,10 +1,10 @@
 # Pitfalls Research
 
-**Domain:** Adding landing page, animations, premium UI, and icon pass to an existing Next.js 15/16 App Router production app (OFAC Sensitivity Testing Tool — v2.0 Production Face)
-**Researched:** 2026-03-05
-**Confidence:** HIGH — stack confirmed via `package.json` + direct codebase inspection; pitfalls confirmed via official Anime.js v4 docs, Next.js App Router docs, shadcn GitHub issues, TanStack Virtual community discussions, Tailwind v4 migration guides.
+**Domain:** Adding Screening Mode and Longitudinal Simulation Mode to an existing Next.js 16 App Router OFAC tool (v3.0 Screening Engine)
+**Researched:** 2026-03-06
+**Confidence:** HIGH — stack and constraints confirmed via direct codebase inspection (`package.json`, `ResultsTable.tsx`, `runTest.ts`, `types/index.ts`). Performance pitfalls confirmed via Vercel official limits docs, React performance community consensus, and Next.js GitHub issue tracker. Algorithm and PDF pitfalls confirmed from official library issue trackers and AML domain literature.
 
-> **Context:** v1.0 shipped. The tool at `/` works correctly. v2.0 adds a landing page, moves the tool to `/tool`, adds animations (Anime.js v4), replaces icons with Iconsax, and introduces React Bits / 21st.dev premium UI components. The constraint is: the existing app must not break.
+> **Context:** v2.0 shipped. The existing `/tool` page (Jaro-Winkler degradation demo) must not break. v3.0 adds two new modes — Screening Mode (CSV/Excel/paste input, 10,000 names, multi-algorithm, threshold slider, PDF export) and Longitudinal Simulation Mode (catch rate chart, evasion tier markers, waterfall table, detection lag). This document is scoped exclusively to v3.0 pitfalls — v2.0 pitfalls (Anime.js SSR, TanStack Virtual transforms, Iconsax sizing) are in the prior PITFALLS.md and remain applicable.
 
 ---
 
@@ -12,312 +12,320 @@
 
 ---
 
-### Pitfall 1: Anime.js v4 Accessed During SSR — "window is not defined" Build Crash
+### Pitfall 1: 2.85M Comparisons on the Server Action Thread — Vercel 10s Timeout
 
 **What goes wrong:**
-Anime.js v4 is a browser-only animation engine. Any file that imports animejs at module level and then calls `animate()`, `onScroll()`, or `createScope()` — even indirectly — will throw `ReferenceError: window is not defined` during Next.js server rendering. This crashes `next build` or produces a 500 at runtime.
+10,000 input names × 285 SDN entries × 3 algorithms = 2.85M string comparisons. If this runs synchronously inside a Next.js Server Action, it will exhaust the Vercel Hobby 10-second function timeout and return a 504. Unlike the existing degradation engine (worst case 500 names × 10 rules ≈ 53ms, all in-memory), the screening comparison count is three orders of magnitude larger and the inner loop calls three separate string distance functions.
 
 **Why it happens:**
-Animejs v4 resolves selector targets against the live `document` on import in some environments. Even if the call is inside a function body, importing from animejs inside a Server Component (or any file without `'use client'`) pulls it into the SSR bundle where `window` and `document` do not exist.
+The existing `runTest` server action pattern works perfectly for its use case. Developers naturally reach for a new server action for the screening computation because the existing architecture uses server actions. The computation model does not translate: the degradation engine applies 10 predefined transforms to each sampled entry (bounded by dataset size, not user input), while screening is a full cross-product of user-provided input (up to 10,000) against all 285 SDN entries with expensive algorithm calls per pair.
 
 **How to avoid:**
-- Mark every file that imports animejs with `'use client'` at the top — no exceptions.
-- Call `animate()`, `onScroll()`, and `createScope()` only inside `useEffect` — never at module level, never in the render function body.
-- The canonical Anime.js v4 + React pattern (from official docs):
-  ```
-  const root = useRef(null);
-  const scope = useRef(null);
-  useEffect(() => {
-    scope.current = createScope({ root }).add(() => {
-      animate('.hero-element', { opacity: [0, 1], translateY: [30, 0], duration: 700 });
-    });
-    return () => scope.current?.revert();
-  }, []);
-  ```
-- If the parent component cannot be a Client Component (e.g., the landing page root that needs to export `metadata`), wrap the animated section in a separate `'use client'` child component. The parent Server Component imports the child.
+Move all screening computation to the browser. The 285-entry SDN dataset is small enough to ship as a static import in the client bundle (it is already imported in `runTest.ts`). The full 2.85M comparison loop with Jaro-Winkler + Double Metaphone + Token Sort runs in a dedicated Web Worker (`screening.worker.ts`) so the main thread is not blocked. The client posts the input array to the worker and receives results via `postMessage`. This eliminates server round-trips entirely and removes Vercel timeout as a concern.
+
+Architecture decision:
+- Ship `data/sdn.json` as a static import accessible to client components (it is already bundled via `@data/*` alias)
+- Create `src/lib/workers/screening.worker.ts` — a standard Web Worker (not Node.js worker_threads)
+- In the Screening Mode component, instantiate the worker with `new Worker(new URL(..., import.meta.url))` inside `useEffect`
+- Use `comlink` (3KB) to wrap the worker for a clean TypeScript async API instead of raw `postMessage`/`onmessage`
+- Progress reporting: worker posts incremental progress events back to the main thread every 5,000 comparisons for the progress bar
 
 **Warning signs:**
-- `next build` fails with `ReferenceError: window is not defined` or `document is not defined`
-- Hydration mismatch warning in the browser console after first render
-- Animation fires against server-rendered HTML producing a visible flash
+- Server Action computation for 1,000 names × 285 SDN entries takes > 800ms in dev — extrapolating to 10,000 names will breach 10s in production
+- Vercel function logs show `FUNCTION_INVOCATION_TIMEOUT` for screening requests
+- The screening computation even briefly blocks `next/server` request processing for other concurrent users
 
-**Phase to address:** Animation pass phase — enforce `'use client'` as the first step before adding any animations
+**Phase to address:** Phase 15 (Architecture) — establish the client-side Web Worker model before writing any screening logic. This is an architecture-level decision, not an implementation detail.
 
 ---
 
-### Pitfall 2: Anime.js v4 Scope Not Reverted on Unmount — Zombie Animations
+### Pitfall 2: Pre-Computing All 2.85M Results in React State — Browser Memory Exhaustion
 
 **What goes wrong:**
-If `scope.current.revert()` is not returned from `useEffect`, Anime.js timelines and scroll listeners continue running after the component unmounts. On the landing page → `/tool` route transition: hero animations may re-fire against stale DOM nodes, `onScroll()` listeners trigger against elements that no longer exist, and React Strict Mode (enabled in Next.js dev) double-invokes effects — making missing cleanup immediately visible as doubled or stuttering animations.
+Storing all match results for 10,000 names × 285 SDN entries as a flat array in `useState` would produce approximately 2.85M `MatchResult` objects. Each object (19 fields per the required schema) consumes roughly 1–2KB serialized. The full result set approaches 3–6GB of heap memory — immediately crashing mobile browsers and causing significant slowdown on mid-tier laptops. Even at a more conservative estimate (only top matches stored), storing un-filtered results in state and re-filtering on threshold slider change triggers a full React re-render of a massive array on every slider move.
 
 **Why it happens:**
-Developers omit the cleanup return from `useEffect`, either by forgetting or by assuming Anime.js cleans itself up. It does not — `createScope` must have an explicit `revert()` call in the cleanup.
+The existing `ResultsTable` uses the same pattern: server action returns all rows, component stores them in state, virtualizer renders only the visible window. That works for the existing scale (max ~5,000 rows from 500 names × 10 rules). The mistake is assuming the same model scales to 2.85M rows.
 
 **How to avoid:**
-```
-useEffect(() => {
-  scope.current = createScope({ root }).add(() => {
-    animate(/* ... */);
-  });
-  return () => scope.current?.revert();  // mandatory
-}, []);
-```
-For `onScroll()` instances: store the returned object and call `.revert()` on it in the cleanup.
+Store only the top match per input name (one `MatchResult` per input row = max 10,000 objects, not 2.85M). The Web Worker computes the best-scoring SDN match for each input name and posts back only the winner. Additional detail (second-best match, all algorithm scores) is computed on demand when the user clicks a row for the detail card, not pre-computed for all rows.
+
+For the threshold slider: do not re-run matching on slider change. Store the raw match scores in state (just an array of `{ inputName, sdnMatch, score }`), derive the tier assignment in a `useMemo` that depends on `[results, threshold]`. Tier assignment is a simple comparison (`score >= HIGH_THRESHOLD ? 'HIGH' : ...`), not a 2.85M comparison loop. The `useMemo` runs in microseconds.
 
 **Warning signs:**
-- Animation plays again after navigating away and back to the landing page
-- Console errors about animating detached DOM nodes
-- In dev mode (Strict Mode double-invocation): animation stutters or appears twice on mount
+- Browser DevTools Memory tab shows heap climbing to hundreds of MB after a screening run
+- Chrome tab crashes with "Aw, Snap!" on 10,000-name inputs
+- React DevTools profiler shows the entire component tree re-rendering on every threshold slider tick
 
-**Phase to address:** Animation pass phase — establish this pattern before writing any individual animations
+**Phase to address:** Phase 15 (Architecture) — the "store only top match per input row" data model must be established before any screening state is written.
 
 ---
 
-### Pitfall 3: Moving "/" to "/tool" — Old Route Not Replaced, Two Copies of Tool Exist
+### Pitfall 3: Double Metaphone False Positives on Short Names and Non-Alpha Strings
 
 **What goes wrong:**
-The existing tool lives at `src/app/page.tsx` (route `/`). If a new `src/app/tool/page.tsx` is created but `src/app/page.tsx` is not replaced with the landing page, both routes show the tool. The landing page never appears at `/`.
+Double Metaphone encodes phonetic similarities. For names of 3 characters or fewer, the algorithm produces the same phonetic code for many unrelated names (e.g., "Al", "Ali", "Eli", "Ola" all encode to similar or identical codes depending on the implementation). For strings containing numbers, punctuation, or codes (e.g., vessel IMO numbers like "9876543" or aircraft registration "N12345"), Double Metaphone returns a phonetic code based on the leading characters, producing absurd high-similarity scores between completely unrelated entries. The name-length penalty in the spec (names ≤6 chars escalate tier by 1) compounds this: a false positive from Double Metaphone on a short string gets its tier escalated further.
 
 **Why it happens:**
-Developers create the new directory `src/app/tool/` and copy the tool there but forget to remove or replace the existing root `page.tsx`. The App Router serves whichever `page.tsx` is in the directory — the original at `/` takes precedence for the root route.
+Double Metaphone was designed for Anglo-American personal names. The algorithm has no concept of "this input is not a name." When applied to vessel names ("EVER GIVEN"), business entity codes, or numeric identifiers in the input list, it treats them as phonetic strings and produces meaningless similarity scores that may still be high enough to match.
 
 **How to avoid:**
-Execute the route move in this exact order:
-1. Create `src/app/tool/page.tsx` (move the tool component here).
-2. Replace `src/app/page.tsx` with the new landing page component.
-3. There is no step 3 — the existing `layout.tsx` wraps both routes automatically.
-4. Do NOT add a redirect from `/` to `/tool` — the landing page IS the root now. A redirect would bypass the landing page entirely.
+Apply algorithm selection logic before scoring rather than always running all three algorithms on every input:
+- If the input string contains more than 20% numeric characters: skip Double Metaphone entirely, use Jaro-Winkler only
+- If the input string is fewer than 4 characters: skip Double Metaphone (unreliable at short length), use Jaro-Winkler + Token Sort only
+- If the input string matches an SDN entry's `entityType` of `vessel` or `aircraft`: skip Double Metaphone, use Token Sort Ratio as primary (vessel names are multi-word, Token Sort handles word-order variants better)
+- Use Double Metaphone only for `individual` entity type matches where input appears to be a personal name (contains at least one space or is a single word of 5+ alpha characters)
+
+The display field `match_algorithm` (required in the result schema) should reflect which algorithm actually determined the winning score, not assume all three always ran.
 
 **Warning signs:**
-- Visiting `/` shows the old tool form instead of the landing page hero
-- Visiting `/tool` returns a 404
-- Both `/` and `/tool` show the same tool UI simultaneously
+- Vessel names like "EVER GIVEN 7" match SDN individual names like "EVER GIDEON" at HIGH tier purely from Double Metaphone numeric-prefix artifact
+- Short inputs like "Ali" return multiple HIGH-tier SDN matches across completely different entity types
+- False positive rate spikes dramatically when the input list contains corporate entity codes, account numbers, or registration identifiers mixed with personal names
 
-**Phase to address:** Route restructuring (must be the very first structural change before any UI work begins)
+**Phase to address:** Phase 16 (Multi-Algorithm Scoring Engine) — guard conditions must be built into the algorithm dispatch layer, not added later as hotfixes. The `match_algorithm` field output validates the guard is firing correctly.
 
 ---
 
-### Pitfall 4: `'use client'` Page Cannot Export `metadata` — Hard Build Error
+### Pitfall 4: Token Sort Ratio Inflating Scores for Partial-Match Business Names
 
 **What goes wrong:**
-The existing `src/app/page.tsx` has `'use client'` at line 1. After moving the tool to `src/app/tool/page.tsx`, that file keeps `'use client'` because it uses `useState`, `useTransition`, and event handlers throughout. If a developer adds `export const metadata = { ... }` to the tool's Client Component file, Next.js throws a hard build error: `"metadata" is not supported in a Client Component`. The build does not complete.
+Token Sort Ratio sorts both strings alphabetically by token, then computes edit distance on the sorted result. This means "BANK OF IRAN" and "IRAN BANK INTERNATIONAL CORP" tokenize to ["BANK", "IRAN"] vs ["BANK", "CORP", "INTERNATIONAL", "IRAN"] and compute similarity on "BANK IRAN" vs "BANK CORP INTERNATIONAL IRAN". The edit distance between these sorted forms is artificially high (similar tokens dominate the score) even though the entities are different. In an OFAC screening context, this produces false positives where generic business name components ("BANK", "TRADING", "INTERNATIONAL", "GROUP") anchor high Token Sort scores across unrelated entities.
 
 **Why it happens:**
-App Router enforces that `metadata` exports exist only in Server Components. This is not a warning — it is a build-time failure.
+Token Sort Ratio was designed to handle word-order variants of the same string (e.g., "Mohammed Ali Khan" vs "Khan Mohammed Ali"). When used on business names with common high-frequency tokens, the sort operation collapses multiple distinct entities toward the same canonical token sequence, making them appear more similar than they are.
 
 **How to avoid:**
-Add a `src/app/tool/layout.tsx` that is a Server Component (no `'use client'`) and exports `metadata` for the tool route. The tool's `page.tsx` stays as a `'use client'` Client Component with zero metadata exports.
+Apply a stop-token filter before Token Sort Ratio computation. Maintain a list of business entity stop tokens: `["BANK", "GROUP", "CORP", "LTD", "LLC", "INC", "TRADING", "INTERNATIONAL", "COMPANY", "CO", "AND", "OF", "THE"]`. Compute Token Sort Ratio on the token sequences with stop tokens removed. This preserves the word-order normalization benefit while preventing generic tokens from anchoring false similarities. If removing stop tokens reduces both strings to fewer than 2 tokens each, fall back to plain Jaro-Winkler.
 
-```
-// src/app/tool/layout.tsx — Server Component, no 'use client'
-import type { Metadata } from 'next';
-export const metadata: Metadata = {
-  title: 'Run Test — OFAC Sensitivity Testing | Crowe',
-  description: 'Configure and run synthetic OFAC name degradation tests.',
-};
-export default function ToolLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
-}
-```
+Also: weight the final combined score. Do not average the three algorithm scores equally. Use Jaro-Winkler as the primary score (it is calibrated for name matching and is already the existing algorithm), with Double Metaphone and Token Sort as bonus contributors: `finalScore = JW * 0.6 + DM_bonus * 0.25 + TSR * 0.15`. This prevents any single algorithm's false positive from dominating the tier assignment.
 
 **Warning signs:**
-- `next build` fails with: `"metadata" is not supported in a Client Component`
-- TypeScript error if `Metadata` type is imported into a `'use client'` file
+- Multiple unrelated SDN business entities matching "BANK OF [COUNTRY]" inputs at HIGH or MEDIUM tier
+- Sorting the SDN dataset by Token Sort score for a business name input shows many HIGH-score matches that share only one common token with the input
+- FP rate in test runs is significantly higher for `entityType: 'business'` than for `entityType: 'individual'`
 
-**Phase to address:** Route restructuring phase — resolve before any content work
+**Phase to address:** Phase 16 (Multi-Algorithm Scoring Engine) — the weighted scoring formula and stop-token filter must be established at algorithm design time, not retrofitted.
 
 ---
 
-### Pitfall 5: Landing Page Exports `metadata` Incorrectly — Root Layout Conflict
+### Pitfall 5: File Upload Bypassing Vercel 4.5MB Serverless Payload Limit
 
 **What goes wrong:**
-The root `layout.tsx` already exports a `metadata` object. If the new landing page `src/app/page.tsx` also exports a `metadata` object, the page-level metadata should override the layout-level. But if the developer puts the landing page `metadata` inside a `'use client'` component (because they added interactivity to the hero), the override fails silently and the root layout's generic metadata appears on the landing page.
+If CSV/Excel file upload is implemented as a `multipart/form-data` POST to a Next.js App Router route handler (`/api/screening/upload`), Vercel's serverless function payload limit (approximately 4.5MB for request body on the Hobby plan) truncates larger uploads silently or returns a 413. A 10,000-row CSV of names with metadata can easily exceed 4.5MB depending on column count and encoding.
 
 **Why it happens:**
-The new landing page starts as a Server Component, then the developer adds a `'use client'` animation component at the top level, accidentally converting the whole page to a Client Component and stripping the `metadata` export capability.
+Developers default to server-side file parsing because `'use client'` components historically had limited file parsing capabilities. In the App Router era, client-side file parsing with the File API is fully capable and avoids the serverless payload ceiling entirely.
 
 **How to avoid:**
-The landing page (`src/app/page.tsx`) must remain a Server Component — it composes Client Component children (animated hero, feature section) but does not itself use hooks. Keep `export const metadata` in `src/app/page.tsx` with no `'use client'` directive.
+Parse all uploaded files entirely on the client. The File API (`FileReader`, `File.text()`) is available in all modern browsers. Use:
+- `papaparse` (7KB) for CSV parsing: streaming mode handles files up to multiple GB without browser memory issues; `worker: true` option parses on a Web Worker thread
+- `xlsx` (SheetJS) for Excel `.xlsx` parsing: call `XLSX.read(arrayBuffer)` on the client; no server round-trip
+
+The parsed name array (plain `string[]`) is passed to the screening Web Worker directly — nothing is sent to the server. This eliminates the upload size limit entirely. The 10MB limit in the MILESTONE-CONTEXT.md is a client-side guard (`if (file.size > 10_000_000) reject()`), not a server limit.
 
 **Warning signs:**
-- Browser tab shows the root layout's title ("OFAC Sensitivity Testing — Crowe") on the landing page instead of landing-specific copy
-- `<meta name="description">` shows tool description on landing page hero
+- Files over 4.5MB return 413 on Vercel but succeed in local dev (local dev does not enforce Vercel payload limits)
+- Large uploads silently truncate — parsed name count is lower than expected row count in the file
+- Console shows `413 Request Entity Too Large` only in production, not in dev
 
-**Phase to address:** Landing page phase
+**Phase to address:** Phase 17 (File Upload and Input Parsing) — establish client-side parsing as the architecture from the first line of code in that phase.
 
 ---
 
-### Pitfall 6: React Bits / 21st.dev Components Using Tailwind v3 Syntax — Silent Visual Breakage in v4
+### Pitfall 6: PDF Generation Attempting Server-Side Rendering — Edge Runtime Incompatibility
 
 **What goes wrong:**
-React Bits and 21st.dev components are copy-paste code often written for Tailwind v3. In this project's Tailwind v4 setup, several v3 patterns no longer work:
-- `bg-opacity-*` and `text-opacity-*` utilities are removed — replaced by slash syntax (`bg-white/50`)
-- `border` defaults to `currentColor` in v4 instead of `gray-200` — elements with unspecified border color turn dark/black
-- Custom colors not registered in the project's `@theme inline` block will not generate utility classes — a `bg-slate-900` class from a copied component may render transparent if the project does not define `slate` colors
-- `tailwind.config.js` plugin references in copied component instructions do not apply (the project has no `tailwind.config.js`)
+Both `jsPDF` and `@react-pdf/renderer` (React-PDF) access browser APIs (`window`, `canvas`, font rendering) that do not exist in the Next.js edge runtime or serverless Node.js environment. Importing either library in a route handler or server action causes build failures or runtime crashes: `ReferenceError: window is not defined` (jsPDF) or `Error: Cannot read properties of undefined (reading 'createContext')` (React-PDF with canvas). The specific failure mode depends on the runtime, but the root cause is the same: both libraries are browser-only.
 
-These failures are silent — no build error, just wrong visual output.
+React-PDF has a documented history of breaking Next.js App Router route handlers (GitHub issues #2350, #2460, #2402 — all unresolved as of early 2026).
 
 **Why it happens:**
-Developers paste component code verbatim without auditing for v3-specific class patterns. The broken classes produce no error in the browser console.
+PDF export feels like a "download endpoint" — developers naturally reach for a server route to generate and stream a PDF file. The pattern works in the Pages Router but breaks in App Router, especially with edge runtime functions.
 
 **How to avoid:**
-After pasting any React Bits or 21st.dev component:
-1. Search for `bg-opacity-`, `text-opacity-`, `border-opacity-` — replace with slash syntax.
-2. Search for any color class not in the project's Crowe color palette (`slate-*`, `gray-*`, `zinc-*`) — replace with project tokens (`crowe-tint-*`, `bg-page`, etc.).
-3. Check any `border` class without an explicit color — add `border-border` or remove the border.
-4. Run `next build` — CSS compilation surface issues there, not at dev runtime.
-5. Visually inspect on the warm `#f8f9fc` page background (not pure white) where subtle color differences are visible.
+Generate the PDF entirely on the client. Use `jsPDF` with dynamic import and SSR disabled:
 
-**Warning signs:**
-- Component background is transparent when it should be opaque
-- Borders appear dark/black unexpectedly
-- Colors from the component do not match what the component preview shows
-- Component looks correct in isolation but wrong on the warm page background
-
-**Phase to address:** Premium UI components phase — audit immediately after every paste, before committing
-
----
-
-### Pitfall 7: React Bits / 21st.dev Animated Components Missing `'use client'` — Build Error
-
-**What goes wrong:**
-Animated components from React Bits (BlurText, TiltCard, Aurora, SpotlightCard) and 21st.dev heroes use `useEffect`, `useRef`, `useState`, or WebGL/canvas APIs. If the landing page (`src/app/page.tsx`) is correctly a Server Component and a React Bits component is imported directly without a `'use client'` wrapper, Next.js throws: "You're importing a component that needs ... a client environment. It only works in a Client Component but none of its parents are marked with 'use client'."
-
-**Why it happens:**
-The component file from React Bits does not include `'use client'` at the top — it is provided as raw code for the developer to place. Developers paste it into a Server Component context.
-
-**How to avoid:**
-Every animated component file must begin with `'use client'`. Structure:
-- `src/app/page.tsx` — Server Component (exports `metadata`, no hooks)
-- `src/components/landing/HeroSection.tsx` — `'use client'` — contains animated hero, CTA
-- `src/components/landing/FeatureSection.tsx` — `'use client'` — contains TiltCards, stagger animations
-- `src/components/landing/HowItWorks.tsx` — `'use client'` — contains scroll-reveal steps
-
-The Server Component composes these Client Component islands. This is the correct App Router boundary pattern.
-
-**Warning signs:**
-- Build error: hooks used in Server Component context
-- Developer adds `'use client'` to `src/app/page.tsx` to "fix" the error — this converts the entire tree to client, making `metadata` export impossible (creates Pitfall 5)
-
-**Phase to address:** Landing page phase — establish the component boundary structure before any content
-
----
-
-### Pitfall 8: `next/dynamic` with `ssr: false` Called Inside a Server Component — Hard Build Error
-
-**What goes wrong:**
-In Next.js App Router, calling `dynamic(() => import('./Component'), { ssr: false })` inside a Server Component throws a hard build error: "Error: `ssr: false` is not allowed with `next/dynamic` in Server Components. Please move it into a Client Component." This is not a warning — the build fails.
-
-**Why it happens:**
-Developers used to Pages Router assume `dynamic({ ssr: false })` can be used anywhere to suppress SSR. In App Router, it must be called from inside a `'use client'` file.
-
-**How to avoid:**
-For any component that needs `ssr: false` (e.g., a WebGL or canvas-heavy animation background), create a Client Component wrapper:
-```
-// src/components/landing/ClientOnlyCanvas.tsx
-'use client';
-import dynamic from 'next/dynamic';
-const CanvasBackground = dynamic(() => import('./CanvasBackground'), { ssr: false });
-export { CanvasBackground };
-```
-Then import `CanvasBackground` from the wrapper in the Server Component parent.
-
-For Anime.js specifically: because all animation code already lives in `'use client'` components inside `useEffect`, `ssr: false` is almost never needed. Reserve it only for libraries that cannot be imported on the server at all (WebGL, canvas-only renderers).
-
-**Warning signs:**
-- `next build` fails with the `ssr: false` Server Component error
-- Developer wraps the layout or page in `'use client'` to escape the error — kills RSC and metadata
-
-**Phase to address:** Landing page phase + Animation pass phase
-
----
-
-### Pitfall 9: Iconsax SVG Size Forced to 16px Inside shadcn Buttons — `[&_svg]:size-4` Override
-
-**What goes wrong:**
-The shadcn Button component (`src/components/ui/button.tsx`) includes `[&_svg]:size-4` in its base Tailwind classes. This forces ALL SVG children inside a `<Button>` to `width: 1rem; height: 1rem` (16px) regardless of the `size` prop passed to the Iconsax component. Passing `size={24}` to an Iconsax icon inside a Button renders at 16px. Trying to override with `className="h-6 w-6"` on the icon fails because the Button's selector specificity wins.
-
-This is a confirmed known issue in the shadcn GitHub issues tracker (issue #6316, discussion #6250), not an Iconsax-specific bug.
-
-**Why it happens:**
-shadcn hardcodes icon sizing on the Button for consistency with Lucide icons. Iconsax renders standard SVG elements, so it is affected by the same selector.
-
-**How to avoid:**
-Before starting the Iconsax icon pass, edit `src/components/ui/button.tsx` (the project-owned copy):
-- Option A: Remove `[&_svg]:size-4` from the `buttonVariants` base class entirely and set explicit sizes per button.
-- Option B: Change to `[&_svg]:size-auto` to remove the forced constraint while preserving the general pattern.
-- Option C: Keep `[&_svg]:size-4` but override per-button: `<Button className="[&_svg]:size-5">`.
-
-Option A is recommended — make the edit once before any icon replacement, then all buttons behave predictably.
-
-**Warning signs:**
-- All icons inside Buttons render at exactly 16px regardless of `size` prop
-- `<Chart size={24} />` inside `<Button>` shows a 16px icon in DevTools
-- Passing `className="h-6 w-6"` directly on the Iconsax component has no effect inside a Button
-
-**Phase to address:** Iconsax icon pass phase — fix `button.tsx` before touching any icons
-
----
-
-### Pitfall 10: Animating TanStack Virtual Rows with `translateY` — Virtualizer Transform Conflict
-
-**What goes wrong:**
-The existing `ResultsTable` positions each `<tr>` with `position: absolute; transform: translateY(${virtualRow.start}px)` — this is the virtualizer's mechanism for placing rows in the correct scroll position. If Anime.js (or Framer Motion) is used to animate individual rows with a `translateY` entrance (e.g., `translateY: [20, 0]`), the animation overwrites the virtualizer's positioning transform. Result: all animated rows collapse to `y=0`, stacking on top of each other and destroying the table layout.
-
-A secondary issue: the virtualizer only renders the visible window of rows and unmounts/remounts rows on scroll. Any per-row enter/exit animation fires on every scroll event, producing constant jitter.
-
-**Why it happens:**
-Both the virtualizer and the animation library write `transform: translateY(Xpx)` to the same element's inline style. The last write wins, breaking positioning. This is a documented conflict with Framer Motion and generalizes to any animation library that writes transform properties.
-
-Confirmed from TanStack Virtual GitHub discussions (discussion #476, #482) and community posts — this conflict exists with both Framer Motion and other animation libraries that set transforms on virtual row elements.
-
-**How to avoid:**
-- Never animate individual `<tr>` rows with `translateY`, `y`, `top`, or `transform` properties. The virtualizer owns the `transform` on those elements — do not touch it.
-- Animate the container and wrapper elements instead:
-  - Fade in the entire results section (`div.space-y-3`) on first appearance
-  - Animate the summary statistics paragraph (catch rate text) with a count-up using Anime.js `innerHTML` animation
-  - Animate the scroll container's shadow or border appearance
-  - Animate the Download CSV button entrance
-- For a subtle "rows appear" effect: animate `opacity` only on the `<tbody>` container — opacity does not conflict with the virtualizer's `transform` positioning.
-- For score column color indicators: use CSS `transition: color 150ms ease` — zero conflict, minimal code.
-
-**Warning signs:**
-- After clicking "Run Test," the results table shows rows stacked at the top of the scroll container
-- Rows appear at wrong positions during scrolling after animation fires
-- Console error: animating a detached element (when virtualizer unmounts a row mid-animation)
-
-**Phase to address:** Animation pass phase — establish the "no translateY on virtual rows" rule before writing any table animations
-
----
-
-### Pitfall 11: Global Anime.js Selector Without Scope Root — Cross-Component Animation Leakage
-
-**What goes wrong:**
-`animate('.card', { opacity: [0, 1] })` without a scope root targets every element matching `.card` in the entire document. When both the landing page and the tool page are mounted during a soft navigation transition, the animation fires against cards on the wrong page. As more animated sections are added, global selectors become unpredictable.
-
-**Why it happens:**
-Developers write selectors based on what they see in the component template without scoping them to the component's DOM subtree. Works fine with one page; breaks with multiple pages or re-renders.
-
-**How to avoid:**
-Always use `createScope({ root })` where `root` is a `useRef` attached to the component's root element. All selectors inside the scope are resolved relative to `root`, not the document.
-
-```
-const root = useRef(null);
-// ...
-<div ref={root}>
-  <div className="card">...</div>
-</div>
+```typescript
+// Inside the PDF export handler (called from a 'use client' component):
+const { jsPDF } = await import('jspdf');
+const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+// ... build document programmatically ...
+doc.save('ofac-compliance-memo.pdf');
 ```
 
-The scope confines all animations to within `root`. Selectors outside `root` are never touched.
+Never import `jsPDF` at module level — always use dynamic import at call time. The `await import('jspdf')` defers the browser-dependent initialization until the handler runs in the browser.
+
+For the Crowe LLP header and logo: embed the logo as a base64 data URI (`doc.addImage(base64Logo, 'PNG', x, y, w, h)`). Avoid `html2canvas` for content-to-PDF conversion — it is slow and produces blurry output for text-heavy compliance reports. Build the PDF programmatically using `jsPDF` drawing primitives.
+
+For non-Latin characters (Arabic, Cyrillic, CJK) in output: `jsPDF`'s default font (Helvetica) does not support non-Latin scripts. Embed a Unicode font (NotoSans) as a base64-encoded `.ttf` string and register it: `doc.addFont(notoSansBase64, 'NotoSans', 'normal')`. Without this, Arabic and CJK names in the PDF output render as empty boxes or question marks.
 
 **Warning signs:**
-- Cards on the tool page animate when the landing page mounts
-- Adding a second animated section causes the first section's animations to fire again
-- Animations fire for elements that are not visible or not in the current route
+- `next build` succeeds but PDF download crashes with `ReferenceError: window is not defined` at runtime when the route handler runs
+- PDF renders correctly in dev but crashes on Vercel (edge runtime vs. local Node.js difference)
+- Arabic or CJK names in the compliance memo show as `?` characters or blank boxes in the exported PDF
 
-**Phase to address:** Animation pass phase — use scoped animations from the very first animation written
+**Phase to address:** Phase 20 (PDF Export) — dynamic import pattern and Unicode font embedding must be established as prerequisites before writing any PDF document structure.
+
+---
+
+### Pitfall 7: Threshold Slider Triggering Full Result Re-Render on Every Tick
+
+**What goes wrong:**
+The threshold slider moves continuously (mouse drag). If the slider's `onChange` directly updates a piece of React state that the entire results table depends on (e.g., `setThreshold(value)`) and the results table renders 10,000 rows filtered by that threshold, every slider tick triggers a full re-render pass on 10,000 rows. At 200ms target responsiveness, a debounce of 300ms would feel sluggish. At 0ms debounce, it destroys frame rate. React's batching and `useMemo` reduce but do not eliminate this.
+
+**Why it happens:**
+The slider is tied to state, state drives a computed display list, the computed list renders into a component — this is the standard React data flow. The problem is that "computed display list" is O(n) on 10,000 rows, and the virtualizer's `getVirtualItems()` call must also recalculate on every re-render.
+
+**How to avoid:**
+Separate the threshold value from the threshold-applied display. Store two pieces of state:
+1. `sliderValue` (number) — updates on every tick, drives only the slider display and the threshold label
+2. `displayThreshold` (number) — updated via `useTransition` or debounce at 150ms intervals, drives tier derivation
+
+Use `useDeferredValue` on the display threshold: `const deferredThreshold = useDeferredValue(displayThreshold)`. The tier-derivation `useMemo` depends on `deferredThreshold`, not the raw `sliderValue`. React schedules the expensive `useMemo` recalculation as a deferred low-priority update, keeping the slider thumb movement at 60fps while tier re-classification runs asynchronously.
+
+Additionally, tier derivation does not need the full result array — it needs only the scores. Store results as `{ inputName: string, score: number }[]` (compact) and derive tier badges in the render, not in a pre-classified array. The virtualizer only renders ~15 visible rows at any time, so per-row tier badge computation is negligible even for 10,000 rows.
+
+**Warning signs:**
+- Slider thumb lags visibly behind mouse cursor during drag
+- React DevTools profiler shows full `ScreeningResultsTable` component re-rendering every 16ms during slider drag
+- Frame rate drops below 30fps when dragging the slider with 10,000+ results loaded
+
+**Phase to address:** Phase 18 (Threshold Slider and Results Display) — the `useDeferredValue` + compact results store architecture must be established before the first slider render.
+
+---
+
+### Pitfall 8: TanStack Virtual Column Width Breaks with New Result Layout
+
+**What goes wrong:**
+The existing `ResultsTable` uses hardcoded pixel widths (`COL_WIDTHS = [260, 110, 130, 300, 160, 90]`) for the virtualizer's absolute-positioned rows. The v3.0 Screening Mode results table has a different schema (19 fields, not 6) and a different layout (split-pane with a detail card on row click, not a full-width table). Reusing the existing `ResultsTable` component for Screening Mode results — or trying to extend the existing `COL_WIDTHS` constant — will produce column misalignment because the new schema requires different column distribution.
+
+**Why it happens:**
+The `COL_WIDTHS` constraint is documented in the existing codebase (`src/components/ResultsTable.tsx` lines 31–39: "Explicit pixel widths are required for correct alignment when tbody rows are absolutely positioned"). Developers adding columns to the existing table change the column count without updating the total table width and the corresponding container `style={{ width: 'Xpx' }}`.
+
+**How to avoid:**
+Build `ScreeningResultsTable` as a completely separate component from the existing `ResultsTable`. The existing table serves the degradation demo mode and must remain unchanged. The new table has different columns, different row interaction (clickable for detail card), and a different outer container width constraint. Keeping them separate also isolates their respective virtualizer instances from interfering with each other.
+
+For the Screening Mode table: the left pane shows 5 columns (Row#, Input Name, Best Match, Score, Risk Tier) at a fixed total width. The right pane is a detail card that renders outside the virtualizer entirely. Five columns at reasonable widths fit in a ~900px left pane.
+
+**Warning signs:**
+- After adding a new column to an existing virtualizer table, headers and data are offset (header column 3 is over data column 4)
+- Modifying `COL_WIDTHS` without updating the container `style={{ width }}` causes scroll overflow or compressed columns
+- The existing degradation results table breaks (visual regression) after changes made for the new screening table
+
+**Phase to address:** Phase 18 (Threshold Slider and Results Display) — create `ScreeningResultsTable` as a new file from the start, not a modified fork of `ResultsTable.tsx`.
+
+---
+
+### Pitfall 9: Recharts Dual-Axis Chart SSR Hydration Mismatch and Resize Breakage
+
+**What goes wrong:**
+The Longitudinal Simulation chart requires 5 elements: catch rate line, 3 threshold band lines, evasion tier vertical markers, cumulative miss count bars on a secondary Y-axis, and a recovery line. Recharts is a common choice but has two confirmed failure modes in this configuration:
+
+1. **SSR hydration mismatch:** Recharts' `ResponsiveContainer` measures the DOM at paint time to determine chart dimensions. When Next.js server-renders the chart, it renders at a default dimension that does not match what the browser computes during hydration, producing React hydration errors. The standard fix is `dynamic(() => import('./Chart'), { ssr: false })` — but this must be called from a `'use client'` file (Pitfall 8 from v2.0 applies here too).
+
+2. **Dual Y-axis synchronization:** The secondary Y-axis (cumulative miss count, absolute numbers 0–N) and the primary Y-axis (catch rate, 0–100%) use completely different scales. Recharts does support `<YAxis yAxisId="left">` and `<YAxis yAxisId="right" orientation="right">`, but the domain computation for the right axis does not automatically track the data maximum — `domain={[0, 'dataMax']}` must be set explicitly on the right `YAxis` or Recharts defaults to `[0, 1]` and renders all bars at the same tiny height.
+
+3. **Chart resize on pane resize:** If the chart lives in a resizable split pane, `ResponsiveContainer` may not detect resize events from CSS flexbox changes. Add `key={containerWidth}` to force a complete chart remount on explicit container width changes.
+
+**Why it happens:**
+Recharts is the most commonly recommended React charting library and most Next.js examples show it working. The SSR issue only surfaces in App Router with actual pre-rendering. The dual-axis domain issue only appears when the secondary data range is very different from `[0, 1]`, which is the Recharts default.
+
+**How to avoid:**
+Always lazy-load the chart component with `dynamic(..., { ssr: false })` from a `'use client'` wrapper. Set explicit `domain` props on both Y-axes. Test the dual axis in isolation with mock data before integrating the full simulation data.
+
+Consider Chart.js via `react-chartjs-2` as an alternative if the Recharts dual-axis implementation proves problematic — Chart.js has explicit multi-axis support that is more straightforward to configure. However, Chart.js also requires `ssr: false` and has its own canvas-based rendering constraints. The choice between Recharts and Chart.js is implementation-level; the ssr:false requirement is the same for both.
+
+**Warning signs:**
+- Hydration error in browser console: "Text content does not match server-rendered HTML" on the chart container
+- Secondary Y-axis bars all render at the same height regardless of data values
+- Chart does not resize when the browser window is resized (stuck at initial render dimensions)
+- In React Strict Mode dev, the chart flickers on initial mount due to double-invocation
+
+**Phase to address:** Phase 22 (Longitudinal Simulation Mode) — the `ssr: false` wrapper and dual-axis domain configuration must be established before adding the 5 chart series.
+
+---
+
+### Pitfall 10: Longitudinal Simulation Evasion Tier Sequencing Bug — Tier 2 Before Tier 1 Complete
+
+**What goes wrong:**
+The simulation state machine introduces evasion tiers sequentially across snapshots. Tier 1 starts at snapshot 0. Tier 2 is introduced at some configurable snapshot offset. If the offset calculation does not account for the velocity preset, Tier 2 can become active before all Tier 1 entries have been fully processed (all their variants scored). This produces a data model inconsistency: entity records exist in the `evasion_tier_variants` object for Tier 2 but have no `first_caught_snapshot` in Tier 1, breaking the detection lag calculation (which requires Tier 1 to be fully resolved before Tier 2 lag is computed).
+
+**Why it happens:**
+The velocity presets (BASELINE: 15 entries/update, ELEVATED: 75 entries/update, SURGE: 300 entries/update) control how many new SDN entries appear per snapshot. The evasion tier offsets are likely specified as snapshot indices (e.g., "introduce Tier 2 at snapshot 10"). But SURGE runs through 10 snapshots much faster than BASELINE — snapshot 10 in SURGE represents 3,000 cumulative SDN entries added, while snapshot 10 in BASELINE represents only 150 entries. If the Tier 2 introduction is hard-coded at "snapshot 10," the behavior is velocity-dependent in a way that undermines the narrative.
+
+**How to avoid:**
+Specify evasion tier introduction by percentage of total entities processed, not by absolute snapshot index. For example: Tier 2 activates when ≥ 60% of the entry set has been through at least one screening cycle. This ensures that Tier 2 is introduced at a meaningfully consistent point relative to data volume regardless of velocity preset.
+
+Additionally: validate the state machine invariant in the simulation engine — before marking a snapshot as "Tier 2 active," assert that every entity that existed in the previous snapshot has a defined `first_caught_snapshot` or has been explicitly marked as "never caught by Tier 1." This assertion runs in development only and is stripped in production.
+
+Detection lag edge case: if an entity is never caught (score never breaches any threshold across all snapshots), `first_caught_snapshot` will be `null`. The detection lag metric must handle this explicitly: `null` translates to "not detected — enhanced due diligence flag" in the UI copy, never to a computed number of days.
+
+**Warning signs:**
+- Detection lag metric shows negative values (caught before the entity was formally added to the SDN list)
+- Tier 2 entries appear in the waterfall table for snapshots before the Tier 2 marker line on the chart
+- `first_caught_snapshot > first_missed_snapshot` for entities that should have been caught immediately
+- Changing velocity preset changes which snapshot the evasion tiers appear on the chart (velocity-coupling bug)
+
+**Phase to address:** Phase 22 (Longitudinal Simulation Mode) — the snapshot state machine data model must be fully designed with invariant assertions before writing any rendering code.
+
+---
+
+### Pitfall 11: Breaking the Existing `/tool` Degradation Mode When Adding New Routes
+
+**What goes wrong:**
+v3.0 adds new routes (`/tool/screening`, `/tool/simulation`) and new shared utilities. Adding a new shared utility file to `src/lib/` that accidentally re-exports a symbol with the same name as an existing export will break the existing engine. Adding a new server action to `src/app/actions/` that imports SDN data with a different transformation (e.g., normalizing all names to uppercase for screening) will not break the existing `runTest.ts` server action, but if the developer modifies the shared `sampler.ts` to support screening's different sampling logic, it can silently change the behavior of the existing degradation demo.
+
+**Why it happens:**
+The natural instinct is to extend existing utilities. `sampler.ts` already samples from `sdn.json` — why not extend it for screening? But the degradation demo sampler does random sampling for a demonstration scenario, while the screening engine needs a full-dataset lookup, not a sample. These are fundamentally different operations. Merging them into one function with a flag parameter creates an untestable conditional mess and risks changing the existing behavior.
+
+**How to avoid:**
+Strict isolation: all v3.0 code lives in new files. Do not modify existing files unless fixing a confirmed bug:
+- `src/lib/screening/` — new directory for all screening logic (scorer, parser, tier calculator)
+- `src/lib/simulation/` — new directory for all longitudinal simulation logic
+- `src/app/actions/runScreening.ts` — new server action file (even if it ultimately becomes client-side)
+- `src/types/screening.ts` — new types file for v3.0 schemas; do not add v3.0 types to `src/types/index.ts`
+- `src/components/ScreeningResultsTable.tsx` — new component; do not modify `ResultsTable.tsx`
+
+Run the full Vitest suite after every new file is added. The existing 57+ tests must remain green throughout v3.0 development. A regression in an existing test from a v3.0 addition indicates an isolation violation.
+
+**Warning signs:**
+- An existing Vitest test fails after adding a new v3.0 utility file
+- `import { sampleEntries } from '@/lib/sampler'` in the existing `runTest.ts` behaves differently after a screening-motivated change to `sampler.ts`
+- The existing `/tool` degradation mode shows different results than before v3.0 development began
+
+**Phase to address:** Phase 15 (Architecture) — establish the directory isolation structure before writing any v3.0 feature code.
+
+---
+
+### Pitfall 12: Unicode Normalization Applied After Algorithm Scoring — Misses Homoglyph Evasion
+
+**What goes wrong:**
+The MILESTONE-CONTEXT.md specifies "Unicode normalization pre-processing (catches Cyrillic/Arabic homoglyph substitution — the biggest real-world evasion)." If Unicode normalization (Unicode NFC/NFD form, homoglyph mapping, Cyrillic→Latin lookalike substitution) is applied only to the display layer or only after scoring, the algorithms receive the raw homoglyph-containing string and produce low similarity scores. The tier correctly shows LOW or CLEAR for what is actually an EXACT match, because "Рobert" (Cyrillic Р + Latin obert) and "Robert" look identical in the UI but produce very low algorithmic similarity before normalization.
+
+**Why it happens:**
+Developers implement normalization as a sanitization step before storing or displaying the input, not as a pre-processing step in the comparison pipeline. The normalization logic and the scoring logic live in different parts of the codebase and the data flow does not guarantee that normalized forms reach the scorer.
+
+**How to avoid:**
+Apply normalization as the first operation inside the comparison function, not before or after it. The pattern:
+```
+compareNames(raw_input, sdn_name):
+  1. normalize(raw_input) → normalized_input
+  2. normalize(sdn_name) → normalized_sdn
+  3. score(normalized_input, normalized_sdn)
+  4. return { score, normalized_input, transformation_detected: raw_input !== normalized_input }
+```
+
+The `transformation_detected` field in the result schema is populated by whether normalization changed the input — this is the flag that signals "Cyrillic homoglyph detected" or "diacritic substitution detected" in the compliance output.
+
+The normalization function must handle at minimum: NFC normalization (`String.prototype.normalize('NFC')`), homoglyph lookalike mapping (Cyrillic lookalikes for Latin letters — а→a, е→e, о→o, р→p, с→c, х→x, etc.), and Unicode case folding (not just `.toLowerCase()` — Arabic and CJK have non-trivial case semantics).
+
+**Warning signs:**
+- A name containing Cyrillic homoglyphs of Latin letters scores as CLEAR against its exact Latin equivalent
+- The `transformation_detected` field is always empty/null even for inputs known to contain non-Latin lookalikes
+- Running the tool against a name with copy-pasted Cyrillic characters that look Latin produces no match, while the manually typed version matches at EXACT
+
+**Phase to address:** Phase 16 (Multi-Algorithm Scoring Engine) — normalization must be the first component built and tested in isolation before any scoring logic is written.
 
 ---
 
@@ -325,13 +333,14 @@ The scope confines all animations to within `root`. Selectors outside `root` are
 
 | Shortcut | Immediate Benefit | Long-term Cost | When Acceptable |
 |----------|-------------------|----------------|-----------------|
-| Inline `style={{ opacity: 0 }}` as initial state for animations | Quick setup | Fights with Anime.js which also writes inline styles; double-apply causes flicker on mount | Never for animation targets — use CSS class with initial state instead |
-| `suppressHydrationWarning` on animated elements | Silences hydration mismatch warnings | Masks real bugs; animated content may differ between server and client in meaningful ways | Only as last resort after confirming the mismatch is purely cosmetic (e.g., a timestamp) |
-| Copy React Bits components without auditing Tailwind classes | Faster iteration | Silent style breakage in v4; wrong colors, broken opacity, dark borders | Never — always audit before commit |
-| Global `animate('.card', ...)` without `createScope` root | Less boilerplate | Leaks across components; breaks with multiple pages or Strict Mode double-invocation | Never |
-| Skip `revert()` in `useEffect` cleanup | Simpler code | Zombie animations; memory leaks; immediate failure in React Strict Mode | Never |
-| Keep tool at `/` and add landing at `/landing` instead of restructuring | Avoids route move risk | No true landing page at the canonical URL; CTA links are confusing; brand impact diminished | Never for a Production Face milestone |
-| Use `suppressHydrationWarning` instead of fixing SSR/client mismatch | Hides error immediately | Root cause remains; may manifest as real visual bugs on slower networks | Only temporarily during debugging, never shipped |
+| Run screening comparison in a Server Action instead of Web Worker | Familiar architecture (mirrors existing runTest.ts) | Hits Vercel 10s timeout above ~1,000 input names; blocks deployment scalability | Never for inputs > 200 names |
+| Store all 2.85M comparison results in state | No result is ever "missing" on threshold change | Browser memory exhaustion; tab crash on mobile; 3-6GB heap for 10,000 inputs | Never — store only top match per input row |
+| Reuse `ResultsTable.tsx` for Screening Mode results | Less new code | COL_WIDTHS breaks with different column count; existing tests risk regression; virtualizer instance interference | Never — build `ScreeningResultsTable` as a new file |
+| Add v3.0 types to `src/types/index.ts` | Single types import | 19-field `MatchResult` type pollutes the v1.0/v2.0 type contract; downstream TypeScript inference widens on existing types | Never — use `src/types/screening.ts` for new types |
+| Extend `sampler.ts` with screening logic | One fewer file | Screening uses full-dataset lookup (no sampling); degradation uses random sample; mixing them creates a conditional mess and risks changing existing behavior | Never — create `src/lib/screening/` directory |
+| Import `jsPDF` or `@react-pdf/renderer` at module level | Simple import syntax | Crashes `next build` or produces runtime error in SSR context | Never — always use dynamic import inside the event handler |
+| Apply Unicode normalization only in the display layer | Inputs look clean in UI | Homoglyph-containing strings still score as non-matching; the biggest real evasion tactic is undetected | Never — normalization must be part of the comparison pipeline |
+| Hard-code evasion tier introduction at snapshot index rather than data percentage | Simpler state machine | Tier introduction is velocity-dependent; SURGE scenario introduces Tier 2 in <1 day of simulated time, breaking the narrative | Never for the velocity-sensitive tiers |
 
 ---
 
@@ -339,16 +348,16 @@ The scope confines all animations to within `root`. Selectors outside `root` are
 
 | Integration | Common Mistake | Correct Approach |
 |-------------|----------------|------------------|
-| Anime.js v4 + Next.js App Router | Import animejs in a Server Component file | Only import in `'use client'` files; call animate only inside `useEffect` |
-| Anime.js v4 + React component lifecycle | Omit `revert()` in `useEffect` cleanup | Every `createScope` has a matching `return () => scope.current?.revert()` |
-| Anime.js v4 + TanStack Virtual rows | Apply `translateY` animation to `<tr>` elements | Animate container/wrapper only; never touch the transform that the virtualizer owns |
-| Anime.js v4 + multiple pages | Use global class selectors without scope | Always use `createScope({ root })` with a ref attached to the component root |
-| Iconsax + shadcn Button | Expect `size` prop to control icon size inside `<Button>` | Remove or override `[&_svg]:size-4` from `button.tsx` before the icon pass |
-| React Bits + Tailwind v4 | Use v3 opacity utilities (`bg-opacity-*`) or undefined color names | Audit and replace with v4 slash syntax; use project Crowe color tokens |
-| React Bits + App Router landing page | Place animated component directly in Server Component | Wrap in `'use client'` Client Component file; Server Component imports the wrapper |
-| `dynamic({ ssr: false })` + App Router | Call from a Server Component file | Wrap in a `'use client'` file; call from there |
-| App Router + Client Component page + `metadata` | Export `metadata` from a `'use client'` file | Add a co-located `layout.tsx` (Server Component) in the same route directory that exports the metadata |
-| Crowe TLS proxy + `npm install` / `npx shadcn add` | Run without SSL bypass | Prefix all install commands with `NODE_TLS_REJECT_UNAUTHORIZED=0` |
+| `comlink` + Web Worker + Next.js bundler | Worker file not recognized by Next.js webpack config | Use `new Worker(new URL('./screening.worker.ts', import.meta.url))` — Next.js 13+ handles this natively with webpack 5's worker support |
+| `papaparse` + Web Worker option in Next.js | `worker: true` option opens its own Worker which conflicts with the wrapping Comlink worker | Use `papaparse` with `worker: false` but call it from inside the screening Web Worker, not the main thread |
+| `xlsx` (SheetJS) + large `.xlsx` files in the browser | Sync `XLSX.read()` blocks the main thread for large files | Call `XLSX.read(arrayBuffer, { type: 'array' })` from inside the screening Web Worker, not the main thread |
+| `jsPDF` + dynamic import + TypeScript | `import type { jsPDF }` fails because the type and the value have the same name | Use `const { jsPDF } = await import('jspdf'); const doc = new jsPDF(...)` — import the class from the default export, not as a named type |
+| `jsPDF` + Arabic/Cyrillic/CJK characters | Default Helvetica font in jsPDF is Latin-only | Register NotoSans or similar Unicode font as base64-embedded TTF before calling `doc.text()` with non-Latin content |
+| Recharts `ResponsiveContainer` + Next.js App Router | Server renders chart at wrong dimensions → hydration mismatch | Wrap chart in `dynamic(() => import('./ChartComponent'), { ssr: false })` inside a `'use client'` file |
+| Recharts dual Y-axis + `dataMax` | Right axis defaults to `[0, 1]` domain, squishing cumulative miss bars | Set `domain={[0, 'dataMax']}` explicitly on the right `YAxis` component |
+| Vitest + new packages with ESM-only exports | `SyntaxError: Cannot use import statement outside a module` in test runner | Add new ESM-only packages to `vitest.config.ts` `server.deps.inline` array to force Vite to transform them |
+| Crowe TLS proxy + `npm install papaparse xlsx jspdf` | SSL certificate error blocks install | Prefix all `npm install` and `npx` commands with `NODE_TLS_REJECT_UNAUTHORIZED=0` (same as v1.0/v2.0) |
+| TanStack Virtual + Screening results detail card pane | Clicking a virtual row triggers a re-render that changes the container layout, causing virtualizer recalculation on every row click | Keep the detail card as an absolutely-positioned overlay or a fixed right pane outside the scroll container — do not let it resize the virtualizer's scroll parent |
 
 ---
 
@@ -356,38 +365,29 @@ The scope confines all animations to within `root`. Selectors outside `root` are
 
 | Trap | Symptoms | Prevention | When It Breaks |
 |------|----------|------------|----------------|
-| `onScroll()` without cleanup on landing page | Scroll listener accumulates on each soft navigation; CPU spikes on scroll after several route transitions | Store the `onScroll` return value; call `.revert()` in `useEffect` cleanup | Immediately visible with React Strict Mode; in production after several navigations |
-| Per-row animation on virtual table rows | Anime.js fires on every scroll event as rows mount/unmount; continuous jitter during scroll | Attach animations to container mount only (empty `useEffect` dependency array); never to individual row lifecycle | Any table with > 50 visible rows during continuous scroll |
-| Large React Bits background components (Aurora, particles) without GPU hint | Janky scroll on consultant laptops (which are mid-tier) | Add `will-change: transform` or `will-change: opacity` to animated canvas/div; test on integrated graphics | Demo context on corporate laptops — this is a real risk |
-| Importing all of animejs at once | Marginal bundle increase | Minimal impact for this single-URL app; not worth optimizing | Not a practical concern at this project's scale |
-
----
-
-## UX Pitfalls
-
-| Pitfall | User Impact | Better Approach |
-|---------|-------------|-----------------|
-| Landing page CTA scrolls to form on same page instead of navigating to `/tool` | Browser back button broken; tool has no clean URL to share; consultant cannot bookmark the tool directly | CTA uses `<Link href="/tool">` — full route navigation |
-| Scroll-triggered animations already played because user scrolled past them | User misses the "How It Works" reveal entirely | Use `viewport: { once: true }` equivalent in Anime.js `onScroll` — fire once when element first enters view |
-| Iconsax icons in form labels without accessible text | Screen readers announce nothing for icon-only controls | Pair all icons with visible text labels OR explicit `aria-label`; the existing checkbox labels already have text — preserve this |
-| Animated score column distracts during table review | User cannot read scores while colors are transitioning | Animate score appearance only on first load of a result set via CSS transition; do not re-animate on sort clicks |
-| Hero entrance animation blocks CTA click during first second | User clicks CTA immediately on page load but the button is animating out of its click target area | Never animate the position of interactive elements; animate opacity/scale in-place only on CTAs |
-| Landing page animations play immediately before user has scrolled | Entire page appears pre-animated; no sense of discovery | Trigger reveal animations with `onScroll` intersection, not on page mount |
+| All 2.85M comparisons in the main JS thread | Tab freezes for 10–30 seconds after "Run Screening"; browser shows "Page Unresponsive" | Web Worker for all comparison computation; progress events every 5,000 comparisons | Above ~500 input names on mid-tier laptop |
+| `useMemo` for tier derivation depending on full result array | 10,000-row `useMemo` recalculates on every parent component re-render | Memoize correctly: `useMemo(() => deriveThreshold(results, threshold), [results, threshold])`; avoid adding unrelated dependencies | Immediately when the parent component has other state (e.g., slider position) |
+| Recharts tooltip rendering with 300+ data points per series | Tooltip computation on hover causes jank; Recharts calculates nearest point across all series on every mouse move | Limit displayed data points to ~100 per series; aggregate intermediate snapshots before rendering | >200 snapshots on the longitudinal chart x-axis |
+| Full waterfall table rendered for all snapshots simultaneously | 300 snapshots × 285 entities = 85,500 rows — same memory problem as unvirtualized results | Waterfall table shows only the currently selected snapshot; pagination or virtualizer for the waterfall rows | Any display of more than ~200 rows without virtualization |
+| `xlsx` loading the full SheetJS library (~1.5MB) | Large initial bundle for Excel parsing that only runs when user uploads a `.xlsx` file | Dynamic import: `const XLSX = await import('xlsx')` inside the file handler, not at module top level | Always — SheetJS should never be in the initial bundle |
+| jsPDF font embedding with a full Unicode font (NotoSans ~3MB TTF) | PDF generation stalls for several seconds while encoding the font data | Embed only the character ranges needed (Latin Extended, Cyrillic, Arabic Basic — not the full CJK range); use a subsetting approach if the full font is too large | For PDF exports containing Arabic names — unavoidable without subsetting |
 
 ---
 
 ## "Looks Done But Isn't" Checklist
 
-- [ ] **Anime.js cleanup:** Every `createScope` has a corresponding `revert()` in the `useEffect` return — verify by navigating away and back; no double-animation in React Strict Mode dev
-- [ ] **Route move complete:** Visit `/` — landing page hero loads, not the tool form. Visit `/tool` — tool form loads. Neither returns 404.
-- [ ] **Metadata per route:** Inspect `<title>` in browser source on `/` and on `/tool` — they differ. The tool's title is NOT the landing page title.
-- [ ] **Iconsax in buttons:** Open DevTools, inspect an Iconsax icon inside a `<Button>` — the rendered SVG `width` and `height` match the `size` prop, not a fixed 16px
-- [ ] **Virtual table after animation:** After running a test, scroll the results table to the bottom — all rows are correctly positioned at their expected scroll offsets, none stacking at y=0
-- [ ] **Tailwind v4 classes in copied components:** Run `next build` after pasting every React Bits component — no build errors. Visual inspection on warm off-white background confirms expected colors.
-- [ ] **Landing page is a Server Component:** `src/app/page.tsx` has no `'use client'` at top. Animated children are imported Client Component files.
-- [ ] **`prefers-reduced-motion` respected:** Toggle OS "Reduce Motion" setting; all Anime.js animations do not play; page remains fully usable
-- [ ] **TLS-prefixed installs:** Every `npm install`, `npx shadcn add`, and `vercel` CLI call during development prefixed with `NODE_TLS_REJECT_UNAUTHORIZED=0` — no SSL errors on Crowe network
-- [ ] **No redirect from `/` to `/tool`:** The landing page IS the root. Visiting `/` shows the landing page, not a redirect.
+- [ ] **Vercel timeout guard:** Run screening with exactly 10,000 input names on the deployed Vercel URL (not just localhost). The response completes within 10 seconds and returns all results. If computation is client-side via Web Worker, this check verifies no server round-trip is part of the hot path.
+- [ ] **Top-match-only storage:** After running a 10,000-name screening, open Chrome DevTools Memory tab. Total heap after screening must be under 200MB. If heap is > 500MB, the 2.85M full result set is being stored in state.
+- [ ] **Double Metaphone short-string guard:** Input "Al" and "Li" — verify neither returns more than 2 SDN matches at MEDIUM or above. If many unrelated entries match, the short-string guard is not firing.
+- [ ] **Token Sort stop-token filter:** Input "International Bank Corp" — verify the top matches are all actually named "International Bank" variants on the SDN list, not every entity with "international" anywhere in the name.
+- [ ] **Unicode normalization in pipeline:** Copy-paste a name containing Cyrillic homoglyphs of Latin characters (e.g., "Аlexandr Рetrov" with Cyrillic А and Р). The `transformation_detected` field must show "Cyrillic homoglyph detected" and the score must match the normalized Latin form.
+- [ ] **File upload client-side only:** Upload a CSV larger than 5MB from the Screening Mode file input on the Vercel deployment. The upload must succeed and all names must parse correctly. No 413 error.
+- [ ] **PDF non-Latin characters:** Export a compliance memo containing at least one Arabic name from the SDN dataset. Open the PDF and verify the Arabic name displays correctly, not as empty boxes.
+- [ ] **Threshold slider 200ms:** With 10,000 results loaded, drag the threshold slider from 0.70 to 0.95 in one motion. The tier badges must update within 200ms of the slider stopping. Measure with Chrome Performance tab.
+- [ ] **Existing tool regression:** After all v3.0 phases are complete, run the existing degradation demo with 500 individuals, all regions, all rules. Results must match the pre-v3.0 baseline (same row count, same scores). The full Vitest suite must pass.
+- [ ] **Evasion tier sequencing:** Run the longitudinal simulation with SURGE preset. Tier 2 marker must appear after a meaningful number of snapshots, not at snapshot 1. Tier 3 must appear after Tier 2 on the chart for all three velocity presets.
+- [ ] **Detection lag null handling:** In the waterfall table, confirm that any entity never caught across all snapshots shows "Not detected — enhanced due diligence flag" in the lag column, not a crash, blank, or negative number.
+- [ ] **Vitest suite green throughout:** Run `npm test` at the end of every phase. Zero regressions from the existing 57+ tests.
 
 ---
 
@@ -395,56 +395,64 @@ The scope confines all animations to within `root`. Selectors outside `root` are
 
 | Pitfall | Recovery Cost | Recovery Steps |
 |---------|---------------|----------------|
-| SSR crash from Anime.js in Server Component | LOW | Add `'use client'` to the offending file; move animate calls into `useEffect` |
-| Zombie animations — missing `revert()` | LOW | Add `return () => scope.current?.revert()` to the `useEffect`; Strict Mode confirms fix |
-| Route move left tool at `/` | LOW | Move `page.tsx` content to `app/tool/page.tsx`; replace root `page.tsx` with landing page |
-| `metadata` on Client Component page | LOW | Add `src/app/tool/layout.tsx` (Server Component) exporting metadata; remove from `page.tsx` |
-| Iconsax forced to 16px inside buttons | LOW | Edit `src/components/ui/button.tsx` — remove or override `[&_svg]:size-4`; one file, immediate fix |
-| Tailwind v4 class breakage in copied component | MEDIUM | Audit all class names in the component; replace v3 patterns with v4 equivalents and Crowe tokens; may require redesigning element colors |
-| Virtual table rows stacked at y=0 from animation | MEDIUM | Remove `translateY` from all row-level animation targets; scope animations to container wrapper; regression test by running 500-row test and scrolling |
-| `ssr: false` called in Server Component | LOW | Extract `dynamic()` call into a `'use client'` wrapper file; Server Component imports from wrapper |
-| Global Anime.js selector animating wrong elements | LOW-MEDIUM | Wrap all animate calls in `createScope({ root })` with ref; re-test each animation section |
+| Server Action timeout on Vercel for large screening | MEDIUM | Move comparison loop to client Web Worker; server action becomes a data-fetch stub or is removed; test with 10,000 names on Vercel immediately |
+| Browser memory exhaustion from full result storage | HIGH | Redesign result store to top-match-only; requires touching the screening engine output contract and the results table component; test with Chrome Memory tab |
+| Double Metaphone false positives in production demo | MEDIUM | Add short-string and non-alpha guards to algorithm dispatch; re-run test suite; verify FP rate drops on known-good test inputs |
+| PDF crashes with non-Latin characters | LOW | Register NotoSans base64 font in jsPDF before calling doc.text(); affects only the PDF generation handler |
+| Recharts SSR hydration error | LOW | Wrap chart in `dynamic(..., { ssr: false })`; confirm no server render of chart component |
+| Evasion tier sequencing bug | MEDIUM | Switch from snapshot-index-based tier offsets to percentage-of-data-processed offsets; add invariant assertions to the state machine; regression test with all three velocity presets |
+| Existing tool regression from v3.0 isolation violation | MEDIUM-HIGH | Identify the shared file that was modified; revert the change; extract a new function or new file for the v3.0 behavior; run full Vitest suite |
+| Unicode normalization only in display layer | MEDIUM | Move normalization call into the comparison function's first line; re-test homoglyph detection; update the `transformation_detected` field population |
 
 ---
 
 ## Pitfall-to-Phase Mapping
 
-| Pitfall | Prevention Phase | Verification |
-|---------|------------------|--------------|
-| Route move leaves tool at `/` | Route restructuring (Phase 1) | Visit `/` — hero loads. Visit `/tool` — form loads. |
-| Client Component cannot export `metadata` | Route restructuring (Phase 1) | `next build` succeeds; `<title>` in browser source differs between routes |
-| Landing page accidentally becomes Client Component | Landing page implementation | `src/app/page.tsx` has no `'use client'`; metadata exports work |
-| Anime.js SSR crash | Animation pass (enforce `'use client'` first) | `next build` completes with no `window`/`document` errors |
-| Anime.js zombie animations — missing revert | Animation pass (establish pattern before any animations) | Navigate away and back — no double animation in dev Strict Mode |
-| `ssr: false` in Server Component | Animation pass + Landing page phase | `next build` succeeds without ssr:false error |
-| React Bits Tailwind v4 class breakage | Premium UI phase (audit immediately after paste) | `next build` succeeds; visual inspection confirms correct colors on warm background |
-| React Bits needs `'use client'` | Landing page phase + Premium UI phase | No build errors; no hooks-in-Server-Component errors |
-| Iconsax size forced by Button | Iconsax pass phase (fix `button.tsx` first) | DevTools SVG width matches `size` prop inside `<Button>` |
-| Virtual table animation destroys row positions | Animation pass (no-translateY-on-rows rule established first) | Run 500-row test; scroll table from top to bottom — all rows correctly positioned |
-| Global Anime.js selector leaking across components | Animation pass (createScope pattern enforced from day 1) | Navigate between landing and tool; no cross-component animation leakage |
+Architecture-level pitfalls must be resolved in Phase 15 before any feature work begins. All others are addressed in their respective feature phase.
+
+| Pitfall | Level | Prevention Phase | Verification |
+|---------|-------|------------------|--------------|
+| Server Action timeout — 2.85M comparisons | Architecture | Phase 15 | 10,000-name screening on Vercel completes in < 10s |
+| Full result storage exhausts browser memory | Architecture | Phase 15 | Heap < 200MB after 10,000-name screening |
+| Breaking existing `/tool` mode — isolation violation | Architecture | Phase 15 | Vitest suite green after every new file addition |
+| New types polluting `src/types/index.ts` | Architecture | Phase 15 | All v3.0 types in `src/types/screening.ts` |
+| Double Metaphone false positives on short/numeric strings | Implementation | Phase 16 | Short-string and non-alpha guard tests in Vitest |
+| Token Sort false positives on generic business tokens | Implementation | Phase 16 | Stop-token filter test with known FP inputs |
+| Unicode normalization applied post-scoring | Implementation | Phase 16 | Homoglyph detection test in Vitest |
+| File upload exceeds Vercel 4.5MB payload limit | Implementation | Phase 17 | 5MB+ CSV upload succeeds on Vercel (not just localhost) |
+| TanStack Virtual COL_WIDTHS collision with new schema | Implementation | Phase 18 | Separate `ScreeningResultsTable` component; visual alignment check |
+| Threshold slider frame rate — full re-render on each tick | Implementation | Phase 18 | Slider drag at 60fps with 10,000 rows (Chrome Performance tab) |
+| PDF generation in SSR context — window is not defined | Implementation | Phase 20 | `next build` succeeds; PDF download works on Vercel |
+| PDF non-Latin font encoding | Implementation | Phase 20 | Exported PDF shows Arabic/CJK names correctly |
+| Recharts SSR hydration mismatch | Implementation | Phase 22 | No hydration errors in browser console; chart renders |
+| Recharts dual-axis domain default `[0,1]` | Implementation | Phase 22 | Cumulative miss bars use full Y range; `domain` prop verified |
+| Evasion tier sequencing — Tier 2 before Tier 1 complete | Implementation | Phase 22 | All three velocity presets show correct tier ordering on chart |
+| Detection lag null handling — never-caught entity | Implementation | Phase 22 | Null lag shows "enhanced due diligence" flag; no crash or negative value |
 
 ---
 
 ## Sources
 
-- Anime.js v4 official — Using with React (createScope + useEffect + revert pattern): https://animejs.com/documentation/getting-started/using-with-react/
-- Anime.js v4 official — `revert()` method: https://animejs.com/documentation/scope/scope-methods/revert/
-- Next.js App Router — `permanentRedirect` and redirect docs: https://nextjs.org/docs/app/api-reference/functions/permanentRedirect
-- Next.js App Router — `generateMetadata` and metadata per route: https://nextjs.org/docs/app/api-reference/functions/generate-metadata
-- Next.js App Router — lazy loading and `ssr: false` constraint: https://nextjs.org/docs/app/guides/lazy-loading
-- Next.js App Router — hydration error reference: https://nextjs.org/docs/messages/react-hydration-error
-- shadcn/ui — Button SVG forced to size-4, icon resize impossible (confirmed issue): https://github.com/shadcn-ui/ui/issues/6316
-- shadcn/ui — `[&_svg]:size-4` design decision discussion: https://github.com/shadcn-ui/ui/discussions/6250
-- TanStack Virtual — `position:absolute` conflict with animation libraries: https://github.com/TanStack/virtual/discussions/476
-- TanStack Virtual — animate virtual list discussion: https://github.com/TanStack/virtual/discussions/482
-- TanStack Virtual + framer-motion transform conflict: https://www.answeroverflow.com/m/1277664625298768012
-- Tailwind v4 arbitrary values and breaking changes: https://tailwindcss.com/docs/upgrade-guide
-- Tailwind v4 `border` default changed from gray-200 to currentColor: Tailwind v4 changelog
-- Codebase inspection — `src/components/ResultsTable.tsx` lines 149–151: `position: absolute; transform: translateY(${virtualRow.start}px)` confirmed on every `<tr>`
-- Codebase inspection — `src/app/page.tsx` line 1: `'use client'` confirmed — tool is a Client Component
-- Codebase inspection — `package.json`: `next: 16.1.6`, `tailwindcss: ^4`, `@tanstack/react-virtual: ^3.13.19`, no animejs (not yet installed)
-- Codebase inspection — `src/app/globals.css`: Crowe tokens in `@theme inline` block confirmed; project-specific color approach documented
+- Vercel Functions Limitations (official) — 10s timeout for Hobby plan: https://vercel.com/docs/functions/limitations
+- Next.js GitHub Discussion #70621 — 413 on multipart route handlers, 4.5MB Vercel payload cap: https://github.com/vercel/next.js/discussions/70621
+- Next.js GitHub Issue #57501 — App Router body size limit: https://github.com/vercel/next.js/issues/57501
+- React-PDF GitHub Issue #2460 — `renderToBuffer` not working in App Router route handlers (unresolved): https://github.com/diegomura/react-pdf/issues/2460
+- React-PDF GitHub Issue #2350 — Unable to render in Next.js 13 App Router route handler: https://github.com/diegomura/react-pdf/issues/2350
+- jsPDF npm — client-side only, requires dynamic import with SSR disabled: https://www.npmjs.com/package/jspdf
+- Recharts GitHub Issue #821 — Multiple Y-axes support and known synchronization problems: https://github.com/recharts/recharts/issues/821
+- Recharts GitHub Issue #2815 — Multi-axis synchronization: https://github.com/recharts/recharts/issues/2815
+- Papa Parse official — Web Worker support, streaming large files: https://www.papaparse.com/
+- Web Workers in Next.js 15 with Comlink — `new Worker(new URL(..., import.meta.url))` pattern: https://park.is/blog_posts/20250417_nextjs_comlink_examples/
+- Jaro-Winkler vs Levenshtein in AML Screening (Flagright) — algorithm selection for entity types: https://www.flagright.com/post/jaro-winkler-vs-levenshtein-choosing-the-right-algorithm-for-aml-screening
+- Sanctions.io — The Problem of Name Matching in Sanctions Screening (non-Latin transliteration, token issues): https://www.sanctions.io/blog/the-problem-of-name-matching-in-sanctions-screening
+- Double Metaphone limitations — short strings and non-English words: https://xlinux.nist.gov/dads/HTML/doubleMetaphone.html
+- Codebase inspection — `src/app/actions/runTest.ts`: existing Server Action pattern confirmed; CANONICAL_RULE_ORDER and scoring loop timing context
+- Codebase inspection — `src/components/ResultsTable.tsx` lines 31–39: COL_WIDTHS hardcoded pixel constraint documented
+- Codebase inspection — `src/types/index.ts`: existing type contracts; isolation strategy for v3.0 types
+- Codebase inspection — `package.json`: `talisman: ^1.1.4` (Jaro-Winkler); no string-similarity, fuzzy, or phonetic library yet installed
 
 ---
-*Pitfalls research for: v2.0 Production Face — OFAC Sensitivity Testing Tool*
-*Researched: 2026-03-05*
+
+*Pitfalls research for: v3.0 Screening Engine — OFAC Sensitivity Testing Tool*
+*Researched: 2026-03-06*
+*Supersedes: PITFALLS.md dated 2026-03-05 (v2.0 pitfalls remain applicable and are preserved; this file covers v3.0-specific additions only)*
