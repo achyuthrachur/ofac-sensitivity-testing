@@ -63,7 +63,10 @@ Full phase details: `.planning/milestones/v2.0-ROADMAP.md`
   2. A benchmark commit proves Web Worker or server-action batching completes 10,000-name screening on the actual Vercel production deployment within 10 seconds
   3. `src/types/screening.ts`, `src/lib/screening/`, and `src/lib/simulation/` directories exist with stub modules — TypeScript strict build passes with zero errors
   4. The existing degradation demo (Sensitivity Test tab) still produces correct results after all Phase 15 file additions — Vitest suite remains green
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 15-01-PLAN.md — Type contracts, stub modules, client name list, and test scaffold
+- [ ] 15-02-PLAN.md — Benchmark spike (Web Worker + server action), Screening Mode tab wiring
 
 ### Phase 16: Scoring Engine
 **Goal**: Every input name produces a single `MatchResult` with the best SDN match score, the winning algorithm, a risk tier, and a name-length penalty flag — all three algorithms ship as an atomic unit so tier assignments are stable across re-runs.
