@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Screening Engine
-status: ready
-stopped_at: Roadmap created — ready to plan Phase 15
-last_updated: "2026-03-06"
-last_activity: 2026-03-06 — v3.0 roadmap created, 9 phases defined (15–23), 25 requirements mapped
+status: planning
+stopped_at: Completed 15-01-PLAN.md
+last_updated: "2026-03-06T16:59:44.307Z"
+last_activity: 2026-03-06 — v3.0 roadmap created (Phases 15–23), 25 requirements mapped with full coverage
 progress:
   total_phases: 9
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 2
+  completed_plans: 1
   percent: 0
 ---
 
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-03-06)
 
 ## Current Position
 
-Phase: Phase 15 (not started)
-Plan: —
-Status: Roadmap complete — ready to plan Phase 15
-Last activity: 2026-03-06 — v3.0 roadmap created (Phases 15–23), 25 requirements mapped with full coverage
+Phase: Phase 15 (in progress — 1/2 plans complete)
+Plan: 15-01 complete, 15-02 next
+Status: 15-01 complete — type contracts, stubs, and CLIENT_NAMES established
+Last activity: 2026-03-06 — Phase 15-01 complete (type contracts, stubs, CLIENT_NAMES, comlink installed)
 
-Progress: [░░░░░░░░░░] 0% v3.0 (9 phases, 0 complete)
+Progress: [██████████] 97% v3.0 (1/34 plans complete)
 
 ## Performance Metrics
 
@@ -103,6 +103,9 @@ Decisions are logged in PROJECT.md Key Decisions table.
 - [Phase 14-premium-ui]: SpotlightCard wraps all 4 form cards with amber spotlight at rgba(245,168,0,0.08); form-card className on outermost div preserves Phase 13 stagger; bg-card text-card-foreground restores shadcn surface styling
 - [Phase 14-premium-ui]: HeroAnimationShell owns the entire box-shadow expression for .cta-button — shadow-lg removed from HeroSection to eliminate Tailwind/Anime.js inline-style conflict
 - [Phase 14-premium-ui]: baseGlow set with duration:0 on mount so CTA button is visually lit from first render without requiring hover
+- [Phase 15-01]: All v3.0 types isolated to src/types/screening.ts — src/types/index.ts unchanged per isolation constraint
+- [Phase 15-01]: Comlink worker accepts sdnEntries as argument — avoids @data/* alias resolution failure in worker bundler
+- [Phase 15-01]: screenNames/runSimulation return never in Phase 15 stubs — signals unimplemented path to TypeScript callers
 
 ### Pending Todos
 
@@ -118,7 +121,7 @@ Decisions are logged in PROJECT.md Key Decisions table.
 
 ## Session Continuity
 
-Last session: 2026-03-06
-Stopped at: v3.0 roadmap created — Phases 15–23 defined, 25 requirements mapped
-Resume file: .planning/ROADMAP.md
+Last session: 2026-03-06T16:59:44.302Z
+Stopped at: Completed 15-01-PLAN.md
+Resume file: None
 Next action: Run /gsd:plan-phase 15 to plan Phase 15: Architecture Foundation

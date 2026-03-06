@@ -175,7 +175,7 @@ Plans:
 | 12. Icon Pass | v2.0 | 2/2 | Complete | 2026-03-06 |
 | 13. Animation Pass | v2.0 | 4/4 | Complete | 2026-03-06 |
 | 14. Premium UI | v2.0 | 5/5 | Complete | 2026-03-06 |
-| 15. Architecture Foundation | v3.0 | 0/TBD | Not started | — |
+| 15. Architecture Foundation | 1/2 | In Progress|  | — |
 | 16. Scoring Engine | v3.0 | 0/TBD | Not started | — |
 | 17. Input Parsing | v3.0 | 0/TBD | Not started | — |
 | 18. Results Display + Threshold | v3.0 | 0/TBD | Not started | — |
