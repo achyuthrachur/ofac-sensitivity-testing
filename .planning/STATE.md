@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Production Face
 status: planning
-stopped_at: Completed 13-animation-pass/13-03-PLAN.md
-last_updated: "2026-03-06T00:45:20.785Z"
+stopped_at: Completed 13-animation-pass/13-02-PLAN.md
+last_updated: "2026-03-06T00:47:33.276Z"
 last_activity: 2026-03-05 — Phase 12 icon pass complete; all 4 iconsax target files updated; visual checkpoint approved
 progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 10
-  completed_plans: 8
+  completed_plans: 9
   percent: 100
 ---
 
@@ -76,6 +76,8 @@ Recent decisions affecting v2.0 work:
 - [Phase 13-animation-pass]: FeatureStatsSection stat number split into prefix+stat-value+suffix sub-spans so ~ and ms remain visible during count-up animation
 - [Phase 13-animation-pass]: createScope scopes .form-card selector to left panel only — safe alongside TanStack virtual rows
 - [Phase 13-animation-pass]: stagger(80) 700ms plays on every page load, no sessionStorage guard per user decision
+- [Phase 13-animation-pass]: ReturnType<typeof animate> used for glow animation ref type — animate() returns JSAnimation class instance, avoids Animatable type import uncertainty
+- [Phase 13-animation-pass]: AnimationShell pattern: className='contents' wrapper div is layout-neutral; createScope + revert() in useEffect is mandatory for all Anime.js Client Components
 
 ### Pending Todos
 
@@ -88,6 +90,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-06T00:45:20.764Z
-Stopped at: Completed 13-animation-pass/13-03-PLAN.md
+Last session: 2026-03-06T00:47:33.271Z
+Stopped at: Completed 13-animation-pass/13-02-PLAN.md
 Resume file: None
