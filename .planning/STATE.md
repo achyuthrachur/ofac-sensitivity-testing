@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Screening Engine
-status: completed
-stopped_at: "Completed 15-02-PLAN.md (checkpoint: awaiting Vercel benchmark)"
-last_updated: "2026-03-06T19:31:38.164Z"
-last_activity: 2026-03-06 — Phase 15-01 complete (type contracts, stubs, CLIENT_NAMES, comlink installed)
+status: in_progress
+stopped_at: "Phase 15 complete — benchmark confirmed, Phase 16 ready to plan"
+last_updated: "2026-03-06T20:00:00.000Z"
+last_activity: 2026-03-06 — Phase 15 complete (benchmark: Web Worker + server action both confirmed; Web Worker primary for Phase 16)
 progress:
   total_phases: 9
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
-  percent: 97
+  total_plans: 4
+  completed_plans: 4
+  percent: 11
 ---
 
 # Project State
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-03-06)
 
 ## Current Position
 
-Phase: Phase 15 (in progress — 1/2 plans complete)
-Plan: 15-01 complete, 15-02 next
-Status: 15-01 complete — type contracts, stubs, and CLIENT_NAMES established
-Last activity: 2026-03-06 — Phase 15-01 complete (type contracts, stubs, CLIENT_NAMES, comlink installed)
+Phase: Phase 16 (ready to plan)
+Plan: All Phase 15 plans complete (15-01 + 15-02)
+Status: Phase 15 complete — benchmark confirmed both paths working; Web Worker primary for Phase 16
+Last activity: 2026-03-06 — Phase 15 complete (scroll fix deployed; benchmark results committed)
 
-Progress: [██████████] 97% v3.0 (1/34 plans complete)
+Progress: [█░░░░░░░░░] 11% v3.0 (1/9 phases complete)
 
 ## Performance Metrics
 
@@ -111,7 +111,7 @@ Decisions are logged in PROJECT.md Key Decisions table.
 
 ### Pending Todos
 
-- Phase 15 spike: benchmark Web Worker vs. server-action batching on live Vercel deployment before any screening computation code is written
+- ~~Phase 15 spike: benchmark confirmed — Web Worker primary for Phase 16~~ (DONE)
 - Phase 20 spike: audit 285 SDN entries for non-Latin character ranges before choosing NotoSans base64 subset size (full TTF ~3MB is too large)
 - Phase 22 prototype: mock Recharts ComposedChart with dual-axis and mock data before integrating real simulation output
 
@@ -123,7 +123,7 @@ Decisions are logged in PROJECT.md Key Decisions table.
 
 ## Session Continuity
 
-Last session: 2026-03-06T19:31:25.255Z
-Stopped at: Completed 15-02-PLAN.md (checkpoint: awaiting Vercel benchmark)
+Last session: 2026-03-06T20:00:00.000Z
+Stopped at: Phase 15 complete — benchmark confirmed, scroll fix deployed
 Resume file: None
-Next action: Run /gsd:plan-phase 15 to plan Phase 15: Architecture Foundation
+Next action: Run /gsd:plan-phase 16 to plan Phase 16: Scoring Engine
