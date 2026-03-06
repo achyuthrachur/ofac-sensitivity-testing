@@ -8,7 +8,7 @@
 
 ### Screening Mode — Input & Data
 
-- [ ] **SCREEN-01**: Screening Mode opens with a pre-loaded synthetic client name list already loaded and ready to screen (standalone demo — no upload required)
+- [x] **SCREEN-01**: Screening Mode opens with a pre-loaded synthetic client name list already loaded and ready to screen (standalone demo — no upload required)
 - [ ] **SCREEN-02**: User can upload a CSV file to replace the pre-loaded list (client-side parsing, column detection for files with/without headers)
 - [ ] **SCREEN-03**: User can upload an .xlsx file to replace the pre-loaded list (SheetJS CDN, client-side parsing)
 - [ ] **SCREEN-04**: User can paste names (one per line or comma-separated) to replace the pre-loaded list
@@ -16,8 +16,8 @@
 
 ### Screening Mode — Scoring Engine
 
-- [ ] **SCREEN-06**: Each input name is scored against all SDN entries using Jaro-Winkler + Double Metaphone + Token Sort Ratio; best match per input name is retained with winning algorithm noted
-- [ ] **SCREEN-07**: Results are assigned to one of five risk tiers based on match score: EXACT (≥0.97) / HIGH (0.90–0.96) / MEDIUM (0.80–0.89) / LOW (0.70–0.79) / CLEAR (<0.70)
+- [x] **SCREEN-06**: Each input name is scored against all SDN entries using Jaro-Winkler + Double Metaphone + Token Sort Ratio; best match per input name is retained with winning algorithm noted
+- [x] **SCREEN-07**: Results are assigned to one of five risk tiers based on match score: EXACT (≥0.97) / HIGH (0.90–0.96) / MEDIUM (0.80–0.89) / LOW (0.70–0.79) / CLEAR (<0.70)
 - [ ] **SCREEN-08**: Names ≤6 characters have their effective tier escalated by one level (name-length penalty)
 - [ ] **SCREEN-09**: Input names are Unicode-normalized (NFKD) before comparison to catch homoglyph substitution evasion
 - [ ] **SCREEN-10**: Threshold slider re-tiers all results client-side within 200ms without re-running the scoring engine
@@ -77,13 +77,13 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SCREEN-01 | Phase 15 | Pending |
+| SCREEN-01 | Phase 15 | Complete |
 | SCREEN-02 | Phase 17 | Pending |
 | SCREEN-03 | Phase 17 | Pending |
 | SCREEN-04 | Phase 17 | Pending |
 | SCREEN-05 | Phase 17 | Pending |
-| SCREEN-06 | Phase 16 | Pending |
-| SCREEN-07 | Phase 16 | Pending |
+| SCREEN-06 | Phase 16 | Complete |
+| SCREEN-07 | Phase 16 | Complete |
 | SCREEN-08 | Phase 16 | Pending |
 | SCREEN-09 | Phase 16 | Pending |
 | SCREEN-10 | Phase 18 | Pending |
