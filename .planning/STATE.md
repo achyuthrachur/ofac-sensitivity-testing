@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Screening Engine
-status: planning
-stopped_at: Completed 15-01-PLAN.md
-last_updated: "2026-03-06T16:59:44.307Z"
-last_activity: 2026-03-06 — v3.0 roadmap created (Phases 15–23), 25 requirements mapped with full coverage
+status: completed
+stopped_at: "Completed 15-02-PLAN.md (checkpoint: awaiting Vercel benchmark)"
+last_updated: "2026-03-06T19:31:38.164Z"
+last_activity: 2026-03-06 — Phase 15-01 complete (type contracts, stubs, CLIENT_NAMES, comlink installed)
 progress:
   total_phases: 9
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
-  percent: 0
+  completed_plans: 2
+  percent: 97
 ---
 
 # Project State
@@ -106,6 +106,8 @@ Decisions are logged in PROJECT.md Key Decisions table.
 - [Phase 15-01]: All v3.0 types isolated to src/types/screening.ts — src/types/index.ts unchanged per isolation constraint
 - [Phase 15-01]: Comlink worker accepts sdnEntries as argument — avoids @data/* alias resolution failure in worker bundler
 - [Phase 15-01]: screenNames/runSimulation return never in Phase 15 stubs — signals unimplemented path to TypeScript callers
+- [Phase 15-architecture-foundation]: BenchmarkPanel catches Phase 15 stub 'Not implemented' error and interprets it as worker roundtrip confirmed — correct interpretation for Phase 15 connectivity test
+- [Phase 15-architecture-foundation]: Outer tabs defaultValue=sensitivity ensures zero behavior change on first load — Screening Mode tab is additive, not breaking
 
 ### Pending Todos
 
@@ -121,7 +123,7 @@ Decisions are logged in PROJECT.md Key Decisions table.
 
 ## Session Continuity
 
-Last session: 2026-03-06T16:59:44.302Z
-Stopped at: Completed 15-01-PLAN.md
+Last session: 2026-03-06T19:31:25.255Z
+Stopped at: Completed 15-02-PLAN.md (checkpoint: awaiting Vercel benchmark)
 Resume file: None
 Next action: Run /gsd:plan-phase 15 to plan Phase 15: Architecture Foundation
