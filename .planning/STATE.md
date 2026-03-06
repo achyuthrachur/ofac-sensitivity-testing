@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Production Face
 status: planning
-stopped_at: Completed 14-premium-ui/14-03-PLAN.md
-last_updated: "2026-03-06T02:42:27.055Z"
+stopped_at: "Checkpoint: 14-premium-ui/14-05 — awaiting visual verification of all 4 UIPOL requirements"
+last_updated: "2026-03-06T02:43:46.905Z"
 last_activity: 2026-03-05 — Phase 12 icon pass complete; all 4 iconsax target files updated; visual checkpoint approved
 progress:
   total_phases: 5
   completed_phases: 4
   total_plans: 15
-  completed_plans: 12
+  completed_plans: 14
   percent: 100
 ---
 
@@ -83,6 +83,8 @@ Recent decisions affecting v2.0 work:
 - [Phase 14-premium-ui]: motion package (v12) installed as canonical framer-motion replacement — motion/react import path required by BlurText and StatTiltCard
 - [Phase 14-premium-ui]: bg-white/15 on stat cards (upgraded from bg-white/10) so tilt depth reads clearly against dark indigo background
 - [Phase 14-premium-ui]: SpotlightCard migration in tool/page.tsx completed — Cards 3+4 closing tags fixed (stashed 14-02 work restored partial state)
+- [Phase 14-premium-ui]: BlurText as="h1" preserves semantic HTML for SEO while HeroSection.tsx remains a Server Component — 'use client' boundary isolated to ClientHeroHeadline.tsx
+- [Phase 14-premium-ui]: SpotlightCard wraps all 4 form cards with amber spotlight at rgba(245,168,0,0.08); form-card className on outermost div preserves Phase 13 stagger; bg-card text-card-foreground restores shadcn surface styling
 
 ### Pending Todos
 
@@ -95,6 +97,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-06T02:42:27.049Z
-Stopped at: Completed 14-premium-ui/14-03-PLAN.md
+Last session: 2026-03-06T02:43:46.900Z
+Stopped at: Checkpoint: 14-premium-ui/14-05 — awaiting visual verification of all 4 UIPOL requirements
 Resume file: None
