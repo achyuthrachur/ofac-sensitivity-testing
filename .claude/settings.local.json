@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(vercel login:*)",
+      "Bash(test:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run:*)",
+      "Bash(node:*)",
+      "Bash(rm:*)",
+      "Bash(NODE_TLS_REJECT_UNAUTHORIZED=0 git push:*)",
+      "Skill(gsd:complete-milestone)",
+      "Skill(gsd:audit-milestone)",
+      "Skill(gsd:plan-milestone-gaps)",
+      "Bash(mkdir:*)",
+      "Bash(npx vitest:*)",
+      "Bash(NODE_TLS_REJECT_UNAUTHORIZED=0 vercel deploy:*)",
+      "Skill(gsd:execute-phase)",
+      "Bash(echo Exit: $?:*)",
+      "Bash(NODE_TLS_REJECT_UNAUTHORIZED=0 npx shadcn@latest:*)",
+      "Bash(NODE_TLS_REJECT_UNAUTHORIZED=0 vercel logs:*)",
+      "Bash(NODE_TLS_REJECT_UNAUTHORIZED=0 vercel inspect:*)",
+      "Bash(NODE_TLS_REJECT_UNAUTHORIZED=0 npx vercel:*)",
+      "Bash(NODE_TLS_REJECT_UNAUTHORIZED=0 npm run:*)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Skill(gsd:plan-phase)"
+    ]
+  }
+}
