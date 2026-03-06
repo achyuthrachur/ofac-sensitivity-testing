@@ -9,7 +9,7 @@ export function HeroSection() {
         <ClientHeroHeadline />
         <Link
           href="/tool"
-          className="cta-button mt-10 inline-flex items-center gap-1 bg-crowe-amber text-crowe-indigo-dark font-bold px-8 py-4 rounded-lg hover:bg-crowe-amber-dark transition-colors duration-200 shadow-lg"
+          className="cta-button mt-10 inline-flex items-center gap-1 bg-crowe-amber text-crowe-indigo-dark font-bold px-8 py-4 rounded-lg hover:bg-crowe-amber-dark transition-colors duration-200"
         >
           Configure Your Test
           <ArrowRight variant="Bold" size={18} color="currentColor" />
