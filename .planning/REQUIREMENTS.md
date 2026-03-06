@@ -77,37 +77,37 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SCREEN-01 | TBD | Pending |
-| SCREEN-02 | TBD | Pending |
-| SCREEN-03 | TBD | Pending |
-| SCREEN-04 | TBD | Pending |
-| SCREEN-05 | TBD | Pending |
-| SCREEN-06 | TBD | Pending |
-| SCREEN-07 | TBD | Pending |
-| SCREEN-08 | TBD | Pending |
-| SCREEN-09 | TBD | Pending |
-| SCREEN-10 | TBD | Pending |
-| SCREEN-11 | TBD | Pending |
-| SCREEN-12 | TBD | Pending |
-| SCREEN-13 | TBD | Pending |
-| SCREEN-14 | TBD | Pending |
-| SCREEN-15 | TBD | Pending |
-| SCREEN-16 | TBD | Pending |
-| SCREEN-17 | TBD | Pending |
-| SIM-01 | TBD | Pending |
-| SIM-02 | TBD | Pending |
-| SIM-03 | TBD | Pending |
-| SIM-04 | TBD | Pending |
-| SIM-05 | TBD | Pending |
-| SIM-06 | TBD | Pending |
-| SIM-07 | TBD | Pending |
-| SIM-08 | TBD | Pending |
+| SCREEN-01 | Phase 15 | Pending |
+| SCREEN-02 | Phase 17 | Pending |
+| SCREEN-03 | Phase 17 | Pending |
+| SCREEN-04 | Phase 17 | Pending |
+| SCREEN-05 | Phase 17 | Pending |
+| SCREEN-06 | Phase 16 | Pending |
+| SCREEN-07 | Phase 16 | Pending |
+| SCREEN-08 | Phase 16 | Pending |
+| SCREEN-09 | Phase 16 | Pending |
+| SCREEN-10 | Phase 18 | Pending |
+| SCREEN-11 | Phase 18 | Pending |
+| SCREEN-12 | Phase 18 | Pending |
+| SCREEN-13 | Phase 19 | Pending |
+| SCREEN-14 | Phase 18 | Pending |
+| SCREEN-15 | Phase 19 | Pending |
+| SCREEN-16 | Phase 20 | Pending |
+| SCREEN-17 | Phase 20 | Pending |
+| SIM-01 | Phase 21 | Pending |
+| SIM-02 | Phase 22 | Pending |
+| SIM-03 | Phase 22 | Pending |
+| SIM-04 | Phase 22 | Pending |
+| SIM-05 | Phase 22 | Pending |
+| SIM-06 | Phase 22 | Pending |
+| SIM-07 | Phase 21 | Pending |
+| SIM-08 | Phase 19 | Pending |
 
 **Coverage:**
 - v3.0 requirements: 25 total
-- Mapped to phases: 0 (TBD — roadmapper fills this)
-- Unmapped: 25 ⚠️
+- Mapped to phases: 25 (Phases 15–22)
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-03-06*
-*Last updated: 2026-03-06 after initial v3.0 definition*
+*Last updated: 2026-03-06 — traceability filled after roadmap creation (Phases 15–23)*

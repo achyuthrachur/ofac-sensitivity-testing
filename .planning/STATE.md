@@ -2,12 +2,12 @@
 gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Screening Engine
-status: planning
-stopped_at: Milestone v3.0 started — defining requirements
+status: ready
+stopped_at: Roadmap created — ready to plan Phase 15
 last_updated: "2026-03-06"
-last_activity: 2026-03-06 — Milestone v3.0 Screening Engine started
+last_activity: 2026-03-06 — v3.0 roadmap created, 9 phases defined (15–23), 25 requirements mapped
 progress:
-  total_phases: 0
+  total_phases: 9
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -21,24 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-06)
 
 **Core value:** A consultant can run a live OFAC sensitivity testing demonstration from a single URL with zero file prep — and a client can see results in real time.
-**Current focus:** v3.0 Screening Engine — defining requirements
+**Current focus:** v3.0 Screening Engine — roadmap defined, ready for Phase 15 planning
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: Phase 15 (not started)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-03-06 — Milestone v3.0 Screening Engine started
-Last activity: 2026-03-05 — Phase 12 icon pass complete; all 4 iconsax target files updated; visual checkpoint approved
+Status: Roadmap complete — ready to plan Phase 15
+Last activity: 2026-03-06 — v3.0 roadmap created (Phases 15–23), 25 requirements mapped with full coverage
 
-Progress: [██████████] 100% (v2.0 phases 10-12 complete)
+Progress: [░░░░░░░░░░] 0% v3.0 (9 phases, 0 complete)
 
 ## Performance Metrics
 
 **Velocity (v1.0 baseline):**
-- Total plans completed: 17
+- Total plans completed: 17 (v1.0) + ~15 (v2.0) = ~32 total
 - Average duration: ~18 min
-- Total execution time: ~5 hours
+- Total execution time: ~5 hours (v1.0)
 
 **Recent Trend:**
 - Last 5 plans: 87, 4, 30, 25, 8 min
@@ -51,7 +50,23 @@ Progress: [██████████] 100% (v2.0 phases 10-12 complete)
 ### Decisions
 
 Decisions are logged in PROJECT.md Key Decisions table.
-Recent decisions affecting v2.0 work:
+
+**v3.0 architecture decisions (from research):**
+
+- [Roadmap v3.0]: Web Worker (primary) + server-action batching at ≤1,000 names (fallback) for 2.85M comparison compute — Phase 15 spike must benchmark both on live Vercel before any screening code is written
+- [Roadmap v3.0]: talisman covers all three scoring algorithms — Double Metaphone at `talisman/phonetics/double-metaphone`, no new phonetics library needed
+- [Roadmap v3.0]: Token Sort Ratio is ~10 lines of TypeScript using the existing talisman JW import — no fuzzball install
+- [Roadmap v3.0]: SheetJS must be CDN install (`npm install --save https://cdn.sheetjs.com/xlsx-latest/xlsx-.tgz`) — npm registry version has high-severity CVE
+- [Roadmap v3.0]: jsPDF via dynamic import inside click handler only — never at module level, never in a route handler
+- [Roadmap v3.0]: Recharts SimulationChart must use `dynamic(..., { ssr: false })` and set explicit `domain={[0, 'dataMax']}` on right YAxis
+- [Roadmap v3.0]: All v3.0 code in new isolated directories — never modify `sampler.ts`, `ResultsTable.tsx`, `runTest.ts`, or merge v3.0 types into `src/types/index.ts`
+- [Roadmap v3.0]: @react-pdf/renderer deferred — App Router compatibility unresolved; jsPDF is the primary PDF path
+- [Roadmap v3.0]: ScreeningResultsTable is a new file separate from ResultsTable.tsx — column count change would break TanStack Virtual alignment in the existing table
+- [Roadmap v3.0]: Evasion tier activation by % of entities processed (not absolute snapshot index) — velocity-invariant for demo narrative coherence
+- [Roadmap v3.0]: Multi-algorithm scoring (Phases 16 SCREEN-06/07/08/09) ships as an atomic unit — partial shipping changes tier assignments on re-run, breaking consistency
+- [Roadmap v3.0]: Phase 23 adds minimum 1024px viewport gate with desktop-only notice — mobile layout explicitly out of scope
+
+**Decisions carried from v2.0:**
 
 - [Phase 08]: colgroup does not propagate to position:absolute virtual rows — every th/td needs explicit px width
 - [Phase 07]: Remove next/font/google — Crowe TLS proxy blocks googleapis.com at build time
@@ -91,15 +106,19 @@ Recent decisions affecting v2.0 work:
 
 ### Pending Todos
 
-None yet.
+- Phase 15 spike: benchmark Web Worker vs. server-action batching on live Vercel deployment before any screening computation code is written
+- Phase 20 spike: audit 285 SDN entries for non-Latin character ranges before choosing NotoSans base64 subset size (full TTF ~3MB is too large)
+- Phase 22 prototype: mock Recharts ComposedChart with dual-axis and mock data before integrating real simulation output
 
 ### Blockers/Concerns
 
-- [Phase 13]: Anime.js v4 onScroll callback name (onEnter vs onEnterForward) — verify against installed v4.3.6 at implementation time
-- [Phase 14]: React Bits components may install framer-motion alongside Anime.js — review CLI output after each add to avoid duplicate animation libraries
+- [Roadmap v3.0]: Web Worker + Next.js App Router webpack 5 bundling compatibility — stated available but described as "not yet stable" in research; Phase 15 must confirm empirically on the live Next.js 16 environment
+- [Roadmap v3.0]: Double Metaphone returning empty codes for CJK/Arabic inputs — two empty-code inputs must not produce a spurious false-positive match; Phase 16 must add guard
+- [Roadmap v3.0]: Token Sort stop-token list completeness — derived from common OFAC patterns; actual 285-entry dataset should be reviewed during Phase 16 to confirm coverage of all generic business tokens present
 
 ## Session Continuity
 
-Last session: 2026-03-06T02:56:59.063Z
-Stopped at: Completed 14-premium-ui/14-04-PLAN.md
-Resume file: None
+Last session: 2026-03-06
+Stopped at: v3.0 roadmap created — Phases 15–23 defined, 25 requirements mapped
+Resume file: .planning/ROADMAP.md
+Next action: Run /gsd:plan-phase 15 to plan Phase 15: Architecture Foundation
