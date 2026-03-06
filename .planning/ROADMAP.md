@@ -32,7 +32,7 @@ Full phase details: `.planning/milestones/v1.0-ROADMAP.md`
 - [x] **Phase 11: Tool Layout + Explanations** - Two-panel layout (configurator left, engine docs right), table row fix, full engine explanation panel with rules/scoring/methodology (completed 2026-03-05)
 - [x] **Phase 12: Icon Pass** - Full Iconsax replacement throughout form, results, and landing (completed 2026-03-05)
 - [x] **Phase 13: Animation Pass** - Anime.js scroll reveals, stagger entrances, count-up numbers, hover effects (completed 2026-03-06)
-- [ ] **Phase 14: Premium UI** - React Bits / 21st.dev hero elements, animated CTA button, SpotlightCard form sections
+- [x] **Phase 14: Premium UI** - React Bits / 21st.dev hero elements, animated CTA button, SpotlightCard form sections (completed 2026-03-06)
 
 ## Phase Details
 
@@ -138,4 +138,4 @@ Phases execute in numeric order: 10 → 11 → 12 → 13 → 14
 | 11. Tool Layout + Explanations | v2.0 | Complete    | 2026-03-05 | 2026-03-05 |
 | 12. Icon Pass | 2/2 | Complete    | 2026-03-06 | - |
 | 13. Animation Pass | 4/4 | Complete    | 2026-03-06 | - |
-| 14. Premium UI | 4/5 | In Progress|  | - |
+| 14. Premium UI | 5/5 | Complete   | 2026-03-06 | - |

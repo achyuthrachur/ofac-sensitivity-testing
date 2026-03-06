@@ -46,7 +46,7 @@ Requirements for the v2.0 Production Face milestone. Each maps to roadmap phases
 
 - [x] **UIPOL-01**: Landing hero headline uses React Bits BlurText or 21st.dev animated headline component
 - [x] **UIPOL-02**: Landing features/stats section uses React Bits TiltCard or 21st.dev premium card variant
-- [ ] **UIPOL-03**: Primary CTA button uses an animated amber glow treatment
+- [x] **UIPOL-03**: Primary CTA button uses an animated amber glow treatment
 - [x] **UIPOL-04**: Parameter form sections use SpotlightCard or premium card treatment
 
 ## Future Requirements
@@ -99,7 +99,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ICON-04 | Phase 12 | Complete |
 | UIPOL-01 | Phase 14 | Complete |
 | UIPOL-02 | Phase 14 | Complete |
-| UIPOL-03 | Phase 14 | Pending |
+| UIPOL-03 | Phase 14 | Complete |
 | UIPOL-04 | Phase 14 | Complete |
 
 **Coverage:**
