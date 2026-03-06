@@ -31,6 +31,8 @@ import { ResultsTable } from '@/components/ResultsTable';
 import { EngineExplanationPanel } from '@/components/EngineExplanationPanel';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { createScope, animate, stagger } from 'animejs';
+import { CLIENT_NAMES } from '@/data/clientNames';
+import { BenchmarkPanel } from '@/components/screening/BenchmarkPanel';
 
 // ─── Module-level constants ────────────────────────────────────────────────────
 
@@ -294,23 +296,58 @@ export default function Home() {
       </div>
 
       {/* RIGHT PANEL — flex-1, independently scrollable */}
-      <div className="flex-1 overflow-y-auto p-6">
-        {rows.length === 0 ? (
-          <EngineExplanationPanel />
-        ) : (
-          <Tabs defaultValue="results">
-            <TabsList className="mb-4">
-              <TabsTrigger value="results">Results</TabsTrigger>
-              <TabsTrigger value="explanation">Engine Docs</TabsTrigger>
+      <div className="flex-1 overflow-y-auto">
+        <Tabs defaultValue="sensitivity" className="h-full flex flex-col">
+          <div className="border-b border-border px-6 pt-4">
+            <TabsList>
+              <TabsTrigger value="sensitivity">Sensitivity Test</TabsTrigger>
+              <TabsTrigger value="screening">Screening Mode</TabsTrigger>
             </TabsList>
-            <TabsContent value="results">
-              <ResultsTable rows={rows} clientName={clientName} />
-            </TabsContent>
-            <TabsContent value="explanation">
+          </div>
+
+          <TabsContent value="sensitivity" className="flex-1 overflow-y-auto p-6">
+            {rows.length === 0 ? (
               <EngineExplanationPanel />
-            </TabsContent>
-          </Tabs>
-        )}
+            ) : (
+              <Tabs defaultValue="results">
+                <TabsList className="mb-4">
+                  <TabsTrigger value="results">Results</TabsTrigger>
+                  <TabsTrigger value="explanation">Engine Docs</TabsTrigger>
+                </TabsList>
+                <TabsContent value="results">
+                  <ResultsTable rows={rows} clientName={clientName} />
+                </TabsContent>
+                <TabsContent value="explanation">
+                  <EngineExplanationPanel />
+                </TabsContent>
+              </Tabs>
+            )}
+          </TabsContent>
+
+          <TabsContent value="screening" className="flex-1 overflow-y-auto p-6 space-y-6">
+            {/* Pre-loaded client name list */}
+            <div>
+              <h3 className="text-lg font-semibold text-crowe-indigo-dark mb-1">
+                Pre-loaded Client Names
+              </h3>
+              <p className="text-sm text-muted-foreground mb-3">
+                {CLIENT_NAMES.length} synthetic client names ready to screen — no upload required.
+              </p>
+              <div className="max-h-48 overflow-y-auto rounded-lg border border-border bg-muted/40 p-3">
+                <ul className="space-y-1">
+                  {CLIENT_NAMES.map((name, i) => (
+                    <li key={i} className="text-sm font-mono text-foreground">
+                      {String(i + 1).padStart(2, '0')}. {name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Benchmark panel */}
+            <BenchmarkPanel />
+          </TabsContent>
+        </Tabs>
       </div>
 
     </div>
