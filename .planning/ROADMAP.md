@@ -92,7 +92,13 @@ Plans:
   2. The 4 parameter form cards at "/tool" stagger in sequentially on page load with an 80ms delay between cards
   3. The stats numbers on the landing page count up with a number animation when the stats section scrolls into view
   4. CTA buttons show an amber glow on hover; feature cards lift with a shadow on hover
-**Plans**: TBD
+**Plans**: 4 plans
+
+Plans:
+- [ ] 13-01-PLAN.md — Install animejs + prerequisite markup (className selectors, FeatureStats sub-spans)
+- [ ] 13-02-PLAN.md — Landing AnimationShells: HowItWorks scroll reveal + stagger + hover lift, FeatureStats count-up, Hero CTA glow
+- [ ] 13-03-PLAN.md — Tool form card stagger on page load (ANIM-02)
+- [ ] 13-04-PLAN.md — Visual checkpoint: verify all 4 ANIM requirements in browser
 
 ### Phase 14: Premium UI
 **Goal**: The landing page and form look premium — React Bits and 21st.dev components replace plain static elements for a polished Crowe brand presentation
@@ -124,5 +130,5 @@ Phases execute in numeric order: 10 → 11 → 12 → 13 → 14
 | 10. Landing Page | v2.0 | 2/2 | Complete | 2026-03-05 |
 | 11. Tool Layout + Explanations | v2.0 | Complete    | 2026-03-05 | 2026-03-05 |
 | 12. Icon Pass | 2/2 | Complete    | 2026-03-06 | - |
-| 13. Animation Pass | v2.0 | 0/TBD | Not started | - |
+| 13. Animation Pass | v2.0 | 0/4 | Not started | - |
 | 14. Premium UI | v2.0 | 0/TBD | Not started | - |
