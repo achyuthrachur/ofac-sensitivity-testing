@@ -4,6 +4,14 @@
 
 A Next.js web application that replaces Crowe's RPA pipeline (UiPath/Power Automate/SharePoint/Outlook) for OFAC sanctions screening sensitivity testing. Consultants configure parameters via a form, the app samples a built-in synthetic SDN dataset and applies 10 degradation transformations, and outputs a virtualized results table with Jaro-Winkler catch-rate scoring and UTF-8 BOM CSV download — all in one browser session at a single Vercel URL. The app now includes a full marketing landing page, contextual engine documentation, a complete icon and animation pass, and premium React Bits UI components.
 
+## Current Milestone: v3.0 Screening Engine
+
+**Goal:** Transform the tool from a degradation demonstration into an actual OFAC screening engine with two new operational modes: Screening Mode (screen real name lists against the SDN dataset with tiered compliance framing) and Longitudinal Simulation Mode (simulate how catch rates evolve as evasion tactics escalate over time).
+
+**Target features:**
+- Screening Mode — CSV/Excel/paste input, 5-tier threshold scoring, multi-algorithm matching (JW + Double Metaphone + Token Sort), threshold slider, FP/FN dashboard, Cost of Miss calculator, PDF compliance memo export
+- Longitudinal Simulation Mode — per-update snapshot model, catch rate chart with 3 threshold bands + evasion tier markers, waterfall decomposition table, detection lag metric, recovery line simulation
+
 ## Core Value
 
 A consultant can run a live OFAC sensitivity testing demonstration from a single URL with zero file prep, no SharePoint, no email — and a client can see results in real time.
@@ -44,8 +52,14 @@ A consultant can run a live OFAC sensitivity testing demonstration from a single
 
 ### Active (v3.0)
 
-- [ ] Screening Mode — user pastes real client names; app screens against synthetic SDN entries and returns match candidates with scores
-- [ ] Longitudinal Simulation — track screening sensitivity over time as degradation rules evolve
+- [ ] Screening Mode: CSV/Excel/paste input (up to 10,000 names) screened against SDN dataset
+- [ ] Screening Mode: 5-tier threshold scoring (EXACT/HIGH/MEDIUM/LOW/CLEAR) with configurable threshold slider
+- [ ] Screening Mode: Multi-algorithm scoring (Jaro-Winkler + Double Metaphone + Token Sort Ratio)
+- [ ] Screening Mode: FP/FN counters + Cost of Miss calculator
+- [ ] Screening Mode: PDF compliance memo export (Crowe header, full match schema)
+- [ ] Longitudinal Simulation: Per-update snapshot model with 3 velocity presets
+- [ ] Longitudinal Simulation: Catch rate chart with 3 threshold bands + evasion tier markers
+- [ ] Longitudinal Simulation: Waterfall decomposition table + detection lag metric per entity
 
 ### Out of Scope
 
@@ -100,4 +114,4 @@ A consultant can run a live OFAC sensitivity testing demonstration from a single
 | Custom StatTiltCard (v2.0) | Stock React Bits TiltedCard is image-only (figure/motion.img); need children wrapper | ✓ Good — useMotionValue/useSpring pattern extracted cleanly |
 
 ---
-*Last updated: 2026-03-06 after v2.0 Production Face milestone*
+*Last updated: 2026-03-06 — v3.0 Screening Engine milestone started*
