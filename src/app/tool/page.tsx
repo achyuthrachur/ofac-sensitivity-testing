@@ -297,7 +297,7 @@ export default function Home() {
 
       {/* RIGHT PANEL — flex-1, independently scrollable */}
       <div className="flex-1 overflow-y-auto">
-        <Tabs defaultValue="sensitivity" className="h-full flex flex-col">
+        <Tabs defaultValue="sensitivity" className="h-full flex flex-col min-h-0">
           <div className="border-b border-border px-6 pt-4">
             <TabsList>
               <TabsTrigger value="sensitivity">Sensitivity Test</TabsTrigger>
@@ -324,7 +324,7 @@ export default function Home() {
             )}
           </TabsContent>
 
-          <TabsContent value="screening" className="flex-1 overflow-y-auto p-6 space-y-6">
+          <TabsContent value="screening" className="flex-1 min-h-0 overflow-y-auto p-6 space-y-6">
             {/* Pre-loaded client name list */}
             <div>
               <h3 className="text-lg font-semibold text-crowe-indigo-dark mb-1">
