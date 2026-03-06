@@ -59,6 +59,7 @@ export interface MatchResult {
   // Classification
   riskTier: RiskTier;
   nameLengthPenaltyApplied: boolean;
+  effectiveTier: RiskTier;
   transformationDetected: boolean;
 }
 
@@ -90,10 +91,10 @@ export interface ScreeningWorkerApi {
    * Screen a list of input names against all SDN entries.
    * @param inputNames - Names to screen (max MAX_SCREENING_NAMES)
    * @param sdnEntries - Full SDN dataset passed from main thread (avoids @data/* alias in worker)
-   * @returns Stub in Phase 15; populated MatchResult[] in Phase 16+
+   * @returns Populated MatchResult[] — Phase 16 implementation required
    */
   screenNames(
     inputNames: string[],
     sdnEntries: unknown[]
-  ): Promise<MatchResultStub[]>;
+  ): Promise<MatchResult[]>;
 }

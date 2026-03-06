@@ -8,13 +8,13 @@
 // Phase 15: stub implementation — Phase 16 replaces the throw with real logic.
 
 import * as Comlink from 'comlink';
-import type { ScreeningWorkerApi, MatchResultStub } from '@/types/screening';
+import type { ScreeningWorkerApi, MatchResult } from '@/types/screening';
 
 const workerApi: ScreeningWorkerApi = {
   async screenNames(
     _inputNames: string[],
     _sdnEntries: unknown[]
-  ): Promise<MatchResultStub[]> {
+  ): Promise<MatchResult[]> {
     throw new Error('screenNames: Not implemented — Phase 16');
   },
 };
