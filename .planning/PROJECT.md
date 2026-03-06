@@ -2,33 +2,22 @@
 
 ## What This Is
 
-A Next.js web application that replaces Crowe's RPA pipeline (UiPath/Power Automate/SharePoint/Outlook) for OFAC sanctions screening sensitivity testing. Consultants configure parameters via a form, the app samples a built-in synthetic SDN dataset and applies 10 degradation transformations, and outputs a virtualized results table with Jaro-Winkler catch-rate scoring and UTF-8 BOM CSV download — all in one browser session at a single Vercel URL.
+A Next.js web application that replaces Crowe's RPA pipeline (UiPath/Power Automate/SharePoint/Outlook) for OFAC sanctions screening sensitivity testing. Consultants configure parameters via a form, the app samples a built-in synthetic SDN dataset and applies 10 degradation transformations, and outputs a virtualized results table with Jaro-Winkler catch-rate scoring and UTF-8 BOM CSV download — all in one browser session at a single Vercel URL. The app now includes a full marketing landing page, contextual engine documentation, a complete icon and animation pass, and premium React Bits UI components.
 
 ## Core Value
 
 A consultant can run a live OFAC sensitivity testing demonstration from a single URL with zero file prep, no SharePoint, no email — and a client can see results in real time.
 
-## Current Milestone: v2.0 Production Face
-
-**Goal:** Transform the tool into a production-ready web app with a landing page, contextual explanations throughout, and a full premium animation and icon pass.
-
-**Target features:**
-- Landing page — Hero + CTA, How It Works (3-step), Features/stats, Crowe-branded footer
-- Inline form explanations — entity types, regions, rules, score interpretation
-- Results context — catch-rate guidance, score interpretation in results view
-- Full animation pass — Anime.js scroll reveals, stagger entrances, hover micro-interactions
-- Iconsax icon pass — replace all generic UI icons
-- Premium UI components — React Bits / 21st.dev cards, buttons, hero elements
-
-## Current State (v1.0 — shipped 2026-03-05)
+## Current State (v2.0 — shipped 2026-03-06)
 
 - **Live URL:** https://ofac-sensitivity-testing.vercel.app
 - **GitHub:** https://github.com/achyuthrachur/ofac-sensitivity-testing
-- **Stack:** Next.js 15 · TypeScript strict · Tailwind v4 · shadcn/ui · Vitest 4
+- **Stack:** Next.js 16 · TypeScript strict · Tailwind v4 · shadcn/ui · Vitest 4 · Anime.js v4 · motion v12 · iconsax-reactjs
 - **Dataset:** 285 synthetic SDN entries — Individual (160), Business (80), Vessel (30), Aircraft (15) — spanning Arabic, CJK, Cyrillic, Latin regions
 - **Rules:** 10 degradation rules — space removal, char substitution, diacritics, word reorder, abbreviation, truncation, phonetic, punctuation, prefix/suffix, alias
 - **Performance:** Worst-case 500 names × 10 rules in ~53ms (well under Vercel Hobby 10s timeout)
 - **Tests:** 57+ Vitest unit/integration tests, all green
+- **Source:** ~3,517 TypeScript/TSX LOC across 36 source files
 
 ## Requirements
 
@@ -44,14 +33,19 @@ A consultant can run a live OFAC sensitivity testing demonstration from a single
 - ✓ User can download results as UTF-8 BOM CSV with client name in filename — v1.0
 - ✓ App deployed to Vercel and accessible via URL — v1.0
 
-### Active (v2.0)
+### Validated (v2.0)
 
-- [ ] Landing page — Hero + CTA, How It Works, Features/stats, Crowe-branded footer
-- [ ] Inline form explanations — contextual guidance for entity types, regions, and degradation rules
-- [ ] Results context — score interpretation panel and catch-rate guidance in results view
-- [ ] Full animation pass — Anime.js scroll reveals, stagger entrances, hover micro-interactions
-- [ ] Iconsax icon pass — replace all generic UI icons throughout the app
-- [ ] Premium UI components — React Bits / 21st.dev cards, buttons, hero elements
+- ✓ Landing page at "/" — Hero + CTA, How It Works (3-step), Features/stats, Crowe-branded footer — v2.0
+- ✓ Engine explanation panel — all 10 rules, Jaro-Winkler scoring, dataset construction documented in right panel — v2.0
+- ✓ Two-panel tool layout — fixed-width configurator left, scrollable docs/results right — v2.0
+- ✓ Full Iconsax icon pass — Linear (form), Bold (CTA/nav), TwoTone (landing features), TickCircle/CloseCircle (results) — v2.0
+- ✓ Anime.js animation pass — scroll-triggered reveals, 80ms form stagger, count-up stats, CTA amber breathing glow, hover lift — v2.0
+- ✓ Premium React Bits UI — BlurText hero headline (word-by-word), StatTiltCard stats depth, always-on CTA amber glow, SpotlightCard form cards — v2.0
+
+### Active (v3.0)
+
+- [ ] Screening Mode — user pastes real client names; app screens against synthetic SDN entries and returns match candidates with scores
+- [ ] Longitudinal Simulation — track screening sensitivity over time as degradation rules evolve
 
 ### Out of Scope
 
@@ -66,7 +60,7 @@ A consultant can run a live OFAC sensitivity testing demonstration from a single
 
 **Original system:** UiPath/Power Automate RPA bot — Microsoft Forms → SharePoint file exchange → Python script → Outlook email delivery.
 
-**What was built:** Next.js app (App Router) with TypeScript degradation engine, built-in synthetic dataset, Zod-validated server action, full parameter form, virtualized results table, Crowe-branded UI.
+**What was built:** Next.js app (App Router) with TypeScript degradation engine, built-in synthetic dataset, Zod-validated server action, full parameter form, virtualized results table, Crowe-branded UI, marketing landing page, engine documentation panel, icon pass, animation pass, and premium React Bits components.
 
 **Key technical facts:**
 - `data/sdn.json` imported via `@data/*` tsconfig alias — flat `SdnEntry[]` array
@@ -75,6 +69,10 @@ A consultant can run a live OFAC sensitivity testing demonstration from a single
 - TanStack virtualizer requires explicit px width on every `<th>` and `<td>` — `colgroup` does not propagate to `position:absolute` rows
 - Crowe TLS proxy blocks `googleapis.com` at build time — `next/font/google` removed, plain CSS font stack used
 - Tailwind v4 requires color tokens in `@theme` inline block (not just `:root`) for `bg-crowe-*` utility generation
+- AnimationShell pattern: thin `'use client'` wrapper around Server Component children using `createScope({ root: rootRef }) + revert()` on unmount
+- Anime.js v4: `onEnterForward` (not `onEnter`) for play-once scroll reveals; named imports only
+- motion v12 (`motion/react`): required by React Bits BlurText + StatTiltCard; not framer-motion
+- Stock React Bits TiltedCard is image-only — custom `StatTiltCard` built using `useMotionValue`/`useSpring` pattern
 
 ## Constraints
 
@@ -96,6 +94,10 @@ A consultant can run a live OFAC sensitivity testing demonstration from a single
 | colgroup → explicit px per th/td | colgroup doesn't propagate to position:absolute virtual rows | ✓ Good — fixed production column misalignment |
 | Remove next/font/google | Crowe TLS proxy blocks googleapis.com at build time | ✓ Good — plain CSS stack works fine |
 | @theme inline for Crowe tokens | Tailwind v4 requires @theme for utility class generation | ✓ Good — bg-crowe-* classes generated correctly |
+| AnimationShell pattern (v2.0) | Server Components can't use useEffect; thin 'use client' wrapper keeps section as Server Component | ✓ Good — clean separation, revert() prevents leaks |
+| Anime.js onEnterForward (v2.0) | onEnter fires bidirectionally; onEnterForward fires only on downward scroll | ✓ Good — play-once scroll reveals work correctly |
+| motion v12 not framer-motion (v2.0) | React Bits registry declares motion@^12 dependency; framer-motion is legacy | ✓ Good — React 19 compatible |
+| Custom StatTiltCard (v2.0) | Stock React Bits TiltedCard is image-only (figure/motion.img); need children wrapper | ✓ Good — useMotionValue/useSpring pattern extracted cleanly |
 
 ---
-*Last updated: 2026-03-05 after v2.0 milestone started*
+*Last updated: 2026-03-06 after v2.0 Production Face milestone*

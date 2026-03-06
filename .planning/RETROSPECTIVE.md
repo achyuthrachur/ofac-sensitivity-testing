@@ -51,14 +51,63 @@
 
 ---
 
+## Milestone: v2.0 — Production Face
+
+**Shipped:** 2026-03-06
+**Phases:** 5 (10–14) | **Plans:** 15 | **Duration:** 4 days
+
+### What Was Built
+
+- Full marketing landing page — HeroSection, HowItWorks (3-step), FeatureStats (real engine numbers), CroweBrandedFooter (Server Components)
+- Two-panel tool layout — fixed-width configurator left, scrollable engine docs/results right; shadcn Tabs for post-run switching
+- EngineExplanationPanel documenting all 10 degradation rules, Jaro-Winkler scoring methodology, and dataset construction
+- Complete Iconsax icon pass — Linear (form headings), Bold (CTA/nav), TwoTone (landing features), TickCircle/CloseCircle (results table)
+- Anime.js animation pass — AnimationShell pattern per section, onEnterForward scroll reveals, 80ms form stagger, count-up stats, CTA amber breathing glow, hover lift
+- React Bits premium components — BlurText hero (word-by-word, 90ms stagger), custom StatTiltCard (spring-physics tilt), always-on CTA amber glow, SpotlightCard form cards
+
+### What Worked
+
+- **AnimationShell pattern** — thin `'use client'` wrapper around Server Component children with `createScope({ root: rootRef }) + revert()` proved clean and reusable; each section got its own isolated scope with no leaks
+- **Research gate catching API issues** — `onEnterForward` (not `onEnter`) for play-once scroll reveals was caught in RESEARCH.md before planning; saved a likely bug in execution
+- **Wave-based parallel execution** — Phase 14's Wave 2 (BlurText, StatTiltCard, SpotlightCard wiring) ran 3 agents in parallel; total execution time cut by ~60% vs sequential
+- **Treat "deploy it" as implicit checkpoint approval** — user intent was unambiguous; completing Wave 3 before deploying was the right call (UIPOL-03 would have been missing)
+
+### What Was Inefficient
+
+- **Stock TiltedCard image-only limitation** — React Bits `TiltedCard` accepts `imageSrc` only; discovered in research and required a custom `StatTiltCard` build. Could have been caught earlier if React Bits component APIs were pre-screened during discuss-phase
+- **SpotlightCard mid-stash JSX parse error** — parallel Wave 2 execution left `tool/page.tsx` with mismatched open/close tags (SpotlightCard open, Card close) because two agents touched the same file. The 14-03 agent auto-fixed it, but it was an avoidable conflict
+- **14-05 continuation agent lost Bash access** — the checkpoint continuation agent couldn't run gsd-tools commands and had to return asking for Bash; orchestrator ran the remaining commands directly. Consider always granting Bash in continuation agent prompts
+
+### Patterns Established
+
+- AnimationShell pattern: `'use client'` shell wrapping Server Component children; `createScope({ root: rootRef })` scoped to section root; `revert()` on unmount
+- Anime.js v4: `onEnterForward` for play-once downward-scroll reveals; named imports only (`animate`, `onScroll`, `stagger`, `createScope`)
+- motion v12 (`motion/react`): correct package for React Bits components; not framer-motion
+- Custom React Bits components: when stock component accepts only primitives (imageSrc), extract the `useMotionValue`/`useSpring` tilt pattern and build a children-accepting wrapper
+- SpotlightCard adaptation: strip `bg-neutral-900 border border-neutral-800` from copied source; caller supplies Crowe surface classes
+- BlurText adaptation: add `as` prop to copied source for semantic h1 rendering; use `onAnimationComplete` for post-headline subtitle fade
+
+### Key Lessons
+
+- **Pre-screen React Bits component APIs during discuss-phase** — knowing TiltedCard is image-only earlier would have shaped the discuss-phase decision (children-accepting from the start) and avoided the surprise in research
+- **Single-file parallel writes need collision detection** — when two Wave 2 plans touch the same file (e.g., tool/page.tsx), plan them to touch different sections or serialize them
+- **Checkpoint continuation agents need Bash in their prompt** — include Bash-accessible gsd-tools commands in the continuation prompt rather than relying on the agent to ask
+
+### Cost Observations
+
+- Sessions: ~3 focused sessions over 4 days (discuss-phase 13, discuss-phase 14 + plan, execute + deploy)
+- Notable: research-first workflow (discuss → research → plan → execute) added ~20 min per phase but prevented 2 confirmed bugs (onEnterForward, TiltedCard limitation)
+
+---
+
 ## Cross-Milestone Trends
 
-| Metric | v1.0 |
-|--------|------|
-| Phases | 9 |
-| Plans | 17 |
-| Commits | 98 |
-| Duration | 2 days |
-| Gap closure phases | 2 (8, 9) |
-| Human verify iterations | 3 (table alignment) |
-| Tests at completion | 57+ |
+| Metric | v1.0 | v2.0 |
+|--------|------|------|
+| Phases | 9 | 5 |
+| Plans | 17 | 15 |
+| Duration | 2 days | 4 days |
+| Gap closure phases | 2 (8, 9) | 0 |
+| Human verify iterations | 3 (table alignment) | 1 (checkpoint) |
+| Tests at completion | 57+ | 57+ (no regressions) |
+| New packages | — | animejs, motion, iconsax-reactjs |
