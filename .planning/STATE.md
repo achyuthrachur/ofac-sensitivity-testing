@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Production Face
 status: planning
-stopped_at: Completed 14-premium-ui/14-01-PLAN.md
-last_updated: "2026-03-06T02:36:08.382Z"
+stopped_at: Completed 14-premium-ui/14-03-PLAN.md
+last_updated: "2026-03-06T02:42:27.055Z"
 last_activity: 2026-03-05 — Phase 12 icon pass complete; all 4 iconsax target files updated; visual checkpoint approved
 progress:
   total_phases: 5
   completed_phases: 4
   total_plans: 15
-  completed_plans: 11
+  completed_plans: 12
   percent: 100
 ---
 
@@ -81,6 +81,8 @@ Recent decisions affecting v2.0 work:
 - [Phase 13-animation-pass]: All 7 Phase 13 visual checks passed on first review — scroll reveals, count-up, CTA glow, form card stagger all confirmed working
 - [Phase 14-premium-ui]: React.JSX.IntrinsicElements (not JSX.IntrinsicElements) required for React 19 — global JSX namespace removed
 - [Phase 14-premium-ui]: motion package (v12) installed as canonical framer-motion replacement — motion/react import path required by BlurText and StatTiltCard
+- [Phase 14-premium-ui]: bg-white/15 on stat cards (upgraded from bg-white/10) so tilt depth reads clearly against dark indigo background
+- [Phase 14-premium-ui]: SpotlightCard migration in tool/page.tsx completed — Cards 3+4 closing tags fixed (stashed 14-02 work restored partial state)
 
 ### Pending Todos
 
@@ -93,6 +95,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-06T02:36:02.204Z
-Stopped at: Completed 14-premium-ui/14-01-PLAN.md
+Last session: 2026-03-06T02:42:27.049Z
+Stopped at: Completed 14-premium-ui/14-03-PLAN.md
 Resume file: None
