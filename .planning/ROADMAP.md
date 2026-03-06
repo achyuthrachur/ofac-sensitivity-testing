@@ -77,7 +77,10 @@ Plans:
   2. A name of 6 characters or fewer shows its effective tier escalated by one level compared to the raw composite score tier
   3. A Cyrillic homoglyph input (e.g., "Рobert" with Cyrillic Р) scores EXACT against "Robert" — confirming NFKD normalization fires before any algorithm call
   4. Vitest unit tests cover all three algorithms in isolation, the composite formula, the name-length penalty, and the Unicode normalization path — all tests green
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 16-01-PLAN.md — Type contracts update (effectiveTier, ScreeningWorkerApi) + Wave 0 test scaffold
+- [ ] 16-02-PLAN.md — Pure scorer module + stub replacement (index.ts and screening.worker.ts)
 
 ### Phase 17: Input Parsing
 **Goal**: A user can replace the pre-loaded name list via CSV file upload, Excel file upload, or paste — the result in all cases is a validated `string[]` ready for the scoring engine, with actionable per-row error messages when the input is malformed.
@@ -176,7 +179,7 @@ Plans:
 | 13. Animation Pass | v2.0 | 4/4 | Complete | 2026-03-06 |
 | 14. Premium UI | v2.0 | 5/5 | Complete | 2026-03-06 |
 | 15. Architecture Foundation | 2/2 | Complete   | 2026-03-06 | — |
-| 16. Scoring Engine | v3.0 | 0/TBD | Not started | — |
+| 16. Scoring Engine | v3.0 | 0/2 | Not started | — |
 | 17. Input Parsing | v3.0 | 0/TBD | Not started | — |
 | 18. Results Display + Threshold | v3.0 | 0/TBD | Not started | — |
 | 19. Dashboard + Cost of Miss | v3.0 | 0/TBD | Not started | — |
