@@ -30,10 +30,10 @@ Requirements for the v2.0 Production Face milestone. Each maps to roadmap phases
 
 ### Animation
 
-- [ ] **ANIM-01**: Landing page sections animate in with scroll-triggered reveals as the user scrolls down
-- [ ] **ANIM-02**: Parameter form sections at /tool stagger in on page load
-- [ ] **ANIM-03**: Landing stats count up with a number animation when scrolled into view
-- [ ] **ANIM-04**: CTA buttons have an amber glow on hover; cards lift on hover
+- [x] **ANIM-01**: Landing page sections animate in with scroll-triggered reveals as the user scrolls down
+- [x] **ANIM-02**: Parameter form sections at /tool stagger in on page load
+- [x] **ANIM-03**: Landing stats count up with a number animation when scrolled into view
+- [x] **ANIM-04**: CTA buttons have an amber glow on hover; cards lift on hover
 
 ### Icon Pass
 
@@ -89,10 +89,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EXPL-02 | Phase 11 | Complete |
 | EXPL-03 | Phase 11 | Complete |
 | EXPL-04 | Phase 10 | Complete |
-| ANIM-01 | Phase 13 | Pending |
-| ANIM-02 | Phase 13 | Pending |
-| ANIM-03 | Phase 13 | Pending |
-| ANIM-04 | Phase 13 | Pending |
+| ANIM-01 | Phase 13 | Complete |
+| ANIM-02 | Phase 13 | Complete |
+| ANIM-03 | Phase 13 | Complete |
+| ANIM-04 | Phase 13 | Complete |
 | ICON-01 | Phase 12 | Complete |
 | ICON-02 | Phase 12 | Complete |
 | ICON-03 | Phase 12 | Complete |

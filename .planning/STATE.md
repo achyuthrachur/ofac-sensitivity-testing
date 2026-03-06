@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Production Face
 status: planning
-stopped_at: Phase 13 context gathered
-last_updated: "2026-03-06T00:22:32.410Z"
+stopped_at: Completed 13-animation-pass/13-01-PLAN.md
+last_updated: "2026-03-06T00:42:21.922Z"
 last_activity: 2026-03-05 — Phase 12 icon pass complete; all 4 iconsax target files updated; visual checkpoint approved
 progress:
   total_phases: 5
   completed_phases: 3
-  total_plans: 6
-  completed_plans: 6
+  total_plans: 10
+  completed_plans: 7
   percent: 100
 ---
 
@@ -72,6 +72,8 @@ Recent decisions affecting v2.0 work:
 - [Phase 12-icon-pass]: Iconsax inside shadcn Button requires className='size-auto' to bypass [&_svg:not([class*='size-'])]:size-4 selector
 - [Phase 12-icon-pass]: No animate-* or transform on icons in TanStack virtualizer tr children — virtualizer writes translateY to tr directly
 - [Phase 12-icon-pass]: TwoTone variant for HowItWorksSection (white cards), Bold variant for FeatureStatsSection (dark indigo bg) — TwoTone dims on dark, Bold gives full amber fill
+- [Phase 13-animation-pass]: Do NOT install react-animejs-wrapper — v3-only, incompatible with animejs v4; use raw animejs import
+- [Phase 13-animation-pass]: FeatureStatsSection stat number split into prefix+stat-value+suffix sub-spans so ~ and ms remain visible during count-up animation
 
 ### Pending Todos
 
@@ -84,6 +86,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-06T00:22:32.406Z
-Stopped at: Phase 13 context gathered
-Resume file: .planning/phases/13-animation-pass/13-CONTEXT.md
+Last session: 2026-03-06T00:42:21.919Z
+Stopped at: Completed 13-animation-pass/13-01-PLAN.md
+Resume file: None
