@@ -43,7 +43,7 @@ Full phase details: `.planning/milestones/v2.0-ROADMAP.md`
 **Milestone Goal:** Transform the tool from a degradation demonstration into a full OFAC screening engine with two new operational modes: Screening Mode (screen real or synthetic name lists against the SDN dataset with tiered compliance framing) and Longitudinal Simulation Mode (simulate how catch rates evolve as evasion tactics escalate over time).
 
 - [x] **Phase 15: Architecture Foundation** — Compute model spike, type contracts, directory structure, synthetic client name list; Web Worker + server action both confirmed on Vercel; Web Worker primary for Phase 16 (completed 2026-03-06)
-- [ ] **Phase 16: Scoring Engine** — Multi-algorithm scorer, 5-tier logic, name-length penalty, Unicode normalization
+- [x] **Phase 16: Scoring Engine** — Multi-algorithm scorer, 5-tier logic, name-length penalty, Unicode normalization (completed 2026-03-07)
 - [ ] **Phase 17: Input Parsing** — CSV/Excel/paste parsing, five-step import flow, client-side file validation
 - [ ] **Phase 18: Results Display + Threshold** — Split-pane results table, threshold slider, detail card, OFAC toggle
 - [ ] **Phase 19: Dashboard + Cost of Miss** — Summary dashboard, FP/FN rates, Cost of Miss calculator (shared component)
@@ -179,7 +179,7 @@ Plans:
 | 13. Animation Pass | v2.0 | 4/4 | Complete | 2026-03-06 |
 | 14. Premium UI | v2.0 | 5/5 | Complete | 2026-03-06 |
 | 15. Architecture Foundation | 2/2 | Complete   | 2026-03-06 | — |
-| 16. Scoring Engine | 1/2 | In Progress|  | — |
+| 16. Scoring Engine | 2/2 | Complete   | 2026-03-07 | — |
 | 17. Input Parsing | v3.0 | 0/TBD | Not started | — |
 | 18. Results Display + Threshold | v3.0 | 0/TBD | Not started | — |
 | 19. Dashboard + Cost of Miss | v3.0 | 0/TBD | Not started | — |
