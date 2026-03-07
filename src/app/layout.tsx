@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,7 +16,15 @@ export default function RootLayout({
         {/* Slim Crowe indigo header */}
         <header className="bg-crowe-indigo-dark px-6 py-3 flex items-center justify-between">
           <span className="text-white font-bold text-lg tracking-tight">Crowe</span>
-          <span className="text-white/80 text-sm">OFAC Sensitivity Testing</span>
+          <nav className="flex items-center gap-6">
+            <Link
+              href="/guide"
+              className="text-white/80 text-sm hover:text-white transition-colors"
+            >
+              User Guide
+            </Link>
+            <span className="text-white/80 text-sm">OFAC Sensitivity Testing</span>
+          </nav>
         </header>
 
         {children}

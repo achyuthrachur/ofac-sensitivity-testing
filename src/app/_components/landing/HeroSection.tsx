@@ -14,6 +14,15 @@ export function HeroSection() {
           Configure Your Test
           <ArrowRight variant="Bold" size={18} color="currentColor" />
         </Link>
+        <div className="mt-4">
+          <Link
+            href="/guide"
+            className="inline-flex items-center gap-1 text-white/70 text-sm hover:text-white transition-colors underline-offset-2 hover:underline"
+          >
+            Read the user guide
+            <ArrowRight variant="Linear" size={14} color="currentColor" />
+          </Link>
+        </div>
       </div>
     </section>
   );
