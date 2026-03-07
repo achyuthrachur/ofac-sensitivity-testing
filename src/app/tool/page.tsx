@@ -33,6 +33,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { createScope, animate, stagger } from 'animejs';
 import { CLIENT_NAMES } from '@/data/clientNames';
 import { BenchmarkPanel } from '@/components/screening/BenchmarkPanel';
+import { InputPanel } from '@/components/screening/InputPanel';
 
 // ─── Module-level constants ────────────────────────────────────────────────────
 
@@ -71,6 +72,7 @@ export default function Home() {
   const [clientName, setClientName] = useState('');
   const [result, setResult] = useState<ActionResult | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [activeNames, setActiveNames] = useState<string[]>(CLIENT_NAMES);
 
   const toolRoot = useRef<HTMLDivElement>(null);
   const scope = useRef<ReturnType<typeof createScope> | null>(null);
@@ -325,24 +327,10 @@ export default function Home() {
           </TabsContent>
 
           <TabsContent value="screening" className="flex-1 min-h-0 overflow-y-auto p-6 space-y-6">
-            {/* Pre-loaded client name list */}
-            <div>
-              <h3 className="text-lg font-semibold text-crowe-indigo-dark mb-1">
-                Pre-loaded Client Names
-              </h3>
-              <p className="text-sm text-muted-foreground mb-3">
-                {CLIENT_NAMES.length} synthetic client names ready to screen — no upload required.
-              </p>
-              <div className="max-h-48 overflow-y-auto rounded-lg border border-border bg-muted/40 p-3">
-                <ul className="space-y-1">
-                  {CLIENT_NAMES.map((name, i) => (
-                    <li key={i} className="text-sm font-mono text-foreground">
-                      {String(i + 1).padStart(2, '0')}. {name}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+            <InputPanel
+              onNamesLoaded={setActiveNames}
+              currentCount={activeNames.length}
+            />
 
             {/* Benchmark panel */}
             <BenchmarkPanel />
