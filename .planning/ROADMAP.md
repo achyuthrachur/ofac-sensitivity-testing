@@ -45,7 +45,7 @@ Full phase details: `.planning/milestones/v2.0-ROADMAP.md`
 - [x] **Phase 15: Architecture Foundation** — Compute model spike, type contracts, directory structure, synthetic client name list; Web Worker + server action both confirmed on Vercel; Web Worker primary for Phase 16 (completed 2026-03-06)
 - [x] **Phase 16: Scoring Engine** — Multi-algorithm scorer, 5-tier logic, name-length penalty, Unicode normalization (completed 2026-03-07)
 - [x] **Phase 17: Input Parsing** — CSV/Excel/paste parsing, five-step import flow, client-side file validation (completed 2026-03-07)
-- [ ] **Phase 17.1: User Guide Page (INSERTED)** — /guide route, sticky sidebar, four content sections covering OFAC context, Sensitivity Test, Screening Mode, and Scoring Engine
+- [x] **Phase 17.1: User Guide Page (INSERTED)** — /guide route, sticky sidebar, four content sections covering OFAC context, Sensitivity Test, Screening Mode, and Scoring Engine (completed 2026-03-07)
 - [ ] **Phase 18: Results Display + Threshold** — Split-pane results table, threshold slider, detail card, OFAC toggle
 - [ ] **Phase 19: Dashboard + Cost of Miss** — Summary dashboard, FP/FN rates, Cost of Miss calculator (shared component)
 - [ ] **Phase 20: Export** — CSV download and PDF compliance memo with Crowe branding and Unicode font
@@ -103,7 +103,7 @@ Plans:
 **Goal:** A first-time user — a consultant who knows OFAC compliance but has never seen this tool — can open /guide and immediately understand what the tool does, how to run a Sensitivity Test, how to use Screening Mode, and how the scoring engine works, without needing anyone to explain it to them.
 **Requirements**: (none — inserted phase, not mapped to v3.0 SCREEN/SIM requirement IDs)
 **Depends on:** Phase 17
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] 17.1-01-PLAN.md — /guide page with sticky sidebar + four content sections + nav link integration
@@ -195,7 +195,7 @@ Plans:
 | 15. Architecture Foundation | v3.0 | 2/2 | Complete | 2026-03-06 |
 | 16. Scoring Engine | v3.0 | 2/2 | Complete | 2026-03-07 |
 | 17. Input Parsing | v3.0 | 2/2 | Complete | 2026-03-07 |
-| 17.1. User Guide Page | v3.0 | 0/1 | Not started | — |
+| 17.1. User Guide Page | 1/1 | Complete   | 2026-03-07 | — |
 | 18. Results Display + Threshold | v3.0 | 0/TBD | Not started | — |
 | 19. Dashboard + Cost of Miss | v3.0 | 0/TBD | Not started | — |
 | 20. Export | v3.0 | 0/TBD | Not started | — |
