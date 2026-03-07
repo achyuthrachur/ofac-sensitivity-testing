@@ -46,10 +46,11 @@ describe('normalize', () => {
     expect(normalize('HASSAN IBN ALI')).toBe('HASSAN IBN ALI');
   });
 
-  it('Cyrillic homoglyph "Рobert" does not normalize to "ROBERT" — documents known limitation', () => {
-    // The Cyrillic Р (U+0420) is not stripped by NFKD diacritic removal;
-    // this test documents the known fact that normalize alone cannot fix homoglyphs.
-    expect(normalize('Рobert')).not.toBe('ROBERT');
+  it('Cyrillic homoglyph "Рobert" normalizes to "ROBERT" — confusable map handles Р→R', () => {
+    // The Cyrillic Р (U+0420) is NOT stripped by NFKD diacritic removal alone,
+    // but normalize() includes an explicit Cyrillic-to-Latin confusable map so
+    // OFAC evasion via homoglyphs is caught at the normalization stage.
+    expect(normalize('Рobert')).toBe('ROBERT');
   });
 });
 
