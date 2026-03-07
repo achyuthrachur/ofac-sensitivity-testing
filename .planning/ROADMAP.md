@@ -92,7 +92,10 @@ Plans:
   3. Pasting names (one-per-line and comma-separated formats both accepted) populates the input list with a live count shown as the user types
   4. A list of 10,001 names shows a validation error stopping the user before screening runs
   5. Malformed rows (empty lines, duplicate names, oversized entries) show per-row error messages with the row number and a specific fix instruction
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 17-01-PLAN.md — SheetJS CDN install + pure parseInput.ts module + unit tests (TDD)
+- [ ] 17-02-PLAN.md — InputPanel component + wire activeNames state into tool/page.tsx
 
 ### Phase 18: Results Display + Threshold
 **Goal**: After screening runs, the user sees a color-coded split-pane results view where every name has a tier badge, clicking any row opens a full detail card, and dragging the threshold slider re-tiers all results client-side within 200ms without re-running the scoring engine.
@@ -180,7 +183,7 @@ Plans:
 | 14. Premium UI | v2.0 | 5/5 | Complete | 2026-03-06 |
 | 15. Architecture Foundation | 2/2 | Complete   | 2026-03-06 | — |
 | 16. Scoring Engine | 2/2 | Complete    | 2026-03-07 | — |
-| 17. Input Parsing | v3.0 | 0/TBD | Not started | — |
+| 17. Input Parsing | v3.0 | 0/2 | Not started | — |
 | 18. Results Display + Threshold | v3.0 | 0/TBD | Not started | — |
 | 19. Dashboard + Cost of Miss | v3.0 | 0/TBD | Not started | — |
 | 20. Export | v3.0 | 0/TBD | Not started | — |
