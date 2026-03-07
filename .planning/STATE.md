@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Screening Engine
 status: completed
-stopped_at: Completed 16-02-PLAN.md — scorer.ts implemented, all 32 tests green, stubs replaced
-last_updated: "2026-03-07T03:49:40.121Z"
+stopped_at: Completed 17-01-PLAN.md — parseInput.ts implemented, 14 tests green, SheetJS 0.20.3 installed from CDN
+last_updated: "2026-03-07T04:54:18.505Z"
 last_activity: 2026-03-06 — Phase 15 complete (scroll fix deployed; benchmark results committed)
 progress:
   total_phases: 9
   completed_phases: 2
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 6
+  completed_plans: 5
   percent: 11
 ---
 
@@ -113,6 +113,8 @@ Decisions are logged in PROJECT.md Key Decisions table.
 - [Phase 16-scoring-engine]: Wave 0 TDD: scorer.test.ts written before scorer.ts exists — module-not-found failure is the intentional RED state; 29 tests specify the behavioral contract for Plan 02
 - [Phase 16-scoring-engine]: Cyrillic confusable map added to normalize(): NFKD alone cannot map Cyrillic Р to Latin R — added explicit table for 18 homoglyphs; required for SCREEN-09 EXACT tier detection
 - [Phase 16-scoring-engine]: Worker imports scorer.ts directly via @/lib/screening/scorer to avoid barrel re-export chain pulling server-only imports into worker bundle
+- [Phase 17-input-parsing]: ZIP magic byte pre-validation before XLSX.read — SheetJS silently CSV-parses any buffer rather than throwing; PK 0x03 0x04 check required for non-XLSX detection
+- [Phase 17-input-parsing]: SheetJS CDN install on Crowe network: curl downloads tgz fine (proxy handled); npm install --save https://... fails with SELF_SIGNED_CERT_IN_CHAIN even with NODE_TLS_REJECT_UNAUTHORIZED=0; workaround: install from local file, update package.json to CDN URL
 
 ### Pending Todos
 
@@ -128,7 +130,7 @@ Decisions are logged in PROJECT.md Key Decisions table.
 
 ## Session Continuity
 
-Last session: 2026-03-07T03:29:06.678Z
-Stopped at: Completed 16-02-PLAN.md — scorer.ts implemented, all 32 tests green, stubs replaced
+Last session: 2026-03-07T04:54:18.490Z
+Stopped at: Completed 17-01-PLAN.md — parseInput.ts implemented, 14 tests green, SheetJS 0.20.3 installed from CDN
 Resume file: None
 Next action: Run /gsd:plan-phase 16 to plan Phase 16: Scoring Engine

@@ -9,10 +9,10 @@
 ### Screening Mode — Input & Data
 
 - [x] **SCREEN-01**: Screening Mode opens with a pre-loaded synthetic client name list already loaded and ready to screen (standalone demo — no upload required)
-- [ ] **SCREEN-02**: User can upload a CSV file to replace the pre-loaded list (client-side parsing, column detection for files with/without headers)
-- [ ] **SCREEN-03**: User can upload an .xlsx file to replace the pre-loaded list (SheetJS CDN, client-side parsing)
-- [ ] **SCREEN-04**: User can paste names (one per line or comma-separated) to replace the pre-loaded list
-- [ ] **SCREEN-05**: Input supports up to 10,000 names; displays count and validation errors (format, duplicates, oversized file)
+- [x] **SCREEN-02**: User can upload a CSV file to replace the pre-loaded list (client-side parsing, column detection for files with/without headers)
+- [x] **SCREEN-03**: User can upload an .xlsx file to replace the pre-loaded list (SheetJS CDN, client-side parsing)
+- [x] **SCREEN-04**: User can paste names (one per line or comma-separated) to replace the pre-loaded list
+- [x] **SCREEN-05**: Input supports up to 10,000 names; displays count and validation errors (format, duplicates, oversized file)
 
 ### Screening Mode — Scoring Engine
 
@@ -78,10 +78,10 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | SCREEN-01 | Phase 15 | Complete |
-| SCREEN-02 | Phase 17 | Pending |
-| SCREEN-03 | Phase 17 | Pending |
-| SCREEN-04 | Phase 17 | Pending |
-| SCREEN-05 | Phase 17 | Pending |
+| SCREEN-02 | Phase 17 | Complete |
+| SCREEN-03 | Phase 17 | Complete |
+| SCREEN-04 | Phase 17 | Complete |
+| SCREEN-05 | Phase 17 | Complete |
 | SCREEN-06 | Phase 16 | Complete |
 | SCREEN-07 | Phase 16 | Complete |
 | SCREEN-08 | Phase 16 | Complete |

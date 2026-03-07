@@ -183,7 +183,7 @@ Plans:
 | 14. Premium UI | v2.0 | 5/5 | Complete | 2026-03-06 |
 | 15. Architecture Foundation | 2/2 | Complete   | 2026-03-06 | — |
 | 16. Scoring Engine | 2/2 | Complete    | 2026-03-07 | — |
-| 17. Input Parsing | v3.0 | 0/2 | Not started | — |
+| 17. Input Parsing | 1/2 | In Progress|  | — |
 | 18. Results Display + Threshold | v3.0 | 0/TBD | Not started | — |
 | 19. Dashboard + Cost of Miss | v3.0 | 0/TBD | Not started | — |
 | 20. Export | v3.0 | 0/TBD | Not started | — |
