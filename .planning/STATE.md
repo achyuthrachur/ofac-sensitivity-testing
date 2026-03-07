@@ -117,6 +117,10 @@ Decisions are logged in PROJECT.md Key Decisions table.
 - [Phase 17-input-parsing]: SheetJS CDN install on Crowe network: curl downloads tgz fine (proxy handled); npm install --save https://... fails with SELF_SIGNED_CERT_IN_CHAIN even with NODE_TLS_REJECT_UNAUTHORIZED=0; workaround: install from local file, update package.json to CDN URL
 - [Phase 17-input-parsing]: InputPanel does not import XLSX directly — parseInput.ts encapsulates SheetJS; noUnusedLocals would fail build otherwise
 
+### Roadmap Evolution
+
+- Phase 17.1 inserted after Phase 17: User Guide Page — /guide route, sidebar+content layout, covers Sensitivity Test + Screening Mode + Scoring Engine + OFAC compliance context (INSERTED)
+
 ### Pending Todos
 
 - ~~Phase 15 spike: benchmark confirmed — Web Worker primary for Phase 16~~ (DONE)
