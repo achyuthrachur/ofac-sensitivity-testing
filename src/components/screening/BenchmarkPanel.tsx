@@ -182,7 +182,7 @@ export function BenchmarkPanel() {
         <button
           onClick={runServerBenchmark}
           disabled={serverBench.status === 'running'}
-          className="w-full rounded-md bg-crowe-indigo text-white text-sm font-semibold py-2 px-4
+          className="w-full rounded-md bg-crowe-indigo-core text-white text-sm font-semibold py-2 px-4
                      hover:bg-crowe-indigo-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {serverBench.status === 'running' ? serverBench.label : 'Run Server Action Benchmark (1k batch)'}

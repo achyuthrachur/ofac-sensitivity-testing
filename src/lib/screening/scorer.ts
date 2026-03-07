@@ -137,14 +137,34 @@ export function scorePair(
   return { jw, dm, tsr, composite };
 }
 
+// ─── Internal DM cache helper ─────────────────────────────────────────────────
+
+/**
+ * Compute DM bonus from pre-computed code pairs — avoids re-running
+ * doubleMetaphone() on the same SDN entry for every input name.
+ */
+function dmBonusFromCodes(
+  [ap, as_]: [string, string],
+  [bp, bs]: [string, string]
+): number {
+  if (!ap && !as_) return 0; // Guard: CJK/Arabic
+  if (!bp && !bs)  return 0;
+  const codesA = new Set([ap, as_].filter(Boolean));
+  const codesB = new Set([bp, bs].filter(Boolean));
+  for (const code of codesA) {
+    if (codesB.has(code)) return 1.0;
+  }
+  return 0.0;
+}
+
 // ─── screenNames (SCREEN-06/07/08/09) ────────────────────────────────────────
 
 /**
  * Screen a list of input names against an SDN dataset.
  *
- * PERFORMANCE: SDN names are pre-normalized ONCE before the outer loop.
- * With 285 SDN entries and up to 10,000 inputs this saves up to 2.85M redundant
- * normalize() calls compared to normalizing inside the inner loop.
+ * PERFORMANCE: SDN names are pre-normalized AND DM codes pre-computed ONCE
+ * before any loops. This reduces doubleMetaphone() calls from ~5.8M to ~10k
+ * for a 10,000-name run against 290 SDN entries.
  *
  * @throws {Error} if sdnEntries is empty (guard against silent empty results)
  */
@@ -156,14 +176,18 @@ export function screenNames(
     throw new Error('screenNames: sdnEntries must not be empty');
   }
 
-  // Pre-normalize SDN names ONCE — saves 2.85M redundant normalize() calls
-  const normalizedSdn = sdnEntries.map(entry => ({
-    entry,
-    normalizedName: normalize(entry.name),
-  }));
+  // Pre-normalize AND pre-compute DM codes for SDN entries ONCE
+  const sdnCache = sdnEntries.map(entry => {
+    const normalizedName = normalize(entry.name);
+    const [dmP, dmS] = doubleMetaphone(normalizedName) as [string, string];
+    return { entry, normalizedName, dmCodes: [dmP, dmS] as [string, string] };
+  });
 
   return inputNames.map((rawInput): MatchResult => {
     const normalizedInput = normalize(rawInput);
+    // Compute DM codes for input name ONCE (not once per SDN entry)
+    const inputDmCodes = doubleMetaphone(normalizedInput) as [string, string];
+
     let best: {
       composite: number;
       jw: number;
@@ -172,8 +196,11 @@ export function screenNames(
       entry: SdnEntry;
     } | null = null;
 
-    for (const { entry, normalizedName } of normalizedSdn) {
-      const { jw, dm, tsr, composite } = scorePair(normalizedInput, normalizedName);
+    for (const { entry, normalizedName, dmCodes } of sdnCache) {
+      const jw  = jaroWinkler(normalizedInput, normalizedName);
+      const dm  = dmBonusFromCodes(inputDmCodes, dmCodes);
+      const tsr = tokenSortRatio(normalizedInput, normalizedName);
+      const composite = jw * 0.6 + dm * 0.25 + tsr * 0.15;
       if (best === null || composite > best.composite) {
         best = { composite, jw, dm, tsr, entry };
       }
