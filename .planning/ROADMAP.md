@@ -44,7 +44,7 @@ Full phase details: `.planning/milestones/v2.0-ROADMAP.md`
 
 - [x] **Phase 15: Architecture Foundation** — Compute model spike, type contracts, directory structure, synthetic client name list; Web Worker + server action both confirmed on Vercel; Web Worker primary for Phase 16 (completed 2026-03-06)
 - [x] **Phase 16: Scoring Engine** — Multi-algorithm scorer, 5-tier logic, name-length penalty, Unicode normalization (completed 2026-03-07)
-- [ ] **Phase 17: Input Parsing** — CSV/Excel/paste parsing, five-step import flow, client-side file validation
+- [x] **Phase 17: Input Parsing** — CSV/Excel/paste parsing, five-step import flow, client-side file validation (completed 2026-03-07)
 - [ ] **Phase 18: Results Display + Threshold** — Split-pane results table, threshold slider, detail card, OFAC toggle
 - [ ] **Phase 19: Dashboard + Cost of Miss** — Summary dashboard, FP/FN rates, Cost of Miss calculator (shared component)
 - [ ] **Phase 20: Export** — CSV download and PDF compliance memo with Crowe branding and Unicode font
@@ -183,7 +183,7 @@ Plans:
 | 14. Premium UI | v2.0 | 5/5 | Complete | 2026-03-06 |
 | 15. Architecture Foundation | 2/2 | Complete   | 2026-03-06 | — |
 | 16. Scoring Engine | 2/2 | Complete    | 2026-03-07 | — |
-| 17. Input Parsing | 1/2 | In Progress|  | — |
+| 17. Input Parsing | 2/2 | Complete   | 2026-03-07 | — |
 | 18. Results Display + Threshold | v3.0 | 0/TBD | Not started | — |
 | 19. Dashboard + Cost of Miss | v3.0 | 0/TBD | Not started | — |
 | 20. Export | v3.0 | 0/TBD | Not started | — |

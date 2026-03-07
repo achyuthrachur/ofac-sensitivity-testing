@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Screening Engine
 status: completed
-stopped_at: Completed 17-01-PLAN.md — parseInput.ts implemented, 14 tests green, SheetJS 0.20.3 installed from CDN
-last_updated: "2026-03-07T04:54:18.505Z"
+stopped_at: Paused at Task 3 checkpoint — 17-02 Tasks 1+2 complete, awaiting browser verification of InputPanel
+last_updated: "2026-03-07T05:22:13.438Z"
 last_activity: 2026-03-06 — Phase 15 complete (scroll fix deployed; benchmark results committed)
 progress:
   total_phases: 9
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 6
-  completed_plans: 5
+  completed_plans: 6
   percent: 11
 ---
 
@@ -115,6 +115,7 @@ Decisions are logged in PROJECT.md Key Decisions table.
 - [Phase 16-scoring-engine]: Worker imports scorer.ts directly via @/lib/screening/scorer to avoid barrel re-export chain pulling server-only imports into worker bundle
 - [Phase 17-input-parsing]: ZIP magic byte pre-validation before XLSX.read — SheetJS silently CSV-parses any buffer rather than throwing; PK 0x03 0x04 check required for non-XLSX detection
 - [Phase 17-input-parsing]: SheetJS CDN install on Crowe network: curl downloads tgz fine (proxy handled); npm install --save https://... fails with SELF_SIGNED_CERT_IN_CHAIN even with NODE_TLS_REJECT_UNAUTHORIZED=0; workaround: install from local file, update package.json to CDN URL
+- [Phase 17-input-parsing]: InputPanel does not import XLSX directly — parseInput.ts encapsulates SheetJS; noUnusedLocals would fail build otherwise
 
 ### Pending Todos
 
@@ -130,7 +131,7 @@ Decisions are logged in PROJECT.md Key Decisions table.
 
 ## Session Continuity
 
-Last session: 2026-03-07T04:54:18.490Z
-Stopped at: Completed 17-01-PLAN.md — parseInput.ts implemented, 14 tests green, SheetJS 0.20.3 installed from CDN
+Last session: 2026-03-07T05:22:08.020Z
+Stopped at: Paused at Task 3 checkpoint — 17-02 Tasks 1+2 complete, awaiting browser verification of InputPanel
 Resume file: None
 Next action: Run /gsd:plan-phase 16 to plan Phase 16: Scoring Engine
