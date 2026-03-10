@@ -32,8 +32,11 @@ import { EngineExplanationPanel } from '@/components/EngineExplanationPanel';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { createScope, animate, stagger } from 'animejs';
 import { CLIENT_NAMES } from '@/data/clientNames';
-import { BenchmarkPanel } from '@/components/screening/BenchmarkPanel';
 import { InputPanel } from '@/components/screening/InputPanel';
+import * as Comlink from 'comlink';
+import type { ScreeningWorkerApi, MatchResult } from '@/types/screening';
+import sdnData from '@data/sdn.json';
+import { ScreeningResultsPane } from '@/components/screening/ScreeningResultsPane';
 
 // ─── Module-level constants ────────────────────────────────────────────────────
 
@@ -73,9 +76,14 @@ export default function Home() {
   const [result, setResult] = useState<ActionResult | null>(null);
   const [isPending, startTransition] = useTransition();
   const [activeNames, setActiveNames] = useState<string[]>(CLIENT_NAMES);
+  const [matchResults, setMatchResults] = useState<MatchResult[]>([]);
+  const [isScreening, setIsScreening] = useState(false);
+  const [workerAvailable, setWorkerAvailable] = useState(false);
 
   const toolRoot = useRef<HTMLDivElement>(null);
   const scope = useRef<ReturnType<typeof createScope> | null>(null);
+  const workerRef = useRef<Worker | null>(null);
+  const apiRef = useRef<Comlink.Remote<ScreeningWorkerApi> | null>(null);
 
   useEffect(() => {
     scope.current = createScope({ root: toolRoot }).add(() => {
@@ -88,6 +96,25 @@ export default function Home() {
       });
     });
     return () => scope.current?.revert();
+  }, []);
+
+  useEffect(() => {
+    try {
+      workerRef.current = new Worker(
+        new URL('../../lib/workers/screening.worker.ts', import.meta.url),
+        { type: 'module' }
+      );
+      apiRef.current = Comlink.wrap<ScreeningWorkerApi>(workerRef.current);
+      setWorkerAvailable(true);
+    } catch {
+      setWorkerAvailable(false);
+    }
+    return () => {
+      try {
+        if (apiRef.current) apiRef.current[Comlink.releaseProxy]();
+        workerRef.current?.terminate();
+      } catch { /* cleanup errors are non-critical */ }
+    };
   }, []);
 
   const rows: ResultRow[] = result?.ok ? result.rows : [];
@@ -105,6 +132,20 @@ export default function Home() {
 
   const handleSelectAll = (checked: boolean | 'indeterminate') => {
     setRuleIds(checked === true ? [...CANONICAL_RULE_ORDER] : []);
+  };
+
+  const handleRunScreening = async () => {
+    if (!apiRef.current) return;
+    setIsScreening(true);
+    try {
+      const results = await apiRef.current.screenNames(
+        activeNames,
+        sdnData as unknown[]
+      );
+      setMatchResults(results);
+    } finally {
+      setIsScreening(false);
+    }
   };
 
   // ─── Render ─────────────────────────────────────────────────────────────────
@@ -326,14 +367,37 @@ export default function Home() {
             )}
           </TabsContent>
 
-          <TabsContent value="screening" className="flex-1 min-h-0 overflow-y-auto p-6 space-y-6">
-            <InputPanel
-              onNamesLoaded={setActiveNames}
-              currentCount={activeNames.length}
-            />
-
-            {/* Benchmark panel */}
-            <BenchmarkPanel />
+          <TabsContent value="screening" className="flex-1 min-h-0 flex flex-col overflow-hidden p-6 gap-4">
+            {matchResults.length === 0 ? (
+              <div className="flex flex-col gap-6 flex-1">
+                <InputPanel onNamesLoaded={setActiveNames} currentCount={activeNames.length} />
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={handleRunScreening}
+                    disabled={!workerAvailable || isScreening || activeNames.length === 0}
+                    className="bg-crowe-amber text-crowe-indigo-dark text-sm font-semibold py-2 px-6 rounded-md
+                               hover:bg-crowe-amber-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors
+                               flex items-center gap-2"
+                  >
+                    {isScreening ? (
+                      <>
+                        <Refresh2 size={16} color="currentColor" className="size-auto animate-spin" />
+                        Screening...
+                      </>
+                    ) : (
+                      'Run Screening'
+                    )}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <ScreeningResultsPane
+                matchResults={matchResults}
+                activeNamesCount={activeNames.length}
+                onChangeNames={() => setMatchResults([])}
+              />
+            )}
           </TabsContent>
         </Tabs>
       </div>
