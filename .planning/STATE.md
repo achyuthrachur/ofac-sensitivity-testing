@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Screening Engine
-status: active
+status: verifying
 stopped_at: Completed 18-03-PLAN.md — Phase 18 results display + threshold complete
-last_updated: "2026-03-10T16:53:40.961Z"
-last_activity: 2026-03-07 — Phase 17.1 complete (/guide page shipped)
+last_updated: "2026-03-10T17:02:50.842Z"
+last_activity: 2026-03-10 — Phase 18 complete (ScreeningResultsPane + threshold slider + OFAC lock shipped)
 progress:
   total_phases: 10
   completed_phases: 5
   total_plans: 10
   completed_plans: 10
-  percent: 44
+  percent: 55
 ---
 
 # Project State
