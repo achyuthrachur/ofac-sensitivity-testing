@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Screening Engine
 status: completed
-stopped_at: Completed 18-02-PLAN.md
-last_updated: "2026-03-10T16:04:23.155Z"
+stopped_at: "Checkpoint: 18-03 Task 3 human-verify — awaiting user approval"
+last_updated: "2026-03-10T16:13:57.788Z"
 last_activity: 2026-03-07 — Phase 17.1 complete (/guide page shipped)
 progress:
   total_phases: 10
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 10
-  completed_plans: 9
+  completed_plans: 10
   percent: 44
 ---
 
@@ -121,6 +121,9 @@ Decisions are logged in PROJECT.md Key Decisions table.
 - [Phase 18-results-display-threshold]: Tier-collapse: when EXACT threshold > 1.0, HIGH absorbs all scores above mediumFloor — preserves meaningful tier assignment across all slider positions
 - [Phase 18-results-display-threshold]: shadcn Slider installed manually from registry JSON — Crowe TLS proxy blocks npm install for CDN-hosted packages; radix-ui already present so no new dep needed
 - [Phase 18]: TIER_COLORS hex appended with 26 (hex ~15% alpha) for callout background tint; Warning2 substituted for WarningCircle (not available in iconsax-reactjs)
+- [Phase 18-results-display-threshold]: Worker lifecycle moved to tool/page.tsx: BenchmarkPanel deleted so page owns worker init/cleanup
+- [Phase 18-results-display-threshold]: escalateTier imported from scorer.ts (not redefined inline) — already an exported pure function
+- [Phase 18-results-display-threshold]: matchResults cleared (not activeNames) on Change button — preserves loaded name list per CONTEXT.md constraint
 
 ### Roadmap Evolution
 
@@ -140,7 +143,7 @@ Decisions are logged in PROJECT.md Key Decisions table.
 
 ## Session Continuity
 
-Last session: 2026-03-10T16:04:23.139Z
-Stopped at: Completed 18-02-PLAN.md
+Last session: 2026-03-10T16:13:57.770Z
+Stopped at: Checkpoint: 18-03 Task 3 human-verify — awaiting user approval
 Resume file: None
 Next action: Run /gsd:discuss-phase 18 to gather context, then /gsd:plan-phase 18

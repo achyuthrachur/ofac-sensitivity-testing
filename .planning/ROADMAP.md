@@ -46,7 +46,7 @@ Full phase details: `.planning/milestones/v2.0-ROADMAP.md`
 - [x] **Phase 16: Scoring Engine** — Multi-algorithm scorer, 5-tier logic, name-length penalty, Unicode normalization (completed 2026-03-07)
 - [x] **Phase 17: Input Parsing** — CSV/Excel/paste parsing, five-step import flow, client-side file validation (completed 2026-03-07)
 - [x] **Phase 17.1: User Guide Page (INSERTED)** — /guide route, sticky sidebar, four content sections covering OFAC context, Sensitivity Test, Screening Mode, and Scoring Engine (completed 2026-03-07)
-- [ ] **Phase 18: Results Display + Threshold** — Split-pane results table, threshold slider, detail card, OFAC toggle
+- [x] **Phase 18: Results Display + Threshold** — Split-pane results table, threshold slider, detail card, OFAC toggle (completed 2026-03-10)
 - [ ] **Phase 19: Dashboard + Cost of Miss** — Summary dashboard, FP/FN rates, Cost of Miss calculator (shared component)
 - [ ] **Phase 20: Export** — CSV download and PDF compliance memo with Crowe branding and Unicode font
 - [ ] **Phase 21: Simulation Engine** — Snapshot data model, velocity presets, evasion tiers, detection lag metric
@@ -200,7 +200,7 @@ Plans:
 | 16. Scoring Engine | v3.0 | 2/2 | Complete | 2026-03-07 |
 | 17. Input Parsing | v3.0 | 2/2 | Complete | 2026-03-07 |
 | 17.1. User Guide Page | 1/1 | Complete   | 2026-03-07 | — |
-| 18. Results Display + Threshold | 2/3 | In Progress|  | — |
+| 18. Results Display + Threshold | 3/3 | Complete   | 2026-03-10 | — |
 | 19. Dashboard + Cost of Miss | v3.0 | 0/TBD | Not started | — |
 | 20. Export | v3.0 | 0/TBD | Not started | — |
 | 21. Simulation Engine | v3.0 | 0/TBD | Not started | — |
