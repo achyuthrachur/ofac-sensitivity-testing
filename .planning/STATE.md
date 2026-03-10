@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Screening Engine
-status: in_progress
-stopped_at: Phase 17.1 complete — Phase 18 (Results Display + Threshold) not yet started; no CONTEXT.md exists
-last_updated: "2026-03-10T00:00:00.000Z"
-last_activity: 2026-03-07 — Phase 17.1 complete (/guide page with sidebar and four content sections shipped)
+status: completed
+stopped_at: Completed 18-01-PLAN.md
+last_updated: "2026-03-10T15:55:58.410Z"
+last_activity: 2026-03-07 — Phase 17.1 complete (/guide page shipped)
 progress:
-  total_phases: 9
+  total_phases: 10
   completed_phases: 4
-  total_plans: 9
-  completed_plans: 9
+  total_plans: 10
+  completed_plans: 8
   percent: 44
 ---
 
@@ -117,6 +117,9 @@ Decisions are logged in PROJECT.md Key Decisions table.
 - [Phase 17-input-parsing]: SheetJS CDN install on Crowe network: curl downloads tgz fine (proxy handled); npm install --save https://... fails with SELF_SIGNED_CERT_IN_CHAIN even with NODE_TLS_REJECT_UNAUTHORIZED=0; workaround: install from local file, update package.json to CDN URL
 - [Phase 17-input-parsing]: InputPanel does not import XLSX directly — parseInput.ts encapsulates SheetJS; noUnusedLocals would fail build otherwise
 - [Phase 17.1-01]: Scrollspy uses IntersectionObserver with rootMargin -20%/-70%; Quick Start intro in OfacContextSection above section heading; secondary hero link in div wrapper to force block stacking; header right side restructured to nav element
+- [Phase 18-results-display-threshold]: assignTierDynamic uses 4-decimal r() rounding to prevent IEEE 754 drift in threshold comparisons
+- [Phase 18-results-display-threshold]: Tier-collapse: when EXACT threshold > 1.0, HIGH absorbs all scores above mediumFloor — preserves meaningful tier assignment across all slider positions
+- [Phase 18-results-display-threshold]: shadcn Slider installed manually from registry JSON — Crowe TLS proxy blocks npm install for CDN-hosted packages; radix-ui already present so no new dep needed
 
 ### Roadmap Evolution
 
@@ -136,7 +139,7 @@ Decisions are logged in PROJECT.md Key Decisions table.
 
 ## Session Continuity
 
-Last session: 2026-03-10T00:00:00.000Z
-Stopped at: Session resumed — Phase 17.1 confirmed complete; proceeding to Phase 18 discussion/planning
+Last session: 2026-03-10T15:55:58.401Z
+Stopped at: Completed 18-01-PLAN.md
 Resume file: None
 Next action: Run /gsd:discuss-phase 18 to gather context, then /gsd:plan-phase 18

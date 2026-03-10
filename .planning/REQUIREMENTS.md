@@ -20,14 +20,14 @@
 - [x] **SCREEN-07**: Results are assigned to one of five risk tiers based on match score: EXACT (≥0.97) / HIGH (0.90–0.96) / MEDIUM (0.80–0.89) / LOW (0.70–0.79) / CLEAR (<0.70)
 - [x] **SCREEN-08**: Names ≤6 characters have their effective tier escalated by one level (name-length penalty)
 - [x] **SCREEN-09**: Input names are Unicode-normalized (NFKD) before comparison to catch homoglyph substitution evasion
-- [ ] **SCREEN-10**: Threshold slider re-tiers all results client-side within 200ms without re-running the scoring engine
+- [x] **SCREEN-10**: Threshold slider re-tiers all results client-side within 200ms without re-running the scoring engine
 
 ### Screening Mode — Results UX
 
 - [ ] **SCREEN-11**: Left pane shows full input list with color-coded tier badges; clicking any row opens a detail card in the right pane
-- [ ] **SCREEN-12**: Detail card shows: input name, matched SDN name, match score, winning algorithm, risk tier, and hardcoded recommended action string
+- [x] **SCREEN-12**: Detail card shows: input name, matched SDN name, match score, winning algorithm, risk tier, and hardcoded recommended action string
 - [ ] **SCREEN-13**: Summary dashboard shows: total names screened, count per tier, average match score, and false positive / false negative rates
-- [ ] **SCREEN-14**: "What would OFAC see?" toggle locks the threshold to 0.85 (industry benchmark) with a single click
+- [x] **SCREEN-14**: "What would OFAC see?" toggle locks the threshold to 0.85 (industry benchmark) with a single click
 - [ ] **SCREEN-15**: Cost of Miss calculator: user enters transaction value and sees OFAC penalty exposure (transaction value × 4.0)
 
 ### Screening Mode — Export
@@ -86,11 +86,11 @@
 | SCREEN-07 | Phase 16 | Complete |
 | SCREEN-08 | Phase 16 | Complete |
 | SCREEN-09 | Phase 16 | Complete |
-| SCREEN-10 | Phase 18 | Pending |
+| SCREEN-10 | Phase 18 | Complete |
 | SCREEN-11 | Phase 18 | Pending |
-| SCREEN-12 | Phase 18 | Pending |
+| SCREEN-12 | Phase 18 | Complete |
 | SCREEN-13 | Phase 19 | Pending |
-| SCREEN-14 | Phase 18 | Pending |
+| SCREEN-14 | Phase 18 | Complete |
 | SCREEN-15 | Phase 19 | Pending |
 | SCREEN-16 | Phase 20 | Pending |
 | SCREEN-17 | Phase 20 | Pending |
