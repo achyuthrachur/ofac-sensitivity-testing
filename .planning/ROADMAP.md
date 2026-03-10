@@ -117,7 +117,11 @@ Plans:
   2. The detail card shows: input name, matched SDN name, match score, winning algorithm, risk tier, and the hardcoded recommended action string for that tier
   3. Dragging the threshold slider re-tiers all visible rows within 200ms — the slider thumb moves at 60fps with no visible frame drops when 10,000 names are loaded
   4. Clicking "What would OFAC see?" locks the threshold to 0.85 and shows a lock icon — the slider becomes non-interactive while the toggle is active
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 18-01-PLAN.md — Slider install + RECOMMENDED_ACTIONS/TIER_COLORS constants + assignTierDynamic TDD
+- [ ] 18-02-PLAN.md — ScreeningNameList (virtualized left pane) + MatchDetailCard (right pane)
+- [ ] 18-03-PLAN.md — ScreeningResultsPane + tool/page.tsx wiring + BenchmarkPanel removal
 
 ### Phase 19: Dashboard + Cost of Miss
 **Goal**: The summary dashboard shows compliance-meaningful aggregate metrics (tier breakdown, FP/FN rates, average score), and the Cost of Miss calculator translates missed hits into a concrete OFAC penalty exposure figure — the same calculator is available in both Screening Mode and Simulation Mode.
