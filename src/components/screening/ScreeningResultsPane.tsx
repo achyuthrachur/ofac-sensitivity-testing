@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Lock } from 'iconsax-reactjs';
+import { Lock, DocumentDownload, Document } from 'iconsax-reactjs';
 import { Slider } from '@/components/ui/slider';
 import type { MatchResult, RiskTier } from '@/types/screening';
 import { TIER_COLORS } from '@/types/screening';
@@ -9,6 +9,9 @@ import { assignTierDynamic, OFAC_BENCHMARK_THRESHOLD } from '@/lib/screening/tie
 import { escalateTier } from '@/lib/screening/scorer';
 import { ScreeningNameList } from '@/components/screening/ScreeningNameList';
 import { MatchDetailCard } from '@/components/screening/MatchDetailCard';
+import { ScreeningDashboard } from '@/components/screening/ScreeningDashboard';
+import { CostOfMissCalculator } from '@/components/shared/CostOfMissCalculator';
+import { exportCsv, exportPdf } from '@/lib/exportUtils';
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -32,6 +35,7 @@ export function ScreeningResultsPane({
   const [threshold, setThreshold] = useState(0.80);
   const [isLocked, setIsLocked] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [isExportingPdf, setIsExportingPdf] = useState(false);
 
   // Re-tier all results when threshold changes — O(n) pure map, no worker call
   const displayResults = useMemo((): MatchResult[] => {
@@ -64,6 +68,19 @@ export function ScreeningResultsPane({
     setIsLocked(false);
   };
 
+  const handleExportCsv = () => {
+    exportCsv(displayResults);
+  };
+
+  const handleExportPdf = async () => {
+    setIsExportingPdf(true);
+    try {
+      await exportPdf(displayResults);
+    } finally {
+      setIsExportingPdf(false);
+    }
+  };
+
   // ─── Render ─────────────────────────────────────────────────────────────────
 
   return (
@@ -74,13 +91,34 @@ export function ScreeningResultsPane({
         <span className="text-sm text-muted-foreground">
           {activeNamesCount.toLocaleString()} names loaded
         </span>
-        <button
-          type="button"
-          onClick={onChangeNames}
-          className="text-xs underline text-crowe-indigo-core hover:text-crowe-indigo-dark transition-colors"
-        >
-          Change
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={handleExportCsv}
+            className="flex items-center gap-1 text-xs text-crowe-indigo-core hover:text-crowe-indigo-dark transition-colors"
+            title="Download CSV"
+          >
+            <DocumentDownload size={14} color="currentColor" />
+            CSV
+          </button>
+          <button
+            type="button"
+            onClick={handleExportPdf}
+            disabled={isExportingPdf}
+            className="flex items-center gap-1 text-xs text-crowe-indigo-core hover:text-crowe-indigo-dark transition-colors disabled:opacity-50"
+            title="Export PDF compliance memo"
+          >
+            <Document size={14} color="currentColor" />
+            {isExportingPdf ? 'Generating…' : 'PDF'}
+          </button>
+          <button
+            type="button"
+            onClick={onChangeNames}
+            className="text-xs underline text-crowe-indigo-core hover:text-crowe-indigo-dark transition-colors"
+          >
+            Change
+          </button>
+        </div>
       </div>
 
       {/* 2. Sticky threshold header bar */}
@@ -149,7 +187,10 @@ export function ScreeningResultsPane({
         </div>
       </div>
 
-      {/* 3. Split pane */}
+      {/* 3. Dashboard — aggregate metrics, updates with threshold */}
+      <ScreeningDashboard displayResults={displayResults} threshold={threshold} />
+
+      {/* 4. Split pane */}
       <div className="flex flex-1 min-h-0 overflow-hidden">
 
         {/* Left pane — 40% */}
@@ -162,10 +203,11 @@ export function ScreeningResultsPane({
         </div>
 
         {/* Right pane — 60% */}
-        <div className="flex-1 overflow-hidden h-full">
+        <div className="flex-1 overflow-y-auto h-full flex flex-col gap-4 p-4">
           <MatchDetailCard
             result={selectedIndex !== null ? displayResults[selectedIndex] : null}
           />
+          <CostOfMissCalculator />
         </div>
 
       </div>

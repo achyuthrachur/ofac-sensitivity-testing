@@ -122,3 +122,13 @@ None - no external service configuration required.
 ---
 *Phase: 16-scoring-engine*
 *Completed: 2026-03-06*
+
+## Self-Check: PASSED
+
+- FOUND: src/types/screening.ts (effectiveTier added, ScreeningWorkerApi updated)
+- FOUND: src/lib/__tests__/scorer.test.ts (Wave 0 failing test scaffold, 248 lines)
+- FOUND: src/lib/workers/screening.worker.ts (return type annotation updated)
+- FOUND: .planning/phases/16-scoring-engine/16-01-SUMMARY.md
+- FOUND: commit 7b45514 (Task 1 — type contracts)
+- FOUND: commit 7e1b519 (Task 2 — test scaffold)
+- FOUND: commit 91c66d2 (metadata — SUMMARY + STATE + ROADMAP)

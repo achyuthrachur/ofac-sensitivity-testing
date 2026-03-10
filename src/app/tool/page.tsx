@@ -37,6 +37,7 @@ import * as Comlink from 'comlink';
 import type { ScreeningWorkerApi, MatchResult } from '@/types/screening';
 import sdnData from '@data/sdn.json';
 import { ScreeningResultsPane } from '@/components/screening/ScreeningResultsPane';
+import { SimulationPane } from '@/components/simulation/SimulationPane';
 
 // ─── Module-level constants ────────────────────────────────────────────────────
 
@@ -149,6 +150,21 @@ export default function Home() {
   };
 
   // ─── Render ─────────────────────────────────────────────────────────────────
+
+  // Desktop-only gate — screens narrower than 1024px show a notice
+  if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+    return (
+      <div className="flex items-center justify-center min-h-[calc(100vh-48px)] bg-page px-6">
+        <div className="text-center max-w-sm">
+          <p className="text-2xl mb-3">🖥️</p>
+          <h2 className="text-lg font-bold text-crowe-indigo-dark mb-2">Desktop required</h2>
+          <p className="text-sm text-muted-foreground">
+            The OFAC Sensitivity Testing tool requires a screen wider than 1024px. Please open it on a desktop or laptop.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-page flex h-[calc(100vh-48px)]">
@@ -345,6 +361,7 @@ export default function Home() {
             <TabsList>
               <TabsTrigger value="sensitivity">Sensitivity Test</TabsTrigger>
               <TabsTrigger value="screening">Screening Mode</TabsTrigger>
+              <TabsTrigger value="simulation">Simulation</TabsTrigger>
             </TabsList>
           </div>
 
@@ -365,6 +382,10 @@ export default function Home() {
                 </TabsContent>
               </Tabs>
             )}
+          </TabsContent>
+
+          <TabsContent value="simulation" className="flex-1 min-h-0 overflow-y-auto p-6">
+            <SimulationPane />
           </TabsContent>
 
           <TabsContent value="screening" className="flex-1 min-h-0 flex flex-col overflow-hidden p-6 gap-4">

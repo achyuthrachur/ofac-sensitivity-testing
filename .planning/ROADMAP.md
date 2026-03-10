@@ -6,6 +6,16 @@
 - ✅ **v2.0 Production Face** — Phases 10–14 (shipped 2026-03-06)
 - 📋 **v3.0 Screening Engine** — Phases 15–23 (planned)
 
+## HOW TO USE THIS ROADMAP
+
+Work through phases in order. For each phase: read the goal and success criteria, build, verify all criteria pass, then confirm before proceeding to the next phase. Do NOT spawn subagents. Make targeted edits. Run `npm run build` after every phase.
+
+**Skills to load at session start:**
+- UI work → `.claude/skills/frontend/SKILL.md` + `.claude/skills/branding/SKILL.md`
+- Architecture → `.claude/skills/architecture/SKILL.md`
+
+---
+
 ## Phases
 
 <details>

@@ -25,7 +25,13 @@
       "Bash(cat:*)",
       "Bash(ls:*)",
       "Bash(grep:*)",
-      "Skill(gsd:plan-phase)"
+      "Skill(gsd:plan-phase)",
+      "Bash(npm test:*)",
+      "Bash(NODE_TLS_REJECT_UNAUTHORIZED=0 npm install:*)",
+      "WebFetch(domain:docs.sheetjs.com)",
+      "Bash(curl:*)",
+      "Bash(npm install:*)",
+      "Skill(gsd:insert-phase)"
     ]
   }
 }
