@@ -8,6 +8,7 @@ import { runSimulation } from '@/lib/simulation/engine';
 import { SimulationChart } from './SimulationChart';
 import { WaterfallTable } from './WaterfallTable';
 import { CostOfMissCalculator } from '@/components/shared/CostOfMissCalculator';
+import { EmptySimulationState } from '@/components/states/EmptySimulationState';
 
 const PRESET_IDS: SimulationPresetId[] = ['BASELINE', 'ELEVATED', 'SURGE'];
 
@@ -132,16 +133,7 @@ export function SimulationPane() {
       </div>
 
       {/* ── Empty state ───────────────────────────────────────────────────────── */}
-      {!result && !isRunning && (
-        <div className="flex-1 flex items-center justify-center text-muted-foreground">
-          <div className="text-center">
-            <p className="text-sm">Select a velocity preset and run the simulation.</p>
-            <p className="text-xs mt-1 max-w-sm">
-              The simulation shows how OFAC catch rates evolve as sanctioned entities escalate evasion tactics.
-            </p>
-          </div>
-        </div>
-      )}
+      {!result && !isRunning && <EmptySimulationState />}
 
       {/* ── Results ───────────────────────────────────────────────────────────── */}
       {result && (

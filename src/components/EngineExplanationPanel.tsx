@@ -1,5 +1,6 @@
 // src/components/EngineExplanationPanel.tsx
 // Pure presentational component — no 'use client', no hooks, no browser APIs
+import { TermTooltip } from '@/components/education/TermTooltip';
 
 export function EngineExplanationPanel() {
   return (
@@ -68,7 +69,7 @@ export function EngineExplanationPanel() {
 
         <p className="text-sm text-muted-foreground leading-relaxed">
           Each (original name, degraded variant) pair is scored using the{' '}
-          <strong className="text-foreground">Jaro-Winkler similarity algorithm</strong>. The score
+          <strong className="text-foreground"><TermTooltip term="jaro-winkler">Jaro-Winkler similarity algorithm</TermTooltip></strong>. The score
           is a number from 0 to 1:
         </p>
 

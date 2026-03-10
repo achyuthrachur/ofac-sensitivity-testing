@@ -12,6 +12,8 @@ import { MatchDetailCard } from '@/components/screening/MatchDetailCard';
 import { ScreeningDashboard } from '@/components/screening/ScreeningDashboard';
 import { CostOfMissCalculator } from '@/components/shared/CostOfMissCalculator';
 import { exportCsv, exportPdf } from '@/lib/exportUtils';
+import { TierLegend } from '@/components/education/TierLegend';
+import { toast } from 'sonner';
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -70,6 +72,7 @@ export function ScreeningResultsPane({
 
   const handleExportCsv = () => {
     exportCsv(displayResults);
+    toast.success('Exported results.csv');
   };
 
   const handleExportPdf = async () => {
@@ -194,12 +197,17 @@ export function ScreeningResultsPane({
       <div className="flex flex-1 min-h-0 overflow-hidden">
 
         {/* Left pane — 40% */}
-        <div className="w-[40%] flex-shrink-0 border-r overflow-hidden h-full">
+        <div className="w-[40%] flex-shrink-0 border-r overflow-hidden h-full flex flex-col">
+          <div className="px-3 pt-3">
+            <TierLegend />
+          </div>
+          <div className="flex-1 min-h-0 overflow-hidden">
           <ScreeningNameList
             results={displayResults}
             selectedIndex={selectedIndex}
             onRowSelect={setSelectedIndex}
           />
+          </div>
         </div>
 
         {/* Right pane — 60% */}

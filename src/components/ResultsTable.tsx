@@ -12,6 +12,7 @@ import {
 } from '@/lib/resultsUtils';
 import { Button } from '@/components/ui/button';
 import { TickCircle, CloseCircle, DocumentDownload } from 'iconsax-reactjs';
+import { EmptyResultsState } from '@/components/states/EmptyResultsState';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -71,8 +72,8 @@ export function ResultsTable({ rows, clientName }: ResultsTableProps) {
     overscan: 5,
   });
 
-  // Guard: render nothing before first run
-  if (rows.length === 0) return null;
+  // Guard: render empty state before first run
+  if (rows.length === 0) return <EmptyResultsState />;
 
   const { caught, total, percent } = computeCatchRate(rows);
   const threshold = Math.round(DEFAULT_CATCH_THRESHOLD * 100);

@@ -38,6 +38,12 @@ import type { ScreeningWorkerApi, MatchResult } from '@/types/screening';
 import sdnData from '@data/sdn.json';
 import { ScreeningResultsPane } from '@/components/screening/ScreeningResultsPane';
 import { SimulationPane } from '@/components/simulation/SimulationPane';
+import { OnboardingBanner } from '@/components/education/OnboardingBanner';
+import { SectionCallout } from '@/components/education/SectionCallout';
+import { EmptyResultsState } from '@/components/states/EmptyResultsState';
+import { EmptyScreeningState } from '@/components/states/EmptyScreeningState';
+import { ScreeningProgressBar } from '@/components/screening/ScreeningProgressBar';
+import { toast } from 'sonner';
 
 // ─── Module-level constants ────────────────────────────────────────────────────
 
@@ -78,6 +84,7 @@ export default function Home() {
   const [isPending, startTransition] = useTransition();
   const [activeNames, setActiveNames] = useState<string[]>(CLIENT_NAMES);
   const [matchResults, setMatchResults] = useState<MatchResult[]>([]);
+  const [activeTab, setActiveTab] = useState('sensitivity');
   const [isScreening, setIsScreening] = useState(false);
   const [workerAvailable, setWorkerAvailable] = useState(false);
 
@@ -118,6 +125,19 @@ export default function Home() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        if (activeTab === 'sensitivity' && !isPending) {
+          e.preventDefault();
+          handleSubmit();
+        }
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [activeTab, isPending]);
+
   const rows: ResultRow[] = result?.ok ? result.rows : [];
 
   // ─── Handlers ───────────────────────────────────────────────────────────────
@@ -138,33 +158,21 @@ export default function Home() {
   const handleRunScreening = async () => {
     if (!apiRef.current) return;
     setIsScreening(true);
+    const startTime = Date.now();
     try {
       const results = await apiRef.current.screenNames(
         activeNames,
         sdnData as unknown[]
       );
       setMatchResults(results);
+      const elapsed = (Date.now() - startTime) / 1000;
+      toast.success(`Screening complete — ${results.length} names processed in ${elapsed.toFixed(1)}s`);
     } finally {
       setIsScreening(false);
     }
   };
 
   // ─── Render ─────────────────────────────────────────────────────────────────
-
-  // Desktop-only gate — screens narrower than 1024px show a notice
-  if (typeof window !== 'undefined' && window.innerWidth < 1024) {
-    return (
-      <div className="flex items-center justify-center min-h-[calc(100vh-48px)] bg-page px-6">
-        <div className="text-center max-w-sm">
-          <p className="text-2xl mb-3">🖥️</p>
-          <h2 className="text-lg font-bold text-crowe-indigo-dark mb-2">Desktop required</h2>
-          <p className="text-sm text-muted-foreground">
-            The OFAC Sensitivity Testing tool requires a screen wider than 1024px. Please open it on a desktop or laptop.
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="bg-page flex h-[calc(100vh-48px)]">
@@ -346,7 +354,10 @@ export default function Home() {
                   Running...
                 </>
               ) : (
-                'Run Test'
+                <>
+                  Run Test
+                  <span className="ml-2 text-xs text-white/40 hidden lg:inline">⌘↵</span>
+                </>
               )}
             </Button>
           </CardFooter>
@@ -356,7 +367,8 @@ export default function Home() {
 
       {/* RIGHT PANEL — flex-1, independently scrollable */}
       <div className="flex-1 overflow-y-auto">
-        <Tabs defaultValue="sensitivity" className="h-full flex flex-col min-h-0">
+        <OnboardingBanner />
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col min-h-0">
           <div className="border-b border-border px-6 pt-4">
             <TabsList>
               <TabsTrigger value="sensitivity">Sensitivity Test</TabsTrigger>
@@ -366,8 +378,9 @@ export default function Home() {
           </div>
 
           <TabsContent value="sensitivity" className="flex-1 overflow-y-auto p-6">
+            <SectionCallout tab="sensitivity" />
             {rows.length === 0 ? (
-              <EngineExplanationPanel />
+              <EmptyResultsState />
             ) : (
               <Tabs defaultValue="results">
                 <TabsList className="mb-4">
@@ -385,32 +398,41 @@ export default function Home() {
           </TabsContent>
 
           <TabsContent value="simulation" className="flex-1 min-h-0 overflow-y-auto p-6">
+            <SectionCallout tab="simulation" />
             <SimulationPane />
           </TabsContent>
 
           <TabsContent value="screening" className="flex-1 min-h-0 flex flex-col overflow-hidden p-6 gap-4">
+            <SectionCallout tab="screening" />
             {matchResults.length === 0 ? (
               <div className="flex flex-col gap-6 flex-1">
-                <InputPanel onNamesLoaded={setActiveNames} currentCount={activeNames.length} />
-                <div className="flex justify-end">
-                  <button
-                    type="button"
-                    onClick={handleRunScreening}
-                    disabled={!workerAvailable || isScreening || activeNames.length === 0}
-                    className="bg-crowe-amber text-crowe-indigo-dark text-sm font-semibold py-2 px-6 rounded-md
-                               hover:bg-crowe-amber-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors
-                               flex items-center gap-2"
-                  >
-                    {isScreening ? (
-                      <>
-                        <Refresh2 size={16} color="currentColor" className="size-auto animate-spin" />
-                        Screening...
-                      </>
-                    ) : (
-                      'Run Screening'
-                    )}
-                  </button>
-                </div>
+                <InputPanel
+                  onNamesLoaded={(names) => {
+                    setActiveNames(names);
+                    if (names.length > 0) {
+                      toast.success(`Name list loaded — ${names.length} names ready to screen`);
+                    }
+                  }}
+                  currentCount={activeNames.length}
+                />
+                {isScreening ? (
+                  <ScreeningProgressBar progress={0} nameCount={activeNames.length} processedCount={0} />
+                ) : activeNames.length === 0 ? (
+                  <EmptyScreeningState />
+                ) : (
+                  <div className="flex justify-end">
+                    <button
+                      type="button"
+                      onClick={handleRunScreening}
+                      disabled={!workerAvailable || isScreening}
+                      className="bg-crowe-amber text-crowe-indigo-dark text-sm font-semibold py-2 px-6 rounded-md
+                                 hover:bg-crowe-amber-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors
+                                 flex items-center gap-2"
+                    >
+                      Run Screening
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <ScreeningResultsPane
