@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Screening Engine
-status: completed
-stopped_at: "Checkpoint: 18-03 Task 3 human-verify — awaiting user approval"
-last_updated: "2026-03-10T16:13:57.788Z"
+status: active
+stopped_at: Completed 18-03-PLAN.md — Phase 18 results display + threshold complete
+last_updated: "2026-03-10T16:53:40.961Z"
 last_activity: 2026-03-07 — Phase 17.1 complete (/guide page shipped)
 progress:
   total_phases: 10
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-06)
 
 **Core value:** A consultant can run a live OFAC sensitivity testing demonstration from a single URL with zero file prep — and a client can see results in real time.
-**Current focus:** v3.0 Screening Engine — Phases 15–17.1 complete; Phase 18 (Results Display + Threshold) is next
+**Current focus:** v3.0 Screening Engine — Phases 15–18 complete; Phase 19 (PDF Export) is next
 
 ## Current Position
 
-Phase: Phase 18 (ready to discuss/plan)
-Plan: All Phase 17.1 plans complete (17.1-01)
-Status: Phases 15, 16, 17, 17.1 all complete — no CONTEXT.md for Phase 18 yet
-Last activity: 2026-03-07 — Phase 17.1 complete (/guide page shipped)
+Phase: Phase 19 (ready to plan)
+Plan: All Phase 18 plans complete (18-01, 18-02, 18-03)
+Status: Phases 15, 16, 17, 17.1, 18 all complete — Phase 18 results experience fully verified
+Last activity: 2026-03-10 — Phase 18 complete (ScreeningResultsPane + threshold slider + OFAC lock shipped)
 
-Progress: [████░░░░░░] 44% v3.0 (4/9 phases complete)
+Progress: [█████░░░░░] 55% v3.0 (5/9 phases complete)
 
 ## Performance Metrics
 
@@ -124,6 +124,9 @@ Decisions are logged in PROJECT.md Key Decisions table.
 - [Phase 18-results-display-threshold]: Worker lifecycle moved to tool/page.tsx: BenchmarkPanel deleted so page owns worker init/cleanup
 - [Phase 18-results-display-threshold]: escalateTier imported from scorer.ts (not redefined inline) — already an exported pure function
 - [Phase 18-results-display-threshold]: matchResults cleared (not activeNames) on Change button — preserves loaded name list per CONTEXT.md constraint
+- [Phase 18-results-display-threshold]: Worker init moved to tool/page.tsx: BenchmarkPanel deleted so page owns worker lifecycle
+- [Phase 18-results-display-threshold]: escalateTier imported from scorer.ts (not redefined inline) — already an exported pure function
+- [Phase 18-results-display-threshold]: matchResults cleared (not activeNames) on Change button — preserves loaded name list per CONTEXT.md constraint
 
 ### Roadmap Evolution
 
@@ -143,7 +146,7 @@ Decisions are logged in PROJECT.md Key Decisions table.
 
 ## Session Continuity
 
-Last session: 2026-03-10T16:13:57.770Z
-Stopped at: Checkpoint: 18-03 Task 3 human-verify — awaiting user approval
+Last session: 2026-03-10T16:53:40.908Z
+Stopped at: Completed 18-03-PLAN.md — Phase 18 results display + threshold complete
 Resume file: None
 Next action: Run /gsd:discuss-phase 18 to gather context, then /gsd:plan-phase 18
