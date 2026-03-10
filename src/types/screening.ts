@@ -83,6 +83,26 @@ export interface SimulationSnapshot {
   evasionTierActive: 0 | 1 | 2 | 3;
 }
 
+// ─── Display Constants ────────────────────────────────────────────────────────
+
+/** Hardcoded recommended action strings per effective tier. NOT configurable. */
+export const RECOMMENDED_ACTIONS: Record<RiskTier, string> = {
+  EXACT:  'Block transaction and file SAR.',
+  HIGH:   'Escalate for manual review before clearing.',
+  MEDIUM: 'Flag for enhanced due diligence.',
+  LOW:    'Log and monitor — no immediate action required.',
+  CLEAR:  'No match — clear to proceed.',
+} as const;
+
+/** Tier color hex values for badges and callout blocks. Traffic-light palette. */
+export const TIER_COLORS: Record<RiskTier, string> = {
+  EXACT:  '#DC2626',  // red
+  HIGH:   '#EA580C',  // orange
+  MEDIUM: '#F5A800',  // Crowe Amber
+  LOW:    '#0075C9',  // Crowe Blue
+  CLEAR:  '#05AB8C',  // Crowe Teal
+} as const;
+
 // ─── Worker API ───────────────────────────────────────────────────────────────
 
 /** Interface for the Comlink-exposed Web Worker — Phase 16 implements the body. */
