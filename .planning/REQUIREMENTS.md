@@ -24,7 +24,7 @@
 
 ### Screening Mode — Results UX
 
-- [ ] **SCREEN-11**: Left pane shows full input list with color-coded tier badges; clicking any row opens a detail card in the right pane
+- [x] **SCREEN-11**: Left pane shows full input list with color-coded tier badges; clicking any row opens a detail card in the right pane
 - [x] **SCREEN-12**: Detail card shows: input name, matched SDN name, match score, winning algorithm, risk tier, and hardcoded recommended action string
 - [ ] **SCREEN-13**: Summary dashboard shows: total names screened, count per tier, average match score, and false positive / false negative rates
 - [x] **SCREEN-14**: "What would OFAC see?" toggle locks the threshold to 0.85 (industry benchmark) with a single click
@@ -87,7 +87,7 @@
 | SCREEN-08 | Phase 16 | Complete |
 | SCREEN-09 | Phase 16 | Complete |
 | SCREEN-10 | Phase 18 | Complete |
-| SCREEN-11 | Phase 18 | Pending |
+| SCREEN-11 | Phase 18 | Complete |
 | SCREEN-12 | Phase 18 | Complete |
 | SCREEN-13 | Phase 19 | Pending |
 | SCREEN-14 | Phase 18 | Complete |

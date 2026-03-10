@@ -200,7 +200,7 @@ Plans:
 | 16. Scoring Engine | v3.0 | 2/2 | Complete | 2026-03-07 |
 | 17. Input Parsing | v3.0 | 2/2 | Complete | 2026-03-07 |
 | 17.1. User Guide Page | 1/1 | Complete   | 2026-03-07 | — |
-| 18. Results Display + Threshold | 1/3 | In Progress|  | — |
+| 18. Results Display + Threshold | 2/3 | In Progress|  | — |
 | 19. Dashboard + Cost of Miss | v3.0 | 0/TBD | Not started | — |
 | 20. Export | v3.0 | 0/TBD | Not started | — |
 | 21. Simulation Engine | v3.0 | 0/TBD | Not started | — |

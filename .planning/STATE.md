@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Screening Engine
 status: completed
-stopped_at: Completed 18-01-PLAN.md
-last_updated: "2026-03-10T15:55:58.410Z"
+stopped_at: Completed 18-02-PLAN.md
+last_updated: "2026-03-10T16:04:23.155Z"
 last_activity: 2026-03-07 — Phase 17.1 complete (/guide page shipped)
 progress:
   total_phases: 10
   completed_phases: 4
   total_plans: 10
-  completed_plans: 8
+  completed_plans: 9
   percent: 44
 ---
 
@@ -120,6 +120,7 @@ Decisions are logged in PROJECT.md Key Decisions table.
 - [Phase 18-results-display-threshold]: assignTierDynamic uses 4-decimal r() rounding to prevent IEEE 754 drift in threshold comparisons
 - [Phase 18-results-display-threshold]: Tier-collapse: when EXACT threshold > 1.0, HIGH absorbs all scores above mediumFloor — preserves meaningful tier assignment across all slider positions
 - [Phase 18-results-display-threshold]: shadcn Slider installed manually from registry JSON — Crowe TLS proxy blocks npm install for CDN-hosted packages; radix-ui already present so no new dep needed
+- [Phase 18]: TIER_COLORS hex appended with 26 (hex ~15% alpha) for callout background tint; Warning2 substituted for WarningCircle (not available in iconsax-reactjs)
 
 ### Roadmap Evolution
 
@@ -139,7 +140,7 @@ Decisions are logged in PROJECT.md Key Decisions table.
 
 ## Session Continuity
 
-Last session: 2026-03-10T15:55:58.401Z
-Stopped at: Completed 18-01-PLAN.md
+Last session: 2026-03-10T16:04:23.139Z
+Stopped at: Completed 18-02-PLAN.md
 Resume file: None
 Next action: Run /gsd:discuss-phase 18 to gather context, then /gsd:plan-phase 18
