@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v3.0
 milestone_name: Screening Engine
-status: completed
-stopped_at: Paused at Task 3 checkpoint — 17.1-01 Tasks 1+2 complete, awaiting browser verification of /guide page
-last_updated: "2026-03-07T13:44:05.918Z"
-last_activity: 2026-03-06 — Phase 15 complete (scroll fix deployed; benchmark results committed)
+status: in_progress
+stopped_at: Phase 17.1 complete — Phase 18 (Results Display + Threshold) not yet started; no CONTEXT.md exists
+last_updated: "2026-03-10T00:00:00.000Z"
+last_activity: 2026-03-07 — Phase 17.1 complete (/guide page with sidebar and four content sections shipped)
 progress:
-  total_phases: 10
+  total_phases: 9
   completed_phases: 4
-  total_plans: 7
-  completed_plans: 7
-  percent: 11
+  total_plans: 9
+  completed_plans: 9
+  percent: 44
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-06)
 
 **Core value:** A consultant can run a live OFAC sensitivity testing demonstration from a single URL with zero file prep — and a client can see results in real time.
-**Current focus:** v3.0 Screening Engine — roadmap defined, ready for Phase 15 planning
+**Current focus:** v3.0 Screening Engine — Phases 15–17.1 complete; Phase 18 (Results Display + Threshold) is next
 
 ## Current Position
 
-Phase: Phase 16 (ready to plan)
-Plan: All Phase 15 plans complete (15-01 + 15-02)
-Status: Phase 15 complete — benchmark confirmed both paths working; Web Worker primary for Phase 16
-Last activity: 2026-03-06 — Phase 15 complete (scroll fix deployed; benchmark results committed)
+Phase: Phase 18 (ready to discuss/plan)
+Plan: All Phase 17.1 plans complete (17.1-01)
+Status: Phases 15, 16, 17, 17.1 all complete — no CONTEXT.md for Phase 18 yet
+Last activity: 2026-03-07 — Phase 17.1 complete (/guide page shipped)
 
-Progress: [█░░░░░░░░░] 11% v3.0 (1/9 phases complete)
+Progress: [████░░░░░░] 44% v3.0 (4/9 phases complete)
 
 ## Performance Metrics
 
@@ -136,7 +136,7 @@ Decisions are logged in PROJECT.md Key Decisions table.
 
 ## Session Continuity
 
-Last session: 2026-03-07T13:44:05.901Z
-Stopped at: Paused at Task 3 checkpoint — 17.1-01 Tasks 1+2 complete, awaiting browser verification of /guide page
+Last session: 2026-03-10T00:00:00.000Z
+Stopped at: Session resumed — Phase 17.1 confirmed complete; proceeding to Phase 18 discussion/planning
 Resume file: None
-Next action: Run /gsd:plan-phase 16 to plan Phase 16: Scoring Engine
+Next action: Run /gsd:discuss-phase 18 to gather context, then /gsd:plan-phase 18
