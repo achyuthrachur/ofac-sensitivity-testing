@@ -2,7 +2,6 @@
 
 import { useMemo } from 'react';
 import type { MatchResult, RiskTier } from '@/types/screening';
-import { TIER_COLORS } from '@/types/screening';
 import { OFAC_BENCHMARK_THRESHOLD as _OFAC, assignTierDynamic } from '@/lib/screening/tierUtils';
 import { escalateTier } from '@/lib/screening/scorer';
 
@@ -60,51 +59,47 @@ export function ScreeningDashboard({ displayResults, threshold }: ScreeningDashb
   if (!stats) return null;
 
   return (
-    <div className="flex flex-wrap items-center gap-x-6 gap-y-2 px-4 py-2 bg-muted/40 border-b text-xs flex-shrink-0">
-
-      {/* Total */}
-      <div className="flex items-center gap-1.5">
-        <span className="text-muted-foreground">Total</span>
-        <span className="font-semibold text-foreground">{stats.total.toLocaleString()}</span>
-      </div>
-
-      <div className="h-3 w-px bg-border" />
-
-      {/* Tier breakdown */}
-      {TIER_ORDER.map((tier) => (
-        <div key={tier} className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: TIER_COLORS[tier] }} />
-          <span className="font-semibold text-foreground">{stats.tierCounts[tier]}</span>
-          <span className="text-muted-foreground">{tier}</span>
+    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+      {[
+        {
+          label: 'Total reviewed',
+          value: stats.total.toLocaleString(),
+          tone: 'text-crowe-indigo-dark',
+        },
+        {
+          label: 'Average score',
+          value: (stats.avgScore * 100).toFixed(1),
+          tone: 'text-crowe-indigo-dark',
+        },
+        {
+          label: 'Tier spread',
+          value: TIER_ORDER.map((tier) => `${stats.tierCounts[tier]} ${tier}`).join(' | '),
+          tone: 'text-crowe-indigo-dark',
+          compact: true,
+        },
+        {
+          label: 'FP rate',
+          value: formatPercent(stats.fpRate),
+          tone: stats.fpRate > 0.05 ? 'text-crowe-amber' : 'text-crowe-indigo-dark',
+        },
+        {
+          label: 'FN rate',
+          value: formatPercent(stats.fnRate),
+          tone: stats.fnRate > 0.02 ? 'text-destructive' : 'text-crowe-indigo-dark',
+        },
+      ].map((item) => (
+        <div
+          key={item.label}
+          className="executive-panel rounded-[1.5rem] border border-white/80 px-4 py-4"
+        >
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#7b8ea5]">
+            {item.label}
+          </p>
+          <p className={`mt-3 ${item.compact ? 'text-sm leading-6' : 'text-3xl'} font-semibold ${item.tone}`}>
+            {item.value}
+          </p>
         </div>
       ))}
-
-      <div className="h-3 w-px bg-border" />
-
-      {/* Avg score */}
-      <div className="flex items-center gap-1.5">
-        <span className="text-muted-foreground">Avg score</span>
-        <span className="font-semibold text-foreground">{(stats.avgScore * 100).toFixed(1)}</span>
-      </div>
-
-      <div className="h-3 w-px bg-border" />
-
-      {/* FP rate */}
-      <div className="flex items-center gap-1.5" title={`${stats.fpCount} names flagged now but clear at OFAC benchmark (0.85)`}>
-        <span className="text-muted-foreground">FP rate</span>
-        <span className="font-semibold" style={{ color: stats.fpRate > 0.05 ? '#FFD231' : undefined }}>
-          {formatPercent(stats.fpRate)}
-        </span>
-      </div>
-
-      {/* FN rate */}
-      <div className="flex items-center gap-1.5" title={`${stats.fnCount} names clear now but flagged at OFAC benchmark (0.85)`}>
-        <span className="text-muted-foreground">FN rate</span>
-        <span className="font-semibold" style={{ color: stats.fnRate > 0.02 ? '#E5376B' : undefined }}>
-          {formatPercent(stats.fnRate)}
-        </span>
-      </div>
-
     </div>
   );
 }

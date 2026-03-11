@@ -1,13 +1,13 @@
 import { ClipboardTick } from 'iconsax-reactjs';
+import { EmptyStatePanel } from './EmptyStatePanel';
 
 export function EmptyScreeningState() {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 py-20 text-center px-6">
-      <ClipboardTick variant="Linear" size={40} color="currentColor" className="text-muted-foreground/40" />
-      <p className="text-muted-foreground text-lg font-medium">No names loaded</p>
-      <p className="text-muted-foreground/60 text-sm max-w-xs">
-        Upload a CSV or Excel file, or paste names directly in the input panel, to begin screening against the SDN dataset.
-      </p>
-    </div>
+    <EmptyStatePanel
+      eyebrow="Screening queue"
+      title="Load a name list to start batch screening."
+      description="Upload a CSV or Excel file, or paste names directly into the screening workspace, to begin matching against the synthetic SDN dataset."
+      icon={<ClipboardTick variant="Linear" size={28} color="currentColor" />}
+    />
   );
 }

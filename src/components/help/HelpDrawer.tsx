@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { CloseCircle } from 'iconsax-reactjs';
-import { Drawer, DrawerContent, DrawerClose } from '@/components/ui/drawer';
+import { ArrowRight2, CloseCircle } from 'iconsax-reactjs';
+import { Drawer, DrawerClose, DrawerContent } from '@/components/ui/drawer';
 import { GLOSSARY } from '@/components/education/GlossaryTerms';
 
 const QUICK_LINKS = [
@@ -33,65 +33,79 @@ interface HelpDrawerProps {
 
 export function HelpDrawer({ open, onClose }: HelpDrawerProps) {
   return (
-    <Drawer open={open} onOpenChange={(o) => !o && onClose()}>
+    <Drawer open={open} onOpenChange={(nextOpen) => !nextOpen && onClose()}>
       <DrawerContent
         side="right"
-        className="w-[380px] bg-crowe-indigo-dark border-l border-white/10 flex flex-col"
+        className="flex w-[420px] max-w-[calc(100vw-24px)] flex-col border-l border-[#12335f] bg-[linear-gradient(180deg,#03172f,#082447)] text-white"
       >
-        {/* Header */}
-        <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between flex-shrink-0">
-          <p className="text-white font-semibold text-base">Help &amp; Reference</p>
-          <DrawerClose asChild>
-            <button
-              type="button"
-              aria-label="Close help"
-              className="text-white/50 hover:text-white transition-colors"
-            >
-              <CloseCircle size={20} color="currentColor" />
-            </button>
-          </DrawerClose>
+        <div className="border-b border-white/10 px-6 py-5">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.26em] text-white/52">
+                Help and reference
+              </p>
+              <h2 className="mt-2 text-2xl font-semibold text-white">Keep the room moving.</h2>
+              <p className="mt-2 text-sm leading-6 text-white/72">
+                Use the quick links for narrative flow and the glossary for precise screening terms.
+              </p>
+            </div>
+            <DrawerClose asChild>
+              <button
+                type="button"
+                aria-label="Close help"
+                className="text-white/50 transition-colors hover:text-white"
+              >
+                <CloseCircle size={22} color="currentColor" />
+              </button>
+            </DrawerClose>
+          </div>
         </div>
 
-        {/* Scrollable body */}
-        <div className="flex-1 overflow-y-auto px-6 py-4">
-
-          {/* Quick Links */}
-          <div className="mb-6">
-            <p className="text-xs font-semibold uppercase text-white/50 tracking-wide mb-3">
-              Quick Links
+        <div className="flex-1 overflow-y-auto px-6 py-5">
+          <section className="mb-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/50">
+              Quick links
             </p>
-            <div className="flex flex-col gap-2">
-              {QUICK_LINKS.map(({ label, href }) => (
+            <div className="mt-4 space-y-3">
+              {QUICK_LINKS.map(({ label, href }, index) => (
                 <Link
                   key={href}
                   href={href}
                   onClick={onClose}
-                  className="text-crowe-amber hover:text-crowe-amber-bright text-sm transition-colors"
+                  className="flex items-center justify-between rounded-[1.25rem] border border-white/10 bg-white/6 px-4 py-4 text-sm font-medium text-white/86 transition-colors hover:border-white/20 hover:bg-white/10"
                 >
-                  {label}
+                  <div>
+                    <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-white/40">
+                      0{index + 1}
+                    </p>
+                    <p className="mt-1">{label}</p>
+                  </div>
+                  <ArrowRight2 size={16} color="currentColor" />
                 </Link>
               ))}
             </div>
-          </div>
+          </section>
 
-          {/* Glossary */}
-          <div>
-            <p className="text-xs font-semibold uppercase text-white/50 tracking-wide mb-3">
+          <section>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/50">
               Glossary
             </p>
-            {GLOSSARY_ORDER.map((key) => {
-              const entry = GLOSSARY[key];
-              return (
-                <div key={key} className="mb-4">
-                  <p className="text-white text-sm font-semibold">{entry.label}</p>
-                  <p className="text-white/70 text-xs leading-relaxed mt-0.5">
-                    {entry.definition}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
+            <div className="mt-4 space-y-3">
+              {GLOSSARY_ORDER.map((key) => {
+                const entry = GLOSSARY[key];
 
+                return (
+                  <article
+                    key={key}
+                    className="rounded-[1.25rem] border border-white/10 bg-white/6 px-4 py-4"
+                  >
+                    <p className="text-sm font-semibold text-white">{entry.label}</p>
+                    <p className="mt-2 text-xs leading-6 text-white/68">{entry.definition}</p>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
         </div>
       </DrawerContent>
     </Drawer>

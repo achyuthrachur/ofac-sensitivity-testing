@@ -1,28 +1,16 @@
 'use client';
-// src/components/screening/InputPanel.tsx
-// Three-tab file upload + paste UI for the Screening Mode input layer.
-//
-// Tabs:
-//   1. CSV Upload  — .csv file via drag-drop or click-to-browse
-//   2. Excel Upload — .xlsx file, parsed client-side via SheetJS (no server round-trip)
-//   3. Paste       — textarea, live count on every keystroke
-//
-// Delegates all parsing/validation to parseInput.ts.
-// Calls onNamesLoaded(names) only when result.error is undefined.
 
-import { useState, useRef } from 'react';
+// Aesthetic direction: Swiss editorial executive.
+import { useRef, useState } from 'react';
+import { ClipboardText, DocumentUpload, DocumentText } from 'iconsax-reactjs';
 import { parseCsv, parseExcel, parsePaste } from '@/lib/screening/parseInput';
 import type { ParseResult } from '@/lib/screening/parseInput';
 import { Label } from '@/components/ui/label';
 
-// ─── Props ────────────────────────────────────────────────────────────────────
-
 interface InputPanelProps {
   onNamesLoaded: (names: string[]) => void;
-  currentCount: number; // activeNames.length from tool/page.tsx
+  currentCount: number;
 }
-
-// ─── Warning list sub-component ──────────────────────────────────────────────
 
 function WarningList({ warnings }: { warnings: ParseResult['warnings'] }) {
   const [expanded, setExpanded] = useState(false);
@@ -32,24 +20,27 @@ function WarningList({ warnings }: { warnings: ParseResult['warnings'] }) {
   const hasMore = warnings.length > 5;
 
   return (
-    <div className="text-xs font-mono text-amber-700 bg-amber-50 rounded p-2 space-y-1">
-      {visible.map((w, i) => (
-        <div key={i}>{w.message}</div>
-      ))}
-      {hasMore && (
+    <div className="rounded-[1.2rem] border border-[#f4d796] bg-[#fff8e8] p-4 text-xs text-[#8b6720]">
+      <p className="mb-2 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#aa7c17]">
+        Parser warnings
+      </p>
+      <div className="space-y-1.5 font-mono">
+        {visible.map((warning, index) => (
+          <div key={index}>{warning.message}</div>
+        ))}
+      </div>
+      {hasMore ? (
         <button
           type="button"
-          onClick={() => setExpanded(prev => !prev)}
-          className="text-amber-600 underline hover:text-amber-800 transition-colors"
+          onClick={() => setExpanded((prev) => !prev)}
+          className="mt-3 text-xs font-semibold text-[#8b6720] underline transition-colors hover:text-[#6f5118]"
         >
           {expanded ? 'Show less' : `Show ${warnings.length - 5} more warnings`}
         </button>
-      )}
+      ) : null}
     </div>
   );
 }
-
-// ─── Drop zone shared by CSV and Excel tabs ───────────────────────────────────
 
 interface DropZoneProps {
   accept: string;
@@ -62,27 +53,23 @@ function DropZone({ accept, onFile, disabled, hint }: DropZoneProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragOver, setIsDragOver] = useState(false);
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
     setIsDragOver(false);
-    const file = e.dataTransfer.files[0];
+    const file = event.dataTransfer.files[0];
     if (file && !disabled) onFile(file);
   };
 
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
     setIsDragOver(true);
   };
 
-  const handleDragLeave = () => setIsDragOver(false);
-
-  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      onFile(file);
-      // Reset input value so the same file can be re-uploaded
-      e.target.value = '';
-    }
+  const handleFileInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    onFile(file);
+    event.target.value = '';
   };
 
   return (
@@ -90,17 +77,22 @@ function DropZone({ accept, onFile, disabled, hint }: DropZoneProps) {
       onClick={() => !disabled && inputRef.current?.click()}
       onDrop={handleDrop}
       onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
+      onDragLeave={() => setIsDragOver(false)}
       className={[
-        'rounded-lg border-2 border-dashed p-8 text-center cursor-pointer transition-colors',
+        'rounded-[1.6rem] border-2 border-dashed p-8 transition-all',
         isDragOver
-          ? 'border-crowe-amber bg-crowe-amber/5'
-          : 'border-border hover:border-crowe-amber',
-        disabled ? 'opacity-50 cursor-not-allowed' : '',
+          ? 'border-crowe-amber bg-[rgba(245,168,0,0.06)]'
+          : 'border-[#c6d3e3] bg-[linear-gradient(180deg,#ffffff,#f7f9fc)] hover:border-crowe-indigo-core',
+        disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
       ].join(' ')}
     >
-      <p className="text-sm text-muted-foreground">{hint}</p>
-      <p className="text-xs text-muted-foreground mt-1">or drag and drop</p>
+      <div className="flex flex-col items-center justify-center text-center">
+        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#011E41] text-white">
+          <DocumentUpload variant="Linear" size={24} color="currentColor" />
+        </div>
+        <p className="text-sm font-semibold text-crowe-indigo-dark">{hint}</p>
+        <p className="mt-2 text-xs text-muted-foreground">Drag and drop is supported.</p>
+      </div>
       <input
         ref={inputRef}
         type="file"
@@ -113,30 +105,27 @@ function DropZone({ accept, onFile, disabled, hint }: DropZoneProps) {
   );
 }
 
-// ─── InputPanel ───────────────────────────────────────────────────────────────
-
 export function InputPanel({ onNamesLoaded, currentCount }: InputPanelProps) {
   const [activeTab, setActiveTab] = useState<'csv' | 'excel' | 'paste'>('csv');
   const [pasteValue, setPasteValue] = useState('');
   const [result, setResult] = useState<ParseResult | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // ── File processing (shared between CSV and Excel tabs) ──────────────────
-
   async function processFile(file: File) {
     setIsProcessing(true);
     setResult(null);
+
     try {
       const ext = file.name.split('.').pop()?.toLowerCase();
       let parsed: ParseResult;
+
       if (ext === 'xlsx') {
         const data = await file.arrayBuffer();
         parsed = parseExcel(data);
       } else {
-        // .csv and any other text file
-        const text = await file.text();
-        parsed = parseCsv(text);
+        parsed = parseCsv(await file.text());
       }
+
       setResult(parsed);
       if (!parsed.error) onNamesLoaded(parsed.names);
     } finally {
@@ -144,13 +133,9 @@ export function InputPanel({ onNamesLoaded, currentCount }: InputPanelProps) {
     }
   }
 
-  // ── Paste handlers ────────────────────────────────────────────────────────
-
   function handlePasteChange(value: string) {
     setPasteValue(value);
-    // Live parse for count display — always call parsePaste on every change
-    const parsed = parsePaste(value);
-    setResult(parsed);
+    setResult(parsePaste(value));
   }
 
   function handlePasteApply() {
@@ -159,152 +144,156 @@ export function InputPanel({ onNamesLoaded, currentCount }: InputPanelProps) {
     if (!parsed.error) onNamesLoaded(parsed.names);
   }
 
-  // ── Tab switch — clear result when switching tabs ─────────────────────────
-
   function switchTab(tab: 'csv' | 'excel' | 'paste') {
     setActiveTab(tab);
     setResult(null);
     if (tab !== 'paste') setPasteValue('');
   }
 
-  // ── Live paste count (inline derivation — no extra state) ─────────────────
-  const livePasteCount = pasteValue.trim()
-    ? parsePaste(pasteValue).names.length
-    : 0;
-
-  // ── Render ────────────────────────────────────────────────────────────────
+  const livePasteCount = pasteValue.trim() ? parsePaste(pasteValue).names.length : 0;
 
   return (
-    <div className="rounded-xl border border-border bg-card p-4 shadow-crowe-sm space-y-4">
-
-      {/* Header row */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="text-lg font-semibold text-crowe-indigo-dark">Client Name List</h3>
-          <p className="text-sm text-muted-foreground">
-            Upload or paste names to screen against the OFAC SDN list.
-          </p>
-        </div>
-        {/* Count badge */}
-        <span className={[
-          'text-xs font-semibold px-3 py-1 rounded-full',
-          currentCount > 0
-            ? 'bg-crowe-teal/12 text-crowe-teal'
-            : 'bg-muted text-muted-foreground',
-        ].join(' ')}>
-          {currentCount.toLocaleString()} {currentCount === 1 ? 'name' : 'names'} loaded
-        </span>
-      </div>
-
-      {/* Tab switcher */}
-      <div className="flex gap-2">
-        {(['csv', 'excel', 'paste'] as const).map((tab) => (
-          <button
-            key={tab}
-            type="button"
-            onClick={() => switchTab(tab)}
-            className={[
-              'px-4 py-1.5 rounded-md text-sm font-semibold transition-colors',
-              activeTab === tab
-                ? 'bg-crowe-amber text-crowe-indigo-dark'
-                : 'bg-muted text-muted-foreground hover:bg-muted/80',
-            ].join(' ')}
-          >
-            {tab === 'csv' ? 'CSV Upload' : tab === 'excel' ? 'Excel Upload' : 'Paste'}
-          </button>
-        ))}
-      </div>
-
-      {/* Tab content */}
-      {activeTab === 'csv' && (
-        <div className="space-y-3">
-          <DropZone
-            accept=".csv,text/csv"
-            onFile={processFile}
-            disabled={isProcessing}
-            hint="Click to browse for a .csv file"
-          />
-          {isProcessing && (
-            <p className="text-sm text-muted-foreground text-center">Processing…</p>
-          )}
-        </div>
-      )}
-
-      {activeTab === 'excel' && (
-        <div className="space-y-3">
-          <DropZone
-            accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-            onFile={processFile}
-            disabled={isProcessing}
-            hint="Click to browse for a .xlsx file"
-          />
-          {isProcessing && (
-            <p className="text-sm text-muted-foreground text-center">Processing…</p>
-          )}
-        </div>
-      )}
-
-      {activeTab === 'paste' && (
-        <div className="space-y-3">
-          <div className="space-y-1">
-            <Label htmlFor="screening-paste-input">Paste names</Label>
-            <p id="screening-paste-help" className="text-xs text-muted-foreground">
-              Paste one name per line or a comma-separated list. The parser will normalize and count entries as you type.
+    <div className="executive-panel overflow-hidden rounded-[2rem] border border-white/80">
+      <div className="border-b border-[#dde5ef] px-6 py-6">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[#7b8ea5]">
+              Screening input
+            </p>
+            <h3 className="mt-2 text-3xl font-semibold text-crowe-indigo-dark">Client name workspace</h3>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-crowe-tint-700">
+              Import a spreadsheet or paste names directly into the queue. Parsing stays client-side
+              and flags issues before the scoring run starts.
             </p>
           </div>
-          <textarea
-            id="screening-paste-input"
-            value={pasteValue}
-            onChange={(e) => handlePasteChange(e.target.value)}
-            placeholder="Paste names here — one per line, or comma-separated"
-            rows={8}
-            aria-describedby="screening-paste-help screening-paste-count"
-            className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-mono
-                       placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-crowe-amber
-                       resize-y"
-          />
-          {/* Live count beneath textarea */}
-          <p id="screening-paste-count" className="text-xs text-muted-foreground">
-            {livePasteCount.toLocaleString()} {livePasteCount === 1 ? 'name' : 'names'} parsed
-          </p>
-          <button
-            type="button"
-            onClick={handlePasteApply}
-            disabled={pasteValue.trim() === ''}
-            className="bg-crowe-amber text-crowe-indigo-dark text-sm font-semibold py-2 px-4 rounded-md
-                       hover:bg-crowe-amber-dark disabled:opacity-50 transition-colors"
-          >
-            Apply
-          </button>
+          <div className="rounded-full border border-[#d6dde7] bg-white px-4 py-2 text-sm font-semibold text-crowe-indigo-dark shadow-[0_8px_24px_rgba(1,30,65,0.06)]">
+            {currentCount.toLocaleString()} {currentCount === 1 ? 'name' : 'names'} loaded
+          </div>
         </div>
-      )}
+      </div>
 
-      {/* Validation output */}
-      {result && (
-        <div className="space-y-2">
-          {/* Blocking error */}
-          {result.error && (
-            <div className="rounded-md border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-              {result.error}
+      <div className="grid gap-6 px-6 py-6 lg:grid-cols-[220px_minmax(0,1fr)]">
+        <div className="space-y-3">
+          {[
+            { id: 'csv', label: 'CSV Upload', icon: DocumentText },
+            { id: 'excel', label: 'Excel Upload', icon: DocumentUpload },
+            { id: 'paste', label: 'Paste Names', icon: ClipboardText },
+          ].map((tab, index) => {
+            const Icon = tab.icon;
+            const active = activeTab === tab.id;
+
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => switchTab(tab.id as 'csv' | 'excel' | 'paste')}
+                className={[
+                  'flex w-full items-center gap-3 rounded-[1.3rem] border px-4 py-4 text-left transition-all',
+                  active
+                    ? 'border-[#011E41] bg-[#011E41] text-white shadow-[0_14px_32px_rgba(1,30,65,0.18)]'
+                    : 'border-[#d6dde7] bg-white text-crowe-indigo-dark hover:border-crowe-indigo-core',
+                ].join(' ')}
+              >
+                <div className={`flex h-10 w-10 items-center justify-center rounded-2xl ${active ? 'bg-white/12' : 'bg-[#eef2f7]'}`}>
+                  <Icon variant="Linear" size={18} color="currentColor" />
+                </div>
+                <div>
+                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.24em] opacity-60">
+                    0{index + 1}
+                  </p>
+                  <p className="text-sm font-semibold">{tab.label}</p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="space-y-4">
+          {activeTab === 'csv' ? (
+            <DropZone
+              accept=".csv,text/csv"
+              onFile={processFile}
+              disabled={isProcessing}
+              hint="Browse for a .csv file"
+            />
+          ) : null}
+
+          {activeTab === 'excel' ? (
+            <DropZone
+              accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              onFile={processFile}
+              disabled={isProcessing}
+              hint="Browse for a .xlsx file"
+            />
+          ) : null}
+
+          {activeTab === 'paste' ? (
+            <div className="rounded-[1.6rem] border border-[#d6dde7] bg-white p-5 shadow-[0_10px_28px_rgba(1,30,65,0.04)]">
+              <div className="mb-3 space-y-1">
+                <Label htmlFor="screening-paste-input">Paste names</Label>
+                <p id="screening-paste-help" className="text-xs text-muted-foreground">
+                  Paste one name per line or a comma-separated list. The parser normalizes entries as
+                  you type.
+                </p>
+              </div>
+              <textarea
+                id="screening-paste-input"
+                value={pasteValue}
+                onChange={(event) => handlePasteChange(event.target.value)}
+                placeholder="Paste names here - one per line, or comma-separated"
+                rows={10}
+                aria-describedby="screening-paste-help screening-paste-count"
+                className="min-h-[220px] w-full resize-y rounded-[1.25rem] border border-[#d6dde7] bg-[#f8fafc] px-4 py-3 text-sm font-mono placeholder:text-muted-foreground focus:border-crowe-amber focus:outline-none"
+              />
+              <div className="mt-4 flex items-center justify-between">
+                <p id="screening-paste-count" className="text-xs text-muted-foreground">
+                  {livePasteCount.toLocaleString()} {livePasteCount === 1 ? 'name' : 'names'} parsed
+                </p>
+                <button
+                  type="button"
+                  onClick={handlePasteApply}
+                  disabled={pasteValue.trim() === ''}
+                  className="rounded-full bg-crowe-amber px-4 py-2 text-sm font-semibold text-crowe-indigo-dark transition-colors hover:bg-crowe-amber-dark disabled:opacity-50"
+                >
+                  Apply list
+                </button>
+              </div>
             </div>
-          )}
+          ) : null}
 
-          {/* Success count (only when no blocking error and names were loaded) */}
-          {!result.error && result.names.length > 0 && (
-            <p className="text-sm text-crowe-teal font-medium">
-              {result.names.length.toLocaleString()} {result.names.length === 1 ? 'name' : 'names'} ready for screening.
-              {result.rawCount !== result.names.length && (
-                <span className="text-muted-foreground font-normal">
-                  {' '}({result.rawCount - result.names.length} skipped)
-                </span>
-              )}
-            </p>
-          )}
+          {isProcessing ? (
+            <div className="rounded-[1.2rem] border border-[#d6dde7] bg-white px-4 py-3 text-sm text-muted-foreground">
+              Processing file...
+            </div>
+          ) : null}
 
-          {/* Per-row warnings */}
-          <WarningList warnings={result.warnings} />
+          {result ? (
+            <div className="space-y-3">
+              {result.error ? (
+                <div className="rounded-[1.2rem] border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                  {result.error}
+                </div>
+              ) : null}
+
+              {!result.error && result.names.length > 0 ? (
+                <div className="rounded-[1.2rem] border border-[#cae6df] bg-[#effaf6] px-4 py-3 text-sm text-crowe-teal">
+                  <span className="font-semibold">
+                    {result.names.length.toLocaleString()} {result.names.length === 1 ? 'name' : 'names'}
+                  </span>{' '}
+                  ready for screening.
+                  {result.rawCount !== result.names.length ? (
+                    <span className="text-muted-foreground">
+                      {' '}({result.rawCount - result.names.length} skipped)
+                    </span>
+                  ) : null}
+                </div>
+              ) : null}
+
+              <WarningList warnings={result.warnings} />
+            </div>
+          ) : null}
         </div>
-      )}
+      </div>
     </div>
   );
 }

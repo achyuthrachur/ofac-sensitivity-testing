@@ -41,24 +41,41 @@ export function GuideSidebar() {
   }, []);
 
   return (
-    <div className="sticky top-6">
-      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3 px-2">
-        On This Page
+    <div className="executive-panel sticky top-28 rounded-[1.8rem] border border-white/80 px-4 py-5">
+      <p className="px-2 text-xs font-semibold uppercase tracking-[0.26em] text-[#7b8ea5]">
+        On this page
       </p>
-      <nav className="space-y-1">
-        {SECTIONS.map(({ id, label }) => (
-          <Link
-            key={id}
-            href={`#${id}`}
-            className={`block text-sm py-1.5 px-2 rounded transition-colors ${
-              activeId === id
-                ? 'bg-crowe-indigo-dark text-white font-semibold'
-                : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-            }`}
-          >
-            {label}
-          </Link>
-        ))}
+      <p className="px-2 pt-2 text-sm leading-6 text-crowe-tint-700">
+        Read in order. The active section follows scroll position.
+      </p>
+      <nav className="mt-5 space-y-2">
+        {SECTIONS.map(({ id, label }, index) => {
+          const active = activeId === id;
+
+          return (
+            <Link
+              key={id}
+              href={`#${id}`}
+              aria-current={active ? 'true' : undefined}
+              className={[
+                'flex items-center gap-3 rounded-[1.2rem] border px-3 py-3 transition-all',
+                active
+                  ? 'border-[#011E41] bg-[#011E41] text-white shadow-[0_14px_32px_rgba(1,30,65,0.16)]'
+                  : 'border-transparent bg-white/72 text-crowe-tint-700 hover:border-[#d9e1eb] hover:text-crowe-indigo-dark',
+              ].join(' ')}
+            >
+              <span
+                className={[
+                  'flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-[0.68rem] font-semibold uppercase tracking-[0.12em]',
+                  active ? 'bg-white/12 text-white' : 'bg-[#eef2f7] text-crowe-indigo-dark',
+                ].join(' ')}
+              >
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <span className="text-sm font-medium leading-5">{label}</span>
+            </Link>
+          );
+        })}
       </nav>
     </div>
   );

@@ -65,6 +65,8 @@ export function ResultsTable({ rows, clientName }: ResultsTableProps) {
     [rows, sortDir],
   );
 
+  // TanStack Virtual intentionally opts out of React Compiler memoization safety here.
+  // eslint-disable-next-line react-hooks/incompatible-library
   const virtualizer = useVirtualizer({
     count: sortedRows.length,
     getScrollElement: () => parentRef.current,

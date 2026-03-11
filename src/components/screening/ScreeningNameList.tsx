@@ -37,6 +37,8 @@ export function ScreeningNameList({
 }: ScreeningNameListProps) {
   const parentRef = useRef<HTMLDivElement>(null);
 
+  // TanStack Virtual intentionally opts out of React Compiler memoization safety here.
+  // eslint-disable-next-line react-hooks/incompatible-library
   const virtualizer = useVirtualizer({
     count: results.length,
     getScrollElement: () => parentRef.current,

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { ArrowRight } from 'iconsax-reactjs';
 
 const NAV_LINKS = [
   { name: 'Home', href: '/' },
@@ -16,45 +16,70 @@ export function SiteNav() {
   const isActive = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href);
 
+  const showToolCta = pathname !== '/tool';
+
   return (
-    <header className="sticky top-0 z-40 bg-crowe-indigo-dark px-6 py-3 flex items-center justify-between">
-      <Link href="/" className="text-white font-bold text-lg tracking-tight">
-        Crowe
-      </Link>
-      <nav className="flex items-center gap-1">
-        {NAV_LINKS.map((link) => {
-          const active = isActive(link.href);
-          return (
-            <Link
-              key={link.name}
-              href={link.href}
-              className={[
-                'relative px-4 py-1.5 rounded-full text-sm font-medium transition-colors',
-                active
-                  ? 'text-crowe-amber font-semibold'
-                  : 'text-white/70 hover:text-white',
-              ].join(' ')}
-            >
-              <span className="relative z-10">{link.name}</span>
-              {active && (
-                <motion.div
-                  layoutId="nav-lamp"
-                  className="absolute inset-0 rounded-full bg-white/5 -z-0"
-                  initial={false}
-                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+    <header className="sticky top-0 z-50 hidden border-b border-white/10 bg-crowe-indigo-dark text-white shadow-[0_16px_40px_rgba(1,30,65,0.18)] lg:block">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-3 xl:px-8">
+        <Link href="/" className="flex min-w-0 items-center gap-3">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/12 bg-white/8 text-sm font-semibold text-white">
+            C
+          </div>
+          <div className="min-w-0">
+            <p className="truncate text-[0.7rem] font-semibold uppercase tracking-[0.32em] text-white/65">
+              Crowe
+            </p>
+            <p className="truncate font-display text-lg font-semibold text-white">
+              OFAC Sensitivity Lab
+            </p>
+          </div>
+        </Link>
+
+        <div className="flex items-center justify-end gap-3">
+          <nav
+            aria-label="Primary"
+            className="flex items-center gap-1 rounded-full border border-white/10 bg-white/6 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
+          >
+            {NAV_LINKS.map((link) => {
+              const active = isActive(link.href);
+
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={active ? 'page' : undefined}
+                  className={[
+                    'rounded-full px-4 py-2 text-sm font-semibold transition-colors',
+                    active
+                      ? 'bg-crowe-amber text-crowe-indigo-dark shadow-[0_8px_24px_rgba(1,30,65,0.18)]'
+                      : 'text-white/78 hover:bg-white/8 hover:text-white',
+                  ].join(' ')}
                 >
-                  {/* Tubelight bloom effect */}
-                  <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-crowe-amber rounded-t-full">
-                    <div className="absolute w-10 h-5 bg-crowe-amber/20 rounded-full blur-md -top-2 -left-2" />
-                    <div className="absolute w-6 h-4 bg-crowe-amber/20 rounded-full blur-md -top-1" />
-                    <div className="absolute w-3 h-3 bg-crowe-amber/30 rounded-full blur-sm top-0 left-1.5" />
-                  </div>
-                </motion.div>
-              )}
+                  {link.name}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {showToolCta ? (
+            <Link
+              href="/tool"
+              className="inline-flex items-center gap-2 rounded-full bg-crowe-amber px-4 py-2 text-sm font-semibold text-crowe-indigo-dark transition-transform hover:-translate-y-0.5"
+            >
+              Launch Tool
+              <ArrowRight variant="Linear" size={14} color="currentColor" />
             </Link>
-          );
-        })}
-      </nav>
+          ) : (
+            <Link
+              href="/guide"
+              className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/6 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+            >
+              View Guide
+              <ArrowRight variant="Linear" size={14} color="currentColor" />
+            </Link>
+          )}
+        </div>
+      </div>
     </header>
   );
 }

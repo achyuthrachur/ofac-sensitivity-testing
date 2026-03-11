@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useTransition, useEffect, useRef } from 'react';
+// Aesthetic direction: Swiss editorial executive.
+import { useState, useTransition, useEffect, useRef, useEffectEvent } from 'react';
 import { runTest } from '@/app/actions/runTest';
 import type { ActionResult, ResultRow, Region } from '@/types';
 import { REGION_VALUES } from '@/types';
@@ -92,7 +93,7 @@ const PANEL_HEADERS: Record<string, { title: string; sub: string }> = {
 function ScreeningGuidePanel() {
   return (
     <SpotlightCard
-      className="rounded-xl bg-card text-card-foreground shadow-crowe-sm"
+      className="executive-panel rounded-[1.6rem] border border-white/80 bg-white/78 text-card-foreground shadow-[0_18px_38px_rgba(1,30,65,0.08)]"
       spotlightColor="rgba(245, 168, 0, 0.08)"
     >
       <CardHeader>
@@ -143,7 +144,7 @@ function ScreeningGuidePanel() {
 function SimulationGuidePanel() {
   return (
     <SpotlightCard
-      className="rounded-xl bg-card text-card-foreground shadow-crowe-sm"
+      className="executive-panel rounded-[1.6rem] border border-white/80 bg-white/78 text-card-foreground shadow-[0_18px_38px_rgba(1,30,65,0.08)]"
       spotlightColor="rgba(245, 168, 0, 0.08)"
     >
       <CardHeader>
@@ -193,14 +194,14 @@ function SimulationGuidePanel() {
 
 function DemoStarterCallout() {
   return (
-    <Alert className="border border-crowe-amber/30 bg-crowe-amber/8 text-foreground">
+    <Alert className="rounded-[1.6rem] border border-crowe-amber/25 bg-[linear-gradient(180deg,rgba(245,168,0,0.12),rgba(245,168,0,0.03))] px-5 py-5 text-foreground shadow-[0_16px_36px_rgba(1,30,65,0.06)]">
       <ClipboardTick
         variant="Linear"
-        size={16}
+        size={18}
         color="var(--color-crowe-indigo-dark)"
       />
       <AlertTitle className="text-crowe-indigo-dark">Recommended demo flow</AlertTitle>
-      <AlertDescription className="mt-2 text-muted-foreground">
+      <AlertDescription className="mt-3 text-muted-foreground">
         <ol className="space-y-1.5">
           <li>1. Keep all entity counts at 10.</li>
           <li>2. Leave all four regions enabled.</li>
@@ -276,18 +277,20 @@ export default function Home() {
     };
   }, []);
 
+  const handleSubmitShortcut = useEffectEvent((e: KeyboardEvent) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter' && activeTab === 'sensitivity' && !isPending) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  });
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-        if (activeTab === 'sensitivity' && !isPending) {
-          e.preventDefault();
-          handleSubmit();
-        }
-      }
+      handleSubmitShortcut(e);
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [activeTab, isPending]);
+  }, []);
 
   const rows: ResultRow[] = result?.ok ? result.rows : [];
 
@@ -328,13 +331,14 @@ export default function Home() {
   // ─── Render ─────────────────────────────────────────────────────────────────
 
   return (
-    <div className="bg-page flex h-[calc(100vh-48px)]">
+    <div className="flex h-[calc(100dvh-4.75rem)] overflow-hidden bg-transparent">
 
       {/* LEFT PANEL — fixed width, independently scrollable */}
-      <div ref={toolRoot} className="w-[460px] flex-shrink-0 overflow-y-auto border-r border-border p-6 space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold text-crowe-indigo-dark">{panelHeader.title}</h1>
-          <p className="text-sm text-muted-foreground mt-1">{panelHeader.sub}</p>
+      <div ref={toolRoot} className="executive-panel w-[440px] min-h-0 flex-shrink-0 overflow-y-auto border-r border-white/80 px-6 py-8 space-y-6">
+        <div className="rounded-[1.8rem] border border-white/85 bg-white/70 px-5 py-5 shadow-[0_16px_36px_rgba(1,30,65,0.06)]">
+          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[#7b8ea5]">Demo control center</p>
+          <h1 className="mt-2 text-3xl font-semibold text-crowe-indigo-dark">{panelHeader.title}</h1>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">{panelHeader.sub}</p>
         </div>
 
         <DemoStarterCallout />
@@ -344,7 +348,7 @@ export default function Home() {
           <>
             {/* Card 1 — Entity Counts */}
             <SpotlightCard
-              className="form-card rounded-xl bg-card text-card-foreground shadow-crowe-sm"
+              className="form-card executive-panel rounded-[1.6rem] border border-white/80 bg-white/80 text-card-foreground shadow-[0_18px_38px_rgba(1,30,65,0.08)]"
               spotlightColor="rgba(245, 168, 0, 0.08)"
             >
               <CardHeader>
@@ -383,7 +387,7 @@ export default function Home() {
 
             {/* Card 2 — Linguistic Regions */}
             <SpotlightCard
-              className="form-card rounded-xl bg-card text-card-foreground shadow-crowe-sm"
+              className="form-card executive-panel rounded-[1.6rem] border border-white/80 bg-white/80 text-card-foreground shadow-[0_18px_38px_rgba(1,30,65,0.08)]"
               spotlightColor="rgba(245, 168, 0, 0.08)"
             >
               <CardHeader>
@@ -416,7 +420,7 @@ export default function Home() {
 
             {/* Card 3 — Degradation Rules */}
             <SpotlightCard
-              className="form-card rounded-xl bg-card text-card-foreground shadow-crowe-sm"
+              className="form-card executive-panel rounded-[1.6rem] border border-white/80 bg-white/80 text-card-foreground shadow-[0_18px_38px_rgba(1,30,65,0.08)]"
               spotlightColor="rgba(245, 168, 0, 0.08)"
             >
               <CardHeader>
@@ -473,7 +477,7 @@ export default function Home() {
 
             {/* Card 4 — Client Name */}
             <SpotlightCard
-              className="form-card rounded-xl bg-card text-card-foreground shadow-crowe-sm"
+              className="form-card executive-panel rounded-[1.6rem] border border-white/80 bg-white/80 text-card-foreground shadow-[0_18px_38px_rgba(1,30,65,0.08)]"
               spotlightColor="rgba(245, 168, 0, 0.08)"
             >
               <CardHeader>
@@ -531,25 +535,25 @@ export default function Home() {
       </div>
 
       {/* RIGHT PANEL — flex-1, independently scrollable */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex min-w-0 min-h-0 flex-1 flex-col overflow-hidden px-4 pb-4">
         <OnboardingBanner />
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col min-h-0">
-          <div className="border-b border-border px-6 pt-4">
-            <TabsList>
-              <TabsTrigger value="sensitivity">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="flex min-h-0 flex-1 flex-col gap-4">
+          <div className="executive-panel rounded-[1.8rem] border border-white/80 px-6 pt-5">
+            <TabsList className="h-auto w-full rounded-[1.5rem] bg-[#e9eef5] p-2">
+              <TabsTrigger value="sensitivity" className="rounded-[1.2rem] px-4 py-3 data-[state=active]:bg-[#011E41] data-[state=active]:text-white">
                 <span className="mr-1.5 text-xs opacity-50">1</span>Sensitivity Test
               </TabsTrigger>
-              <TabsTrigger value="screening">
+              <TabsTrigger value="screening" className="rounded-[1.2rem] px-4 py-3 data-[state=active]:bg-[#011E41] data-[state=active]:text-white">
                 <span className="mr-1.5 text-xs opacity-50">2</span>Screening Mode
               </TabsTrigger>
-              <TabsTrigger value="simulation">
+              <TabsTrigger value="simulation" className="rounded-[1.2rem] px-4 py-3 data-[state=active]:bg-[#011E41] data-[state=active]:text-white">
                 <span className="mr-1.5 text-xs opacity-50">3</span>Simulation
               </TabsTrigger>
-              <TabsTrigger value="docs">Methodology</TabsTrigger>
+              <TabsTrigger value="docs" className="rounded-[1.2rem] px-4 py-3 data-[state=active]:bg-[#011E41] data-[state=active]:text-white">Methodology</TabsTrigger>
             </TabsList>
           </div>
 
-          <TabsContent value="sensitivity" className="flex-1 overflow-y-auto p-6">
+          <TabsContent value="sensitivity" className="min-h-0 flex-1 overflow-y-auto rounded-[1.8rem] pr-1">
             <SectionCallout tab="sensitivity" />
             {rows.length === 0 ? (
               <EmptyResultsState />
@@ -557,7 +561,7 @@ export default function Home() {
               <>
                 <ResultsTable rows={rows} clientName={clientName} />
                 {/* Cross-tab CTA */}
-                <div className="mt-6 rounded-lg border border-crowe-amber/20 bg-crowe-amber/5 p-4 flex items-center justify-between">
+                <div className="executive-panel mt-6 flex items-center justify-between rounded-[1.6rem] border border-crowe-amber/20 p-5">
                   <div>
                     <p className="text-sm font-semibold text-foreground">Next: Try Screening Mode</p>
                     <p className="text-xs text-muted-foreground mt-0.5">
@@ -575,7 +579,7 @@ export default function Home() {
             )}
           </TabsContent>
 
-          <TabsContent value="screening" className="flex-1 min-h-0 flex flex-col overflow-hidden p-6 gap-4">
+          <TabsContent value="screening" className="flex-1 min-h-0 flex flex-col overflow-hidden rounded-[1.8rem] gap-4">
             <SectionCallout tab="screening" />
             {matchResults.length === 0 ? (
               <div className="flex flex-col gap-4 flex-1">
@@ -593,7 +597,7 @@ export default function Home() {
                 ) : activeNames.length === 0 ? (
                   <EmptyScreeningState />
                 ) : (
-                  <div className="flex justify-end">
+                  <div className="executive-panel flex justify-end rounded-[1.5rem] border border-white/80 p-4">
                     <button
                       type="button"
                       onClick={handleRunScreening}
@@ -615,7 +619,7 @@ export default function Home() {
                   onChangeNames={() => setMatchResults([])}
                 />
                 {/* Cross-tab CTA */}
-                <div className="mt-2 rounded-lg border border-crowe-amber/20 bg-crowe-amber/5 p-4 flex items-center justify-between">
+                <div className="executive-panel mt-2 flex items-center justify-between rounded-[1.6rem] border border-crowe-amber/20 p-5">
                   <div>
                     <p className="text-sm font-semibold text-foreground">Next: Try Simulation</p>
                     <p className="text-xs text-muted-foreground mt-0.5">
@@ -633,13 +637,13 @@ export default function Home() {
             )}
           </TabsContent>
 
-          <TabsContent value="simulation" className="flex-1 min-h-0 overflow-y-auto p-6">
+          <TabsContent value="simulation" className="min-h-0 flex-1 overflow-y-auto rounded-[1.8rem] pr-1">
             <SectionCallout tab="simulation" />
             <SimulationPane />
           </TabsContent>
 
-          <TabsContent value="docs" className="flex-1 overflow-y-auto p-6">
-            <div className="mx-auto w-full max-w-4xl">
+          <TabsContent value="docs" className="min-h-0 flex-1 overflow-y-auto rounded-[1.8rem] pr-1">
+            <div className="executive-panel mx-auto w-full max-w-5xl rounded-[1.8rem] border border-white/80 px-8 py-8">
               <EngineExplanationPanel />
             </div>
           </TabsContent>

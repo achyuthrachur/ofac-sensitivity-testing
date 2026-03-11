@@ -7,8 +7,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  --font-sans: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "IBM Plex Mono", Consolas, monospace;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -62,6 +62,7 @@
 
 :root {
   --radius: 0.75rem;
+  --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   --background: #FFFFFF;
   --foreground: #333333;
   --card: #ffffff;
@@ -133,8 +134,23 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground;
+    background:
+      radial-gradient(circle at top left, rgba(245, 168, 0, 0.12), transparent 24%),
+      radial-gradient(circle at top right, rgba(0, 117, 201, 0.1), transparent 22%),
+      linear-gradient(180deg, #fcfdff 0%, #f4f7fb 46%, #ffffff 100%);
+    font-family: var(--font-sans);
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
   }
   /* Crowe card shadow — indigo-tinted, borderless floating cards */
   [data-slot="card"] {
@@ -148,4 +164,47 @@
 @keyframes shimmer {
   0%   { transform: translateX(-150%); }
   100% { transform: translateX(350%); }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .executive-grid {
+    background-image:
+      linear-gradient(rgba(1, 30, 65, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(1, 30, 65, 0.08) 1px, transparent 1px);
+    background-size: 72px 72px;
+  }
+
+  .executive-panel {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(247, 249, 252, 0.88)),
+      rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(22px);
+    box-shadow:
+      0 20px 48px rgba(1, 30, 65, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  }
+
+  .section-frame {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .section-frame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at top right, rgba(245, 168, 0, 0.14), transparent 22%),
+      radial-gradient(circle at bottom left, rgba(0, 117, 201, 0.12), transparent 28%);
+  }
+}
+
+::selection {
+  background: rgba(245, 168, 0, 0.28);
+  color: #011E41;
 }

@@ -10,11 +10,7 @@ export function HelpFab({ onClick }: HelpFabProps) {
       type="button"
       aria-label="Open help"
       onClick={onClick}
-      className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full
-                 bg-crowe-indigo-dark border border-white/20
-                 hover:border-crowe-amber hover:text-crowe-amber
-                 text-white transition-colors
-                 flex items-center justify-center"
+      className="fixed bottom-6 right-6 z-50 flex h-[3.25rem] w-[3.25rem] items-center justify-center rounded-full border border-white/16 bg-[linear-gradient(180deg,#011E41,#0A2B57)] text-white shadow-[0_18px_36px_rgba(1,30,65,0.22)] transition-colors hover:border-crowe-amber hover:text-crowe-amber"
     >
       <InfoCircle variant="Linear" size={20} color="currentColor" />
     </button>
