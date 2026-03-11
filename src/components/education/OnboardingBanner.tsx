@@ -24,7 +24,7 @@ export function OnboardingBanner() {
 
   return (
     <StickyBanner
-      className="bg-crowe-indigo/40 border-b border-white/10"
+      className="bg-crowe-indigo-dark border-b border-white/10"
       onDismiss={handleDismiss}
     >
       <span className="text-white/80 text-sm">

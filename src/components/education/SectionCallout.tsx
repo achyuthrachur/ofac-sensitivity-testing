@@ -27,9 +27,9 @@ export function SectionCallout({ tab }: SectionCalloutProps) {
   const { title, body, link } = CONTENT[tab];
 
   return (
-    <Alert className="mb-4 border-white/10 bg-white/5 text-white">
-      <AlertTitle className="text-white font-semibold">{title}</AlertTitle>
-      <AlertDescription className="text-white/70 mt-1">
+    <Alert className="mb-4 border-crowe-indigo-dark/15 bg-crowe-indigo-dark/5">
+      <AlertTitle className="text-foreground font-semibold">{title}</AlertTitle>
+      <AlertDescription className="text-muted-foreground mt-1">
         {body}{' '}
         <Link
           href={link.href}

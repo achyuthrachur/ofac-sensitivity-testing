@@ -17,7 +17,7 @@ export function TermTooltip({ term, children }: TermTooltipProps) {
       <TooltipRoot>
         <TooltipTrigger asChild>
           <span
-            className="border-b border-dotted border-white/50 cursor-help inline"
+            className="border-b border-dotted border-crowe-indigo-dark/40 cursor-help inline"
             tabIndex={0}
           >
             {label}

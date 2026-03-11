@@ -9,7 +9,7 @@ interface ScreeningProgressBarProps {
 export function ScreeningProgressBar({ progress, nameCount, processedCount }: ScreeningProgressBarProps) {
   return (
     <div className="px-6 py-10 flex flex-col items-center gap-4">
-      <p className="text-white/70 text-sm">
+      <p className="text-muted-foreground text-sm">
         Screening {processedCount} of {nameCount} names…
       </p>
       <Progress value={progress} className="w-full max-w-md" />
