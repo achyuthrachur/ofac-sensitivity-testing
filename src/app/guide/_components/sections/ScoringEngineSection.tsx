@@ -99,7 +99,7 @@ export function ScoringEngineSection() {
         <h3 className="text-lg font-semibold text-crowe-indigo-dark border-b border-border pb-2">
           Composite Formula
         </h3>
-        <div className="rounded-lg bg-muted/50 p-4 font-mono text-sm text-center">
+        <div className="rounded-lg bg-muted/50 p-5 font-mono text-sm text-center">
           composite = (JW &times; 0.6) + (DM_bonus &times; 0.25) + (TSR &times; 0.15)
         </div>
         <p className="text-sm text-muted-foreground leading-relaxed">
@@ -121,8 +121,8 @@ export function ScoringEngineSection() {
         <div className="space-y-2">
 
           {/* EXACT */}
-          <div className="flex items-start gap-4 rounded-lg border border-border p-4">
-            <span className="flex-shrink-0 text-xs font-bold bg-red-600 text-white px-2 py-0.5 rounded mt-0.5">
+          <div className="flex items-start gap-4 rounded-lg border border-border p-5">
+            <span className="flex-shrink-0 text-xs font-bold bg-crowe-coral text-white px-2 py-0.5 rounded mt-0.5">
               EXACT
             </span>
             <div className="space-y-1">
@@ -135,8 +135,8 @@ export function ScoringEngineSection() {
           </div>
 
           {/* HIGH */}
-          <div className="flex items-start gap-4 rounded-lg border border-border p-4">
-            <span className="flex-shrink-0 text-xs font-bold bg-orange-500 text-white px-2 py-0.5 rounded mt-0.5">
+          <div className="flex items-start gap-4 rounded-lg border border-border p-5">
+            <span className="flex-shrink-0 text-xs font-bold bg-crowe-amber-bright text-crowe-indigo-dark px-2 py-0.5 rounded mt-0.5">
               HIGH
             </span>
             <div className="space-y-1">
@@ -149,8 +149,8 @@ export function ScoringEngineSection() {
           </div>
 
           {/* MEDIUM */}
-          <div className="flex items-start gap-4 rounded-lg border border-border p-4">
-            <span className="flex-shrink-0 text-xs font-bold bg-yellow-500 text-crowe-indigo-dark px-2 py-0.5 rounded mt-0.5">
+          <div className="flex items-start gap-4 rounded-lg border border-border p-5">
+            <span className="flex-shrink-0 text-xs font-bold bg-crowe-amber text-crowe-indigo-dark px-2 py-0.5 rounded mt-0.5">
               MEDIUM
             </span>
             <div className="space-y-1">
@@ -163,8 +163,8 @@ export function ScoringEngineSection() {
           </div>
 
           {/* LOW */}
-          <div className="flex items-start gap-4 rounded-lg border border-border p-4">
-            <span className="flex-shrink-0 text-xs font-bold bg-blue-500 text-white px-2 py-0.5 rounded mt-0.5">
+          <div className="flex items-start gap-4 rounded-lg border border-border p-5">
+            <span className="flex-shrink-0 text-xs font-bold bg-crowe-indigo-bright text-white px-2 py-0.5 rounded mt-0.5">
               LOW
             </span>
             <div className="space-y-1">
@@ -176,8 +176,8 @@ export function ScoringEngineSection() {
           </div>
 
           {/* CLEAR */}
-          <div className="flex items-start gap-4 rounded-lg border border-border p-4">
-            <span className="flex-shrink-0 text-xs font-bold bg-green-600 text-white px-2 py-0.5 rounded mt-0.5">
+          <div className="flex items-start gap-4 rounded-lg border border-border p-5">
+            <span className="flex-shrink-0 text-xs font-bold bg-crowe-teal text-white px-2 py-0.5 rounded mt-0.5">
               CLEAR
             </span>
             <div className="space-y-1">
@@ -196,7 +196,7 @@ export function ScoringEngineSection() {
         <h3 className="text-lg font-semibold text-crowe-indigo-dark border-b border-border pb-2">
           Name-Length Penalty
         </h3>
-        <div className="rounded-lg border-l-4 border-crowe-amber bg-crowe-amber/10 p-4">
+        <div className="rounded-lg border-l-4 border-crowe-amber bg-crowe-amber/10 p-5">
           <p className="text-sm text-foreground leading-relaxed">
             Short names (6 characters or fewer, excluding spaces) are escalated one tier
             automatically. A MEDIUM score for a 5-character name becomes HIGH; a LOW score becomes

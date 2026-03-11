@@ -14,15 +14,17 @@ export const metadata: Metadata = {
 export default function GuidePage() {
   return (
     <div className="min-h-screen bg-page">
-      <div className="max-w-6xl mx-auto px-6 py-12 flex gap-10">
+      <div className="mx-auto flex max-w-7xl gap-10 px-6 py-12">
         <aside className="w-56 flex-shrink-0">
           <GuideSidebar />
         </aside>
-        <main className="flex-1 min-w-0 space-y-20">
-          <OfacContextSection />
-          <SensitivityTestSection />
-          <ScreeningModeSection />
-          <ScoringEngineSection />
+        <main className="min-w-0 flex-1">
+          <div className="mx-auto w-full max-w-4xl space-y-20">
+            <OfacContextSection />
+            <SensitivityTestSection />
+            <ScreeningModeSection />
+            <ScoringEngineSection />
+          </div>
         </main>
       </div>
     </div>

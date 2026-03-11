@@ -1,9 +1,9 @@
 const TIERS = [
-  { label: 'EXACT',  badge: 'bg-red-900/60 text-red-200 border-red-700/50',         caption: 'Immediate block required' },
-  { label: 'HIGH',   badge: 'bg-orange-900/60 text-orange-200 border-orange-700/50', caption: 'Enhanced due diligence' },
-  { label: 'MEDIUM', badge: 'bg-yellow-900/60 text-yellow-200 border-yellow-700/50', caption: 'Manual review required' },
-  { label: 'LOW',    badge: 'bg-blue-900/60 text-blue-200 border-blue-700/50',       caption: 'Monitor and document' },
-  { label: 'CLEAR',  badge: 'bg-green-900/60 text-green-200 border-green-700/50',    caption: 'No action required' },
+  { label: 'EXACT',  badge: 'bg-crowe-coral/15 text-crowe-coral border-crowe-coral/35',           caption: 'Immediate block required' },
+  { label: 'HIGH',   badge: 'bg-crowe-amber-bright/20 text-crowe-indigo-dark border-crowe-amber/35', caption: 'Enhanced due diligence' },
+  { label: 'MEDIUM', badge: 'bg-crowe-amber/15 text-crowe-indigo-dark border-crowe-amber/35',     caption: 'Manual review required' },
+  { label: 'LOW',    badge: 'bg-crowe-indigo-bright/12 text-crowe-indigo-core border-crowe-indigo-bright/30', caption: 'Monitor and document' },
+  { label: 'CLEAR',  badge: 'bg-crowe-teal/15 text-crowe-teal border-crowe-teal/35',               caption: 'No action required' },
 ] as const;
 
 export function TierLegend() {

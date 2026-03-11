@@ -92,7 +92,7 @@ export function ScreeningDashboard({ displayResults, threshold }: ScreeningDashb
       {/* FP rate */}
       <div className="flex items-center gap-1.5" title={`${stats.fpCount} names flagged now but clear at OFAC benchmark (0.85)`}>
         <span className="text-muted-foreground">FP rate</span>
-        <span className="font-semibold" style={{ color: stats.fpRate > 0.05 ? '#EA580C' : undefined }}>
+        <span className="font-semibold" style={{ color: stats.fpRate > 0.05 ? '#FFD231' : undefined }}>
           {formatPercent(stats.fpRate)}
         </span>
       </div>
@@ -100,7 +100,7 @@ export function ScreeningDashboard({ displayResults, threshold }: ScreeningDashb
       {/* FN rate */}
       <div className="flex items-center gap-1.5" title={`${stats.fnCount} names clear now but flagged at OFAC benchmark (0.85)`}>
         <span className="text-muted-foreground">FN rate</span>
-        <span className="font-semibold" style={{ color: stats.fnRate > 0.02 ? '#DC2626' : undefined }}>
+        <span className="font-semibold" style={{ color: stats.fnRate > 0.02 ? '#E5376B' : undefined }}>
           {formatPercent(stats.fnRate)}
         </span>
       </div>

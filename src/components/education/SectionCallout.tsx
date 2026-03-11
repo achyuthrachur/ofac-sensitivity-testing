@@ -36,7 +36,7 @@ export function SectionCallout({ tab }: SectionCalloutProps) {
 
   return (
     <Alert className="mb-4 border-l-4 border-l-crowe-indigo-dark border-crowe-indigo-dark/15 bg-crowe-indigo-dark/5">
-      <Icon variant="Linear" size={16} color="var(--crowe-indigo-dark)" />
+      <Icon variant="Linear" size={16} color="var(--color-crowe-indigo-dark)" />
       <AlertTitle className="text-foreground font-semibold">{title}</AlertTitle>
       <AlertDescription className="text-muted-foreground mt-1">
         {body}{' '}

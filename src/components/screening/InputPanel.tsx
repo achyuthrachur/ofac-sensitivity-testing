@@ -13,6 +13,7 @@
 import { useState, useRef } from 'react';
 import { parseCsv, parseExcel, parsePaste } from '@/lib/screening/parseInput';
 import type { ParseResult } from '@/lib/screening/parseInput';
+import { Label } from '@/components/ui/label';
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -174,7 +175,7 @@ export function InputPanel({ onNamesLoaded, currentCount }: InputPanelProps) {
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <div className="rounded-xl border border-border bg-card p-5 shadow-crowe-sm space-y-4">
+    <div className="rounded-xl border border-border bg-card p-4 shadow-crowe-sm space-y-4">
 
       {/* Header row */}
       <div className="flex items-center justify-between">
@@ -188,7 +189,7 @@ export function InputPanel({ onNamesLoaded, currentCount }: InputPanelProps) {
         <span className={[
           'text-xs font-semibold px-3 py-1 rounded-full',
           currentCount > 0
-            ? 'bg-green-100 text-green-700'
+            ? 'bg-crowe-teal/12 text-crowe-teal'
             : 'bg-muted text-muted-foreground',
         ].join(' ')}>
           {currentCount.toLocaleString()} {currentCount === 1 ? 'name' : 'names'} loaded
@@ -245,17 +246,25 @@ export function InputPanel({ onNamesLoaded, currentCount }: InputPanelProps) {
 
       {activeTab === 'paste' && (
         <div className="space-y-3">
+          <div className="space-y-1">
+            <Label htmlFor="screening-paste-input">Paste names</Label>
+            <p id="screening-paste-help" className="text-xs text-muted-foreground">
+              Paste one name per line or a comma-separated list. The parser will normalize and count entries as you type.
+            </p>
+          </div>
           <textarea
+            id="screening-paste-input"
             value={pasteValue}
             onChange={(e) => handlePasteChange(e.target.value)}
             placeholder="Paste names here — one per line, or comma-separated"
             rows={8}
+            aria-describedby="screening-paste-help screening-paste-count"
             className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-mono
                        placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-crowe-amber
                        resize-y"
           />
           {/* Live count beneath textarea */}
-          <p className="text-xs text-muted-foreground">
+          <p id="screening-paste-count" className="text-xs text-muted-foreground">
             {livePasteCount.toLocaleString()} {livePasteCount === 1 ? 'name' : 'names'} parsed
           </p>
           <button
@@ -282,7 +291,7 @@ export function InputPanel({ onNamesLoaded, currentCount }: InputPanelProps) {
 
           {/* Success count (only when no blocking error and names were loaded) */}
           {!result.error && result.names.length > 0 && (
-            <p className="text-sm text-green-700 font-medium">
+            <p className="text-sm text-crowe-teal font-medium">
               {result.names.length.toLocaleString()} {result.names.length === 1 ? 'name' : 'names'} ready for screening.
               {result.rawCount !== result.names.length && (
                 <span className="text-muted-foreground font-normal">

@@ -27,15 +27,15 @@ interface SimulationChartProps {
 
 const COLOR_75  = '#05AB8C'; // Crowe Teal
 const COLOR_85  = '#0075C9'; // Crowe Blue
-const COLOR_95  = '#DC2626'; // Red
+const COLOR_95  = '#E5376B'; // Crowe Coral
 const COLOR_BAR = '#F5A800'; // Crowe Amber (cumulative miss bars)
-const COLOR_RECAL = '#2B2D6E'; // Crowe Indigo
+const COLOR_RECAL = '#002E62'; // Crowe Indigo Core
 
 // Evasion tier marker colors
 const TIER_MARKER_COLORS: Record<1 | 2 | 3, string> = {
-  1: '#EA580C',
-  2: '#DC2626',
-  3: '#7C2D12',
+  1: '#FFD231',
+  2: '#E5376B',
+  3: '#B14FC5',
 };
 
 // ─── Custom tooltip ───────────────────────────────────────────────────────────

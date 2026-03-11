@@ -94,10 +94,10 @@ export const RECOMMENDED_ACTIONS: Record<RiskTier, string> = {
   CLEAR:  'No match — clear to proceed.',
 } as const;
 
-/** Tier color hex values for badges and callout blocks. Traffic-light palette. */
+/** Tier color hex values for badges and callout blocks, mapped to the Crowe palette. */
 export const TIER_COLORS: Record<RiskTier, string> = {
-  EXACT:  '#DC2626',  // red
-  HIGH:   '#EA580C',  // orange
+  EXACT:  '#E5376B',  // Crowe Coral
+  HIGH:   '#FFD231',  // Crowe Amber Bright
   MEDIUM: '#F5A800',  // Crowe Amber
   LOW:    '#0075C9',  // Crowe Blue
   CLEAR:  '#05AB8C',  // Crowe Teal

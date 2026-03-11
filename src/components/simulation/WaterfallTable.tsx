@@ -39,8 +39,8 @@ export function WaterfallTable({ rows, snapshotIndex }: WaterfallTableProps) {
                   key={row.entityId}
                   className={
                     isMissed
-                      ? 'bg-red-50 dark:bg-red-950/30'
-                      : 'bg-green-50/50 dark:bg-green-950/20'
+                      ? 'bg-crowe-coral/8'
+                      : 'bg-crowe-teal/8'
                   }
                 >
                   <td className="px-3 py-1.5 font-medium text-foreground truncate max-w-[140px]">
@@ -56,8 +56,8 @@ export function WaterfallTable({ rows, snapshotIndex }: WaterfallTableProps) {
                     <span
                       className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold ${
                         isMissed
-                          ? 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300'
-                          : 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300'
+                          ? 'bg-crowe-coral/12 text-crowe-coral'
+                          : 'bg-crowe-teal/12 text-crowe-teal'
                       }`}
                     >
                       {row.result}

@@ -26,6 +26,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import {
   People, Global, Setting4, Building, Refresh2, ClipboardTick,
   DocumentUpload, Chart, ArrowRight,
@@ -81,8 +82,8 @@ const PANEL_HEADERS: Record<string, { title: string; sub: string }> = {
     sub: 'Model catch rate decay under three evasion velocity presets',
   },
   docs: {
-    title: 'Engine Docs',
-    sub: 'Reference documentation for the scoring algorithms',
+    title: 'Methodology',
+    sub: 'Plain-language guidance for the scoring model and demo workflow',
   },
 };
 
@@ -96,7 +97,7 @@ function ScreeningGuidePanel() {
     >
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <ClipboardTick variant="Linear" size={18} color="var(--crowe-indigo-dark)" />
+          <ClipboardTick variant="Linear" size={18} color="var(--color-crowe-indigo-dark)" />
           Screening Mode
         </CardTitle>
         <CardDescription>
@@ -147,7 +148,7 @@ function SimulationGuidePanel() {
     >
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Chart variant="Linear" size={18} color="var(--crowe-indigo-dark)" />
+          <Chart variant="Linear" size={18} color="var(--color-crowe-indigo-dark)" />
           Simulation Mode
         </CardTitle>
         <CardDescription>
@@ -187,6 +188,29 @@ function SimulationGuidePanel() {
         </Link>
       </CardFooter>
     </SpotlightCard>
+  );
+}
+
+function DemoStarterCallout() {
+  return (
+    <Alert className="border border-crowe-amber/30 bg-crowe-amber/8 text-foreground">
+      <ClipboardTick
+        variant="Linear"
+        size={16}
+        color="var(--color-crowe-indigo-dark)"
+      />
+      <AlertTitle className="text-crowe-indigo-dark">Recommended demo flow</AlertTitle>
+      <AlertDescription className="mt-2 text-muted-foreground">
+        <ol className="space-y-1.5">
+          <li>1. Keep all entity counts at 10.</li>
+          <li>2. Leave all four regions enabled.</li>
+          <li>3. Keep all degradation rules selected.</li>
+          <li>4. Run Sensitivity Test first.</li>
+          <li>5. Use the preloaded screening list next.</li>
+          <li>6. Finish with the Baseline simulation.</li>
+        </ol>
+      </AlertDescription>
+    </Alert>
   );
 }
 
@@ -313,6 +337,8 @@ export default function Home() {
           <p className="text-sm text-muted-foreground mt-1">{panelHeader.sub}</p>
         </div>
 
+        <DemoStarterCallout />
+
         {/* Sensitivity form — only when sensitivity or docs tab is active */}
         {(activeTab === 'sensitivity' || activeTab === 'docs') && (
           <>
@@ -323,7 +349,7 @@ export default function Home() {
             >
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <People variant="Linear" size={18} color="var(--crowe-indigo-dark)" />
+                  <People variant="Linear" size={18} color="var(--color-crowe-indigo-dark)" />
                   Entity Counts
                 </CardTitle>
                 <CardDescription>
@@ -362,7 +388,7 @@ export default function Home() {
             >
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Global variant="Linear" size={18} color="var(--crowe-indigo-dark)" />
+                  <Global variant="Linear" size={18} color="var(--color-crowe-indigo-dark)" />
                   Linguistic Regions
                 </CardTitle>
                 <CardDescription>Include names from these regions in the sample</CardDescription>
@@ -395,48 +421,53 @@ export default function Home() {
             >
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Setting4 variant="Linear" size={18} color="var(--crowe-indigo-dark)" />
+                  <Setting4 variant="Linear" size={18} color="var(--color-crowe-indigo-dark)" />
                   Degradation Rules
                 </CardTitle>
                 <CardDescription>Select which name degradation rules to apply</CardDescription>
               </CardHeader>
               <CardContent>
-                {/* Select All row */}
-                <div className="flex items-center gap-2">
-                  <Checkbox
-                    id="rule-select-all"
-                    checked={deriveSelectAllState(ruleIds)}
-                    disabled={isPending}
-                    onCheckedChange={handleSelectAll}
-                  />
-                  <Label htmlFor="rule-select-all" className="font-medium">
-                    Select All
-                  </Label>
-                </div>
+                <fieldset aria-describedby="degradation-rules-help" className="space-y-3">
+                  <legend className="sr-only">Degradation rules</legend>
+                  <p id="degradation-rules-help" className="text-xs text-muted-foreground">
+                    These rules simulate common screening blind spots such as spacing changes,
+                    phonetic variants, truncation, and punctuation loss.
+                  </p>
 
-                {/* Separator */}
-                <div className="border-t my-3" />
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="rule-select-all"
+                      checked={deriveSelectAllState(ruleIds)}
+                      disabled={isPending}
+                      onCheckedChange={handleSelectAll}
+                    />
+                    <Label htmlFor="rule-select-all" className="font-medium">
+                      Select All
+                    </Label>
+                  </div>
 
-                {/* Individual rule checkboxes */}
-                <div className="grid grid-cols-2 gap-3">
-                  {CANONICAL_RULE_ORDER.map((ruleId) => (
-                    <div key={ruleId} className="flex items-center gap-2">
-                      <Checkbox
-                        id={`rule-${ruleId}`}
-                        checked={ruleIds.includes(ruleId)}
-                        disabled={isPending}
-                        onCheckedChange={(checked) => {
-                          if (checked !== 'indeterminate') {
-                            setRuleIds(toggleRule(ruleIds, ruleId));
-                          }
-                        }}
-                      />
-                      <Label htmlFor={`rule-${ruleId}`} className="cursor-pointer text-sm leading-tight">
-                        {RULE_LABELS[ruleId as RuleId]}
-                      </Label>
-                    </div>
-                  ))}
-                </div>
+                  <div className="border-t" />
+
+                  <div className="grid grid-cols-2 gap-3">
+                    {CANONICAL_RULE_ORDER.map((ruleId) => (
+                      <div key={ruleId} className="flex items-center gap-2">
+                        <Checkbox
+                          id={`rule-${ruleId}`}
+                          checked={ruleIds.includes(ruleId)}
+                          disabled={isPending}
+                          onCheckedChange={(checked) => {
+                            if (checked !== 'indeterminate') {
+                              setRuleIds(toggleRule(ruleIds, ruleId));
+                            }
+                          }}
+                        />
+                        <Label htmlFor={`rule-${ruleId}`} className="cursor-pointer text-sm leading-tight">
+                          {RULE_LABELS[ruleId as RuleId]}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                </fieldset>
               </CardContent>
             </SpotlightCard>
 
@@ -447,7 +478,7 @@ export default function Home() {
             >
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Building variant="Linear" size={18} color="var(--crowe-indigo-dark)" />
+                  <Building variant="Linear" size={18} color="var(--color-crowe-indigo-dark)" />
                   Client Name
                 </CardTitle>
                 <CardDescription>Used to label the output CSV file</CardDescription>
@@ -514,7 +545,7 @@ export default function Home() {
               <TabsTrigger value="simulation">
                 <span className="mr-1.5 text-xs opacity-50">3</span>Simulation
               </TabsTrigger>
-              <TabsTrigger value="docs">Engine Docs</TabsTrigger>
+              <TabsTrigger value="docs">Methodology</TabsTrigger>
             </TabsList>
           </div>
 
@@ -547,7 +578,7 @@ export default function Home() {
           <TabsContent value="screening" className="flex-1 min-h-0 flex flex-col overflow-hidden p-6 gap-4">
             <SectionCallout tab="screening" />
             {matchResults.length === 0 ? (
-              <div className="flex flex-col gap-6 flex-1">
+              <div className="flex flex-col gap-4 flex-1">
                 <InputPanel
                   onNamesLoaded={(names) => {
                     setActiveNames(names);
@@ -608,7 +639,9 @@ export default function Home() {
           </TabsContent>
 
           <TabsContent value="docs" className="flex-1 overflow-y-auto p-6">
-            <EngineExplanationPanel />
+            <div className="mx-auto w-full max-w-4xl">
+              <EngineExplanationPanel />
+            </div>
           </TabsContent>
         </Tabs>
       </div>

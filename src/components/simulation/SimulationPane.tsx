@@ -9,6 +9,7 @@ import { SimulationChart } from './SimulationChart';
 import { WaterfallTable } from './WaterfallTable';
 import { CostOfMissCalculator } from '@/components/shared/CostOfMissCalculator';
 import { EmptySimulationState } from '@/components/states/EmptySimulationState';
+import { Label } from '@/components/ui/label';
 
 const PRESET_IDS: SimulationPresetId[] = ['BASELINE', 'ELEVATED', 'SURGE'];
 
@@ -98,16 +99,23 @@ export function SimulationPane() {
 
         {/* Recalibration event input — only when result is available */}
         {result && (
-          <div className="flex flex-col gap-1">
-            <span className="text-xs font-semibold uppercase text-muted-foreground">Recalibration Event</span>
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="simulation-recalibration" className="text-xs font-semibold uppercase text-muted-foreground">
+              Recalibration Event
+            </Label>
+            <p id="simulation-recalibration-help" className="max-w-sm text-xs text-muted-foreground">
+              Enter a snapshot number to mark the point where the screening model would be recalibrated.
+            </p>
             <div className="flex items-center gap-2">
               <input
+                id="simulation-recalibration"
                 type="number"
                 min={0}
                 max={result.snapshots.length - 1}
                 placeholder={`0–${result.snapshots.length - 1}`}
                 value={recalibrationInput}
                 onChange={(e) => setRecalibrationInput(e.target.value)}
+                aria-describedby="simulation-recalibration-help"
                 className="w-24 px-2 py-1.5 text-xs rounded-md border bg-background focus:outline-none
                            focus:ring-2 focus:ring-crowe-indigo-core/40"
               />
@@ -137,10 +145,10 @@ export function SimulationPane() {
 
       {/* ── Results ───────────────────────────────────────────────────────────── */}
       {result && (
-        <div className="flex flex-col flex-1 min-h-0 gap-3">
+        <div className="flex flex-col flex-1 min-h-0 gap-4">
 
           {/* Chart */}
-          <div className="border rounded-lg bg-card p-3 flex-shrink-0">
+          <div className="border rounded-lg bg-card p-4 flex-shrink-0">
             <p className="text-xs font-semibold uppercase text-muted-foreground mb-2">
               Catch Rate Evolution — {SIMULATION_PRESETS[result.preset].label} ({result.snapshots.length} snapshots)
             </p>
@@ -156,7 +164,7 @@ export function SimulationPane() {
           </div>
 
           {/* Bottom split — waterfall table + Cost of Miss */}
-          <div className="flex flex-1 min-h-0 gap-3">
+          <div className="flex flex-1 min-h-0 gap-4">
 
             {/* Waterfall table */}
             <div className="flex-1 border rounded-lg bg-card overflow-hidden">
@@ -173,7 +181,7 @@ export function SimulationPane() {
             </div>
 
             {/* Cost of Miss + detection lag summary */}
-            <div className="w-72 flex flex-col gap-3 flex-shrink-0">
+            <div className="w-72 flex flex-col gap-4 flex-shrink-0">
               <CostOfMissCalculator />
 
               {/* Detection lag summary */}
@@ -194,7 +202,7 @@ export function SimulationPane() {
                   ))}
                 </div>
                 <p className="text-xs text-muted-foreground pt-1 border-t">
-                  Entities showing "Not detected" should be flagged for enhanced due diligence.
+                  Entities showing &quot;Not detected&quot; should be flagged for enhanced due diligence.
                 </p>
               </div>
             </div>

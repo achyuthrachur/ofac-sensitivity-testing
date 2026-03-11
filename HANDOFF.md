@@ -1,71 +1,110 @@
 # HANDOFF.md
-> Written by Claude Code at the end of each session.
-> Read at the start of the next session to resume without re-explaining context.
-> Delete contents after reading — keep this file lean.
 
----
+## Current phase
+Implementation complete / final verification documented
 
-## STATUS
-Phase 19 — Dashboard + Cost of Miss. Phases 18 + 18.1–18.4 complete and committed.
-Build is green. 8 styling fixes are pending commit (see below).
+## Relevant skills loaded
+- animation-components
+- architecture
+- crowe-brand
+- frontend
+- qa
+- tech-stack
 
-## WHAT WAS JUST COMPLETED
-- Phases 18.1–18.4 fully built and committed (nav, education layer, empty states, help drawer)
-- All 9 21st.dev components installed in src/components/ui/
-- SiteNav, TermTooltip, SectionCallout, TierLegend, OnboardingBanner, HelpDrawer, HelpFab all wired
-- ScreeningDashboard (tier counts, avg score, FP/FN) already built + wired into ScreeningResultsPane
-- CostOfMissCalculator already built at src/components/shared/CostOfMissCalculator.tsx
-- CostOfMissCalculator already rendered in ScreeningResultsPane right pane
+## Completed work
+- Recreated and maintained `HANDOFF.md`
+- Phase 1: corrected live Crowe branding issues
+  - normalized global Crowe and neutral tokens in `src/app/globals.css`
+  - replaced broken `var(--crowe-...)` references with valid Crowe token usage
+  - remapped live tier/status colors to Crowe palette values in screening, simulation, guide, and export surfaces
+  - updated mirrored tier color tests
+- Phase 2: improved `/tool` UX and accessibility
+  - added the compact starter checklist directly below the left-panel header
+  - renamed visible `Engine Docs` labels to `Methodology`
+  - added helper text and ARIA wiring for degradation rules, paste input, threshold slider, recalibration input, and Cost of Miss input
+  - normalized panel spacing and centered the methodology surface
+- Phase 3: cleaned up public-facing copy
+  - rewrote methodology content into concise client-facing guidance
+  - rewrote guide sections for OFAC context, sensitivity testing, and screening mode so they match the current UI and remove implementation-detail language
+- Phase 4: fixed layout consistency
+  - replaced the landing-page spacing hack in `HowItWorksSection` with real grid gaps and centered connectors
+  - constrained guide-page content width and standardized guide card padding
+- Phase 5: removed dead UI copies and cleaned dependencies
+  - deleted dead files:
+    - `src/components/ui/animated-tooltip.tsx`
+    - `src/components/ui/empty-state.tsx`
+    - `src/components/ui/floating-action-menu.tsx`
+    - `src/components/ui/sheet.tsx`
+    - `src/components/ui/toaster.tsx`
+    - `src/components/ui/tubelight-navbar.tsx`
+  - removed `next-themes`
+  - retained `lucide-react` because `src/components/ui/checkbox.tsx` still imports `CheckIcon`
 
-## WHAT TO DO NEXT
+## Files changed
+- `HANDOFF.md`
+- `package.json`
+- `package-lock.json`
+- `src/app/globals.css`
+- `src/app/tool/page.tsx`
+- `src/app/_components/landing/FeatureStatsSection.tsx`
+- `src/app/_components/landing/HowItWorksSection.tsx`
+- `src/app/guide/page.tsx`
+- `src/app/guide/_components/sections/OfacContextSection.tsx`
+- `src/app/guide/_components/sections/ScoringEngineSection.tsx`
+- `src/app/guide/_components/sections/ScreeningModeSection.tsx`
+- `src/app/guide/_components/sections/SensitivityTestSection.tsx`
+- `src/components/EngineExplanationPanel.tsx`
+- `src/components/education/SectionCallout.tsx`
+- `src/components/education/TierLegend.tsx`
+- `src/components/screening/InputPanel.tsx`
+- `src/components/screening/ScreeningDashboard.tsx`
+- `src/components/screening/ScreeningResultsPane.tsx`
+- `src/components/shared/CostOfMissCalculator.tsx`
+- `src/components/simulation/SimulationChart.tsx`
+- `src/components/simulation/SimulationPane.tsx`
+- `src/components/simulation/WaterfallTable.tsx`
+- `src/components/ui/animated-tooltip.tsx` (deleted)
+- `src/components/ui/empty-state.tsx` (deleted)
+- `src/components/ui/floating-action-menu.tsx` (deleted)
+- `src/components/ui/sheet.tsx` (deleted)
+- `src/components/ui/toaster.tsx` (deleted)
+- `src/components/ui/tubelight-navbar.tsx` (deleted)
+- `src/lib/__tests__/screening-types.test.ts`
+- `src/lib/exportUtils.ts`
+- `src/types/screening.ts`
 
-### Step 1 — Commit 8 pending style fixes (5 minutes)
-These are light-mode style corrections sitting uncommitted in the working tree:
-```
-src/components/education/OnboardingBanner.tsx
-src/components/education/SectionCallout.tsx
-src/components/education/TermTooltip.tsx
-src/components/education/TierLegend.tsx
-src/components/screening/ScreeningProgressBar.tsx
-src/components/states/EmptyResultsState.tsx
-src/components/states/EmptyScreeningState.tsx
-src/components/states/EmptySimulationState.tsx
-```
-Commit message: `chore(ux): fix light-mode styles on education + state components`
+## Commands run and outcomes
+- `git status --short`
+  - initial status showed `HANDOFF.md` deleted and diagnosis/instruction docs untracked
+- `git show HEAD:HANDOFF.md`
+  - recovered prior handoff context before recreating the file
+- `npm uninstall next-themes lucide-react`
+  - succeeded, but removing `lucide-react` proved incorrect because `src/components/ui/checkbox.tsx` is live
+- `npm install lucide-react@^0.576.0`
+  - rerun with escalation after cache-restricted sandbox failure; succeeded
+- `npm run build`
+  - sandbox run failed with `spawn EPERM`
+  - escalated run passed
+- `npm run test`
+  - sandbox run failed with `spawn EPERM`
+  - escalated run passed: 19 files, 196 tests
+- `npm run lint`
+  - escalated run still fails because of pre-existing repo issues outside this MVP change set
 
-### Step 2 — Verify Phase 19 is already complete
-Both Phase 19 deliverables were built ahead of schedule:
-- ScreeningDashboard: `src/components/screening/ScreeningDashboard.tsx` — DONE
-- CostOfMissCalculator: `src/components/shared/CostOfMissCalculator.tsx` — DONE
+## Open blockers
+- Real Crowe logo SVG assets are still missing, so logo replacement remains blocked and out of scope
+- `npm run lint` still fails on pre-existing issues not introduced by this implementation:
+  - `.planning/fix-tool-page.cjs` uses forbidden `require()` imports
+  - `src/components/education/OnboardingBanner.tsx` triggers `react-hooks/set-state-in-effect`
+- Remaining lint warnings are also pre-existing:
+  - `src/app/tool/page.tsx` missing hook dependency warning
+  - `src/components/ResultsTable.tsx` and `src/components/screening/ScreeningNameList.tsx` React Compiler incompatibility warnings
+  - `src/lib/simulation/index.ts` unused parameter warning
 
-Check the 3 Phase 19 success criteria from ROADMAP.md:
-1. Dashboard shows total, per-tier counts, avg score, FP/FN — updates on threshold change ← verify
-2. Entering a transaction value shows penalty (value × 4.0) as currency ← verify
-3. CostOfMissCalculator is ONE shared component in both Screening and Simulation ← check SimulationPane
+## UI and animation decisions already confirmed by the user
+- Starter callout style: compact checklist
+- Methodology depth: client-facing summary
+- No new animation treatment was introduced; existing motion patterns were preserved
 
-**Action:** Read `src/components/simulation/SimulationPane.tsx`. If CostOfMissCalculator is not
-rendered there, add `<CostOfMissCalculator />` to it. Then mark Phase 19 complete in ROADMAP.md.
-
-### Step 3 — Phase 20 (Export)
-exportCsv() and exportPdf() may already be implemented in src/lib/exportUtils.ts.
-Check that file before building anything new. CSV and PDF buttons already exist in
-ScreeningResultsPane header bar. Verify they work end-to-end before calling Phase 20 done.
-
-## OPEN QUESTIONS / BLOCKERS
-- Confirm CostOfMissCalculator is wired into SimulationPane (likely missing — wasn't checked)
-- 3 installed 21st.dev components are unused (animated-tooltip, floating-action-menu,
-  tubelight-navbar) — this is intentional, custom implementations are used instead. Do NOT
-  remove or replace them.
-
-## FILES MOST RECENTLY TOUCHED
-- src/components/screening/ScreeningResultsPane.tsx
-- src/components/screening/ScreeningDashboard.tsx
-- src/components/shared/CostOfMissCalculator.tsx
-- src/components/simulation/SimulationPane.tsx (check this — may need CostOfMissCalculator)
-- src/app/tool/page.tsx
-
-## COMMANDS TO VERIFY CURRENT STATE
-```
-npm run build
-```
-(Build passes clean as of this handoff. No test suite failures known.)
+## Exact next action
+If work resumes, address the unrelated lint blockers outside the MVP scope or provide the missing Crowe logo assets if logo work is needed.

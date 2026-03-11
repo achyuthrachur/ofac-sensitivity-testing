@@ -31,22 +31,22 @@ export function HowItWorksSection() {
         Each tool builds on the last — stress test your engine, screen real names, then project performance over time.
       </p>
       <div className="max-w-5xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-0 relative">
+        <div className="relative grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-8">
           {TOOLS.map((tool, index) => (
             <div key={tool.number} className="relative flex flex-col items-start">
               {/* Connector arrow between cards */}
               {index < TOOLS.length - 1 && (
-                <div className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 z-10 items-center justify-center w-8 h-8 rounded-full bg-crowe-amber/10 border border-crowe-amber/20">
+                <div className="absolute right-[-1rem] top-1/2 z-10 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-crowe-amber/20 bg-crowe-amber/10 md:flex">
                   <span className="text-crowe-amber text-sm font-bold">→</span>
                 </div>
               )}
               <div
-                className="how-it-works-card bg-white rounded-xl p-8 w-full h-full mx-2"
+                className="how-it-works-card h-full w-full rounded-xl bg-white p-8"
                 style={{ boxShadow: '0 4px 8px rgba(1,30,65,0.06), 0 1px 3px rgba(1,30,65,0.04)' }}
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-crowe-amber/10">
-                    <tool.Icon variant="TwoTone" size={28} color="var(--crowe-indigo-dark)" />
+                    <tool.Icon variant="TwoTone" size={28} color="var(--color-crowe-indigo-dark)" />
                   </div>
                   <span className="text-xs font-bold text-crowe-amber/70 uppercase tracking-widest">
                     Step {tool.number}

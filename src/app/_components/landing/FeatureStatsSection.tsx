@@ -20,7 +20,7 @@ export function FeatureStatsSection() {
           return (
             <StatTiltCard key={stat.label} className="rounded-xl">
               <div className="p-8 text-center bg-white/15 rounded-xl [transform-style:preserve-3d]">
-                <StatIcon variant="Bold" size={32} color="var(--crowe-amber-core)" />
+                <StatIcon variant="Bold" size={32} color="var(--color-crowe-amber)" />
                 <span className="stat-number text-5xl font-bold text-crowe-amber block mt-2">
                   {stat.prefix && <span className="stat-prefix">{stat.prefix}</span>}
                   <span className="stat-value" data-value={String(stat.value)}>

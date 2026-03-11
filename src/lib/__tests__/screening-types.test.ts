@@ -69,12 +69,12 @@ describe('TIER_COLORS', () => {
     expect(Object.keys(TIER_COLORS).length).toBe(5);
   });
 
-  it('EXACT color is #DC2626', () => {
-    expect(TIER_COLORS['EXACT']).toBe('#DC2626');
+  it('EXACT color is #E5376B', () => {
+    expect(TIER_COLORS['EXACT']).toBe('#E5376B');
   });
 
-  it('HIGH color is #EA580C', () => {
-    expect(TIER_COLORS['HIGH']).toBe('#EA580C');
+  it('HIGH color is #FFD231', () => {
+    expect(TIER_COLORS['HIGH']).toBe('#FFD231');
   });
 
   it('MEDIUM color is #F5A800', () => {

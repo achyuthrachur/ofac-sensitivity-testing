@@ -90,7 +90,7 @@ export function ScreeningResultsPane({
     <div className="flex flex-col h-full">
 
       {/* 1. Collapsed header bar */}
-      <div className="flex items-center justify-between px-4 py-2 rounded-lg border bg-card mb-3 flex-shrink-0">
+      <div className="mb-4 flex items-center justify-between rounded-lg border bg-card p-4 flex-shrink-0">
         <span className="text-sm text-muted-foreground">
           {activeNamesCount.toLocaleString()} names loaded
         </span>
@@ -125,25 +125,33 @@ export function ScreeningResultsPane({
       </div>
 
       {/* 2. Sticky threshold header bar */}
-      <div className="sticky top-0 z-10 bg-background border-b px-4 py-3 flex items-center gap-4 flex-wrap flex-shrink-0">
+      <div className="sticky top-0 z-10 flex flex-wrap items-start gap-4 border-b bg-background p-4 flex-shrink-0">
 
         {/* Threshold label + slider */}
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold uppercase text-muted-foreground whitespace-nowrap">
-            Threshold
-          </span>
-          <Slider
-            min={50}
-            max={99}
-            step={1}
-            value={[Math.round(threshold * 100)]}
-            onValueChange={handleThresholdChange}
-            disabled={isLocked}
-            className="w-36"
-          />
-          <span className="text-xs font-mono text-muted-foreground w-6">
-            {(threshold * 100).toFixed(0)}
-          </span>
+        <div className="min-w-[240px] space-y-1.5">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold uppercase text-muted-foreground whitespace-nowrap">
+              Threshold
+            </span>
+            <Slider
+              id="screening-threshold"
+              min={50}
+              max={99}
+              step={1}
+              value={[Math.round(threshold * 100)]}
+              onValueChange={handleThresholdChange}
+              disabled={isLocked}
+              aria-label="Screening threshold"
+              aria-describedby="screening-threshold-help"
+              className="w-36"
+            />
+            <span className="text-xs font-mono text-muted-foreground w-6">
+              {(threshold * 100).toFixed(0)}
+            </span>
+          </div>
+          <p id="screening-threshold-help" className="text-xs text-muted-foreground">
+            Lower thresholds surface more possible matches. Higher thresholds reduce alert volume but can hide weaker hits.
+          </p>
         </div>
 
         {/* Tier count summary */}
@@ -198,7 +206,7 @@ export function ScreeningResultsPane({
 
         {/* Left pane — 40% */}
         <div className="w-[40%] flex-shrink-0 border-r overflow-hidden h-full flex flex-col">
-          <div className="px-3 pt-3">
+          <div className="p-4">
             <TierLegend />
           </div>
           <div className="flex-1 min-h-0 overflow-hidden">
