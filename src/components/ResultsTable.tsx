@@ -83,7 +83,7 @@ export function ResultsTable({ rows, clientName }: ResultsTableProps) {
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 w-full max-w-[1100px] mx-auto">
       {/* Summary row */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
@@ -102,11 +102,11 @@ export function ResultsTable({ rows, clientName }: ResultsTableProps) {
       </div>
 
       {/* Scroll container */}
-      <div
-        ref={parentRef}
-        className="rounded-md border"
-        style={{ height: '600px', overflowY: 'auto', width: '1050px', overflowX: 'auto' }}
-      >
+      <div className="w-full overflow-x-auto rounded-md border">
+        <div
+          ref={parentRef}
+          style={{ height: '600px', overflowY: 'auto', width: '1050px' }}
+        >
         {/* Fixed 1050px table: explicit width on every th/td is the only reliable
             alignment strategy when tbody rows are position:absolute (virtualizer).
             colgroup does NOT propagate to absolutely-positioned rows. */}
@@ -181,6 +181,7 @@ export function ResultsTable({ rows, clientName }: ResultsTableProps) {
             })}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { Setting4, ClipboardTick, Chart } from 'iconsax-reactjs';
 
 interface SectionCalloutProps {
   tab: 'sensitivity' | 'screening' | 'simulation';
@@ -23,11 +24,19 @@ const CONTENT = {
   },
 } as const;
 
+const ICONS = {
+  sensitivity: Setting4,
+  screening: ClipboardTick,
+  simulation: Chart,
+} as const;
+
 export function SectionCallout({ tab }: SectionCalloutProps) {
   const { title, body, link } = CONTENT[tab];
+  const Icon = ICONS[tab];
 
   return (
-    <Alert className="mb-4 border-crowe-indigo-dark/15 bg-crowe-indigo-dark/5">
+    <Alert className="mb-4 border-l-4 border-l-crowe-indigo-dark border-crowe-indigo-dark/15 bg-crowe-indigo-dark/5">
+      <Icon variant="Linear" size={16} color="var(--crowe-indigo-dark)" />
       <AlertTitle className="text-foreground font-semibold">{title}</AlertTitle>
       <AlertDescription className="text-muted-foreground mt-1">
         {body}{' '}

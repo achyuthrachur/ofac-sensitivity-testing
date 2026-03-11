@@ -24,14 +24,15 @@
 
 ## KICKOFF PROMPT
 ```
-Read .planning/ROADMAP.md and .planning/PROJECT.md before writing any code.
-Load .claude/skills/frontend/SKILL.md and .claude/skills/branding/SKILL.md.
+1. Check if HANDOFF.md exists in the project root — if yes, read it first.
+2. Read .planning/ROADMAP.md and .planning/PROJECT.md.
+3. Load .claude/skills/frontend/SKILL.md and .claude/skills/branding/SKILL.md.
 
-Current work: v3.0 Screening Engine — Phase 19 (Dashboard + Cost of Miss).
-Read the Phase 19 section of ROADMAP.md in full.
-Build what's listed. Verify all success criteria pass before stopping.
+Work on ONE phase at a time. When the phase is complete OR when /compact
+triggers, write HANDOFF.md summarising what was done and what comes next,
+then stop. Do not continue into the next phase without a fresh session.
 
-Do NOT spawn subagents. Do NOT rewrite entire files for small changes.
+Do NOT spawn subagents. Do NOT rewrite entire files — make targeted edits.
 Run npm run build after every significant change.
 ```
 

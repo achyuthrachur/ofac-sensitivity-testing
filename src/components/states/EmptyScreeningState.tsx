@@ -1,14 +1,13 @@
-import { ClipboardCheck } from 'lucide-react';
-import { EmptyState } from '@/components/ui/empty-state';
+import { ClipboardTick } from 'iconsax-reactjs';
 
 export function EmptyScreeningState() {
   return (
-    <div className="flex items-center justify-center py-10 px-6">
-      <EmptyState
-        icons={[ClipboardCheck]}
-        title="No names loaded"
-        description="Upload a CSV or Excel file, or paste names directly in the input panel, to begin screening against the SDN dataset."
-      />
+    <div className="flex flex-col items-center justify-center gap-4 py-20 text-center px-6">
+      <ClipboardTick variant="Linear" size={40} color="currentColor" className="text-muted-foreground/40" />
+      <p className="text-muted-foreground text-lg font-medium">No names loaded</p>
+      <p className="text-muted-foreground/60 text-sm max-w-xs">
+        Upload a CSV or Excel file, or paste names directly in the input panel, to begin screening against the SDN dataset.
+      </p>
     </div>
   );
 }
