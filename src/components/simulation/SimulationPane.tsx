@@ -6,6 +6,11 @@ import { Refresh2 } from 'iconsax-reactjs';
 import type { SimulationPresetId } from '@/types/simulation';
 import { SIMULATION_PRESETS } from '@/lib/simulation/presets';
 import { runSimulation } from '@/lib/simulation/engine';
+import {
+  formatReviewCycle,
+  formatReviewCycleCount,
+  SIMULATION_CADENCE_LABEL,
+} from '@/lib/simulation/display';
 import { SimulationChart } from './SimulationChart';
 import { WaterfallTable } from './WaterfallTable';
 import { CostOfMissCalculator } from '@/components/shared/CostOfMissCalculator';
@@ -44,9 +49,9 @@ export function SimulationPane() {
   };
 
   const handleRecalibration = () => {
-    const value = parseInt(recalibrationInput, 10);
-    if (!result || Number.isNaN(value) || value < 0 || value >= result.snapshots.length) return;
-    setRecalibrationAt(value);
+    const cycle = parseInt(recalibrationInput, 10);
+    if (!result || Number.isNaN(cycle) || cycle < 1 || cycle > result.snapshots.length) return;
+    setRecalibrationAt(cycle - 1);
   };
 
   return (
@@ -59,8 +64,8 @@ export function SimulationPane() {
             </p>
             <h3 className="mt-2 text-3xl font-semibold text-crowe-indigo-dark">Catch-rate decay model</h3>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-crowe-tint-700">
-              Select the evasion velocity profile, run the simulation, and isolate the snapshot where
-              recalibration becomes necessary.
+              Select the evasion velocity profile, run the simulation, and isolate the review cycle
+              where recalibration becomes necessary.
             </p>
           </div>
           <button
@@ -114,18 +119,18 @@ export function SimulationPane() {
 
           <div className="rounded-[1.35rem] border border-[#d6dde7] bg-white p-4">
             <Label htmlFor="simulation-recalibration" className="text-xs font-semibold uppercase tracking-[0.24em] text-[#7b8ea5]">
-              Recalibration event
+              Recalibration {SIMULATION_CADENCE_LABEL.toLowerCase()}
             </Label>
             <p id="simulation-recalibration-help" className="mt-2 text-xs leading-5 text-muted-foreground">
-              Mark the snapshot where the model would be tuned again to restore catch-rate performance.
+              Mark the review cycle where the model would be tuned again to restore catch-rate performance.
             </p>
             <div className="mt-4 flex items-center gap-2">
               <input
                 id="simulation-recalibration"
                 type="number"
-                min={0}
-                max={result ? result.snapshots.length - 1 : 0}
-                placeholder={result ? `0-${result.snapshots.length - 1}` : 'Run first'}
+                min={1}
+                max={result ? result.snapshots.length : 1}
+                placeholder={result ? `1-${result.snapshots.length}` : 'Run first'}
                 value={recalibrationInput}
                 onChange={(event) => setRecalibrationInput(event.target.value)}
                 aria-describedby="simulation-recalibration-help"
@@ -166,8 +171,8 @@ export function SimulationPane() {
               Catch-rate evolution
             </p>
             <p className="mt-2 text-sm text-crowe-tint-700">
-              {SIMULATION_PRESETS[result.preset].label} preset across {result.snapshots.length} snapshots.
-              Click any point on the chart to inspect the associated entity-level details.
+              {SIMULATION_PRESETS[result.preset].label} preset across {formatReviewCycleCount(result.snapshots.length)}.
+              Click any point on the chart to inspect the associated review-cycle details.
             </p>
             <div className="mt-5">
               <SimulationChart
@@ -188,7 +193,7 @@ export function SimulationPane() {
                 />
               ) : (
                 <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-                  Click a snapshot on the chart to see entity-level detail.
+                  Click a review cycle on the chart to see entity-level detail.
                 </div>
               )}
             </div>
@@ -199,20 +204,20 @@ export function SimulationPane() {
               </div>
               <div className="executive-panel min-h-0 rounded-[1.8rem] border border-white/80 p-4">
                 <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#7b8ea5]">
-                  Detection lag summary
+                  Detection timing summary
                 </p>
                 <div className="mt-4 space-y-2 overflow-y-auto">
                   {result.entities.map((entity) => (
                     <div key={entity.id} className="flex items-baseline justify-between gap-2 text-sm">
                       <span className="truncate text-foreground">{entity.baseName}</span>
                       <span className={`font-mono ${entity.detectionLag === null ? 'font-semibold text-destructive' : 'text-muted-foreground'}`}>
-                        {entity.detectionLag === null ? 'Not detected' : `+${entity.detectionLag}s`}
+                        {entity.detectionLag === null ? 'Not detected' : formatReviewCycle(entity.detectionLag)}
                       </span>
                     </div>
                   ))}
                 </div>
                 <p className="mt-4 border-t border-[#dde5ef] pt-3 text-xs leading-5 text-muted-foreground">
-                  Entities showing &quot;Not detected&quot; should be flagged for enhanced due diligence.
+                  Entities that are not detected within the visible review cycles should be flagged for enhanced due diligence.
                 </p>
               </div>
             </div>

@@ -2,14 +2,15 @@
 
 // Aesthetic direction: Swiss editorial executive.
 import { useRef, useState } from 'react';
-import { ClipboardText, DocumentUpload, DocumentText } from 'iconsax-reactjs';
-import { parseCsv, parseExcel, parsePaste } from '@/lib/screening/parseInput';
+import { ClipboardText, DocumentText, DocumentUpload } from 'iconsax-reactjs';
 import type { ParseResult } from '@/lib/screening/parseInput';
+import { parseCsv, parseExcel, parsePaste } from '@/lib/screening/parseInput';
 import { Label } from '@/components/ui/label';
 
 interface InputPanelProps {
   onNamesLoaded: (names: string[]) => void;
   currentCount: number;
+  loadedNames: string[];
 }
 
 function WarningList({ warnings }: { warnings: ParseResult['warnings'] }) {
@@ -105,11 +106,91 @@ function DropZone({ accept, onFile, disabled, hint }: DropZoneProps) {
   );
 }
 
-export function InputPanel({ onNamesLoaded, currentCount }: InputPanelProps) {
+interface LoadedQueuePreviewProps {
+  currentCount: number;
+  loadedNames: string[];
+  previewLimit: number;
+  showAll: boolean;
+  onToggle: () => void;
+}
+
+function LoadedQueuePreview({
+  currentCount,
+  loadedNames,
+  previewLimit,
+  showAll,
+  onToggle,
+}: LoadedQueuePreviewProps) {
+  const visibleNames = showAll ? loadedNames : loadedNames.slice(0, previewLimit);
+  const hiddenCount = Math.max(loadedNames.length - previewLimit, 0);
+
+  return (
+    <div className="rounded-[1.6rem] border border-[#d6dde7] bg-white p-5 shadow-[0_10px_28px_rgba(1,30,65,0.04)]">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#7b8ea5]">
+            Loaded queue preview
+          </p>
+          <p className="mt-2 text-sm leading-6 text-crowe-tint-700">
+            Review the synthetic client names that are currently staged for screening.
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="rounded-full border border-[#d6dde7] bg-[#f8fafc] px-3 py-1.5 text-xs font-semibold text-crowe-indigo-dark">
+            {currentCount.toLocaleString()} ready
+          </div>
+          <div className="rounded-full border border-[#d6dde7] bg-[#f8fafc] px-3 py-1.5 text-xs font-semibold text-crowe-tint-700">
+            Synthetic demo queue
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 rounded-[1.25rem] border border-[#dbe3ee] bg-[#f8fafc]">
+        <div className="grid grid-cols-[56px_minmax(0,1fr)] border-b border-[#dbe3ee] px-4 py-3 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#7b8ea5]">
+          <span>No.</span>
+          <span>Name</span>
+        </div>
+        <div className="max-h-[320px] overflow-y-auto">
+          {visibleNames.map((name, index) => (
+            <div
+              key={name}
+              className="grid grid-cols-[56px_minmax(0,1fr)] items-start gap-3 border-b border-[#e7edf4] px-4 py-3 text-sm last:border-b-0"
+            >
+              <span className="font-mono text-xs font-semibold text-[#7b8ea5]">
+                {(index + 1).toString().padStart(2, '0')}
+              </span>
+              <span className="leading-5 text-crowe-indigo-dark">{name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-4 flex flex-col gap-2 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <p>
+          {showAll || hiddenCount === 0
+            ? 'Showing the full loaded queue.'
+            : `Showing the first ${previewLimit} names. ${hiddenCount} more remain below the fold.`}
+        </p>
+        {loadedNames.length > previewLimit ? (
+          <button
+            type="button"
+            onClick={onToggle}
+            className="text-left font-semibold text-crowe-amber transition-colors hover:text-crowe-amber-bright"
+          >
+            {showAll ? 'Show fewer names' : `View all ${loadedNames.length} names`}
+          </button>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+export function InputPanel({ onNamesLoaded, currentCount, loadedNames }: InputPanelProps) {
   const [activeTab, setActiveTab] = useState<'csv' | 'excel' | 'paste'>('csv');
   const [pasteValue, setPasteValue] = useState('');
   const [result, setResult] = useState<ParseResult | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showAllPreview, setShowAllPreview] = useState(false);
 
   async function processFile(file: File) {
     setIsProcessing(true);
@@ -151,6 +232,7 @@ export function InputPanel({ onNamesLoaded, currentCount }: InputPanelProps) {
   }
 
   const livePasteCount = pasteValue.trim() ? parsePaste(pasteValue).names.length : 0;
+  const previewLimit = 6;
 
   return (
     <div className="executive-panel overflow-hidden rounded-[2rem] border border-white/80">
@@ -194,7 +276,11 @@ export function InputPanel({ onNamesLoaded, currentCount }: InputPanelProps) {
                     : 'border-[#d6dde7] bg-white text-crowe-indigo-dark hover:border-crowe-indigo-core',
                 ].join(' ')}
               >
-                <div className={`flex h-10 w-10 items-center justify-center rounded-2xl ${active ? 'bg-white/12' : 'bg-[#eef2f7]'}`}>
+                <div
+                  className={`flex h-10 w-10 items-center justify-center rounded-2xl ${
+                    active ? 'bg-white/12' : 'bg-[#eef2f7]'
+                  }`}
+                >
                   <Icon variant="Linear" size={18} color="currentColor" />
                 </div>
                 <div>
@@ -208,89 +294,101 @@ export function InputPanel({ onNamesLoaded, currentCount }: InputPanelProps) {
           })}
         </div>
 
-        <div className="space-y-4">
-          {activeTab === 'csv' ? (
-            <DropZone
-              accept=".csv,text/csv"
-              onFile={processFile}
-              disabled={isProcessing}
-              hint="Browse for a .csv file"
-            />
-          ) : null}
-
-          {activeTab === 'excel' ? (
-            <DropZone
-              accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-              onFile={processFile}
-              disabled={isProcessing}
-              hint="Browse for a .xlsx file"
-            />
-          ) : null}
-
-          {activeTab === 'paste' ? (
-            <div className="rounded-[1.6rem] border border-[#d6dde7] bg-white p-5 shadow-[0_10px_28px_rgba(1,30,65,0.04)]">
-              <div className="mb-3 space-y-1">
-                <Label htmlFor="screening-paste-input">Paste names</Label>
-                <p id="screening-paste-help" className="text-xs text-muted-foreground">
-                  Paste one name per line or a comma-separated list. The parser normalizes entries as
-                  you type.
-                </p>
-              </div>
-              <textarea
-                id="screening-paste-input"
-                value={pasteValue}
-                onChange={(event) => handlePasteChange(event.target.value)}
-                placeholder="Paste names here - one per line, or comma-separated"
-                rows={10}
-                aria-describedby="screening-paste-help screening-paste-count"
-                className="min-h-[220px] w-full resize-y rounded-[1.25rem] border border-[#d6dde7] bg-[#f8fafc] px-4 py-3 text-sm font-mono placeholder:text-muted-foreground focus:border-crowe-amber focus:outline-none"
+        <div className="grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
+          <div className="space-y-4">
+            {activeTab === 'csv' ? (
+              <DropZone
+                accept=".csv,text/csv"
+                onFile={processFile}
+                disabled={isProcessing}
+                hint="Browse for a .csv file"
               />
-              <div className="mt-4 flex items-center justify-between">
-                <p id="screening-paste-count" className="text-xs text-muted-foreground">
-                  {livePasteCount.toLocaleString()} {livePasteCount === 1 ? 'name' : 'names'} parsed
-                </p>
-                <button
-                  type="button"
-                  onClick={handlePasteApply}
-                  disabled={pasteValue.trim() === ''}
-                  className="rounded-full bg-crowe-amber px-4 py-2 text-sm font-semibold text-crowe-indigo-dark transition-colors hover:bg-crowe-amber-dark disabled:opacity-50"
-                >
-                  Apply list
-                </button>
+            ) : null}
+
+            {activeTab === 'excel' ? (
+              <DropZone
+                accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                onFile={processFile}
+                disabled={isProcessing}
+                hint="Browse for a .xlsx file"
+              />
+            ) : null}
+
+            {activeTab === 'paste' ? (
+              <div className="rounded-[1.6rem] border border-[#d6dde7] bg-white p-5 shadow-[0_10px_28px_rgba(1,30,65,0.04)]">
+                <div className="mb-3 space-y-1">
+                  <Label htmlFor="screening-paste-input">Paste names</Label>
+                  <p id="screening-paste-help" className="text-xs text-muted-foreground">
+                    Paste one name per line or a comma-separated list. The parser normalizes entries as
+                    you type.
+                  </p>
+                </div>
+                <textarea
+                  id="screening-paste-input"
+                  value={pasteValue}
+                  onChange={(event) => handlePasteChange(event.target.value)}
+                  placeholder="Paste names here - one per line, or comma-separated"
+                  rows={10}
+                  aria-describedby="screening-paste-help screening-paste-count"
+                  className="min-h-[220px] w-full resize-y rounded-[1.25rem] border border-[#d6dde7] bg-[#f8fafc] px-4 py-3 text-sm font-mono placeholder:text-muted-foreground focus:border-crowe-amber focus:outline-none"
+                />
+                <div className="mt-4 flex items-center justify-between">
+                  <p id="screening-paste-count" className="text-xs text-muted-foreground">
+                    {livePasteCount.toLocaleString()} {livePasteCount === 1 ? 'name' : 'names'} parsed
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handlePasteApply}
+                    disabled={pasteValue.trim() === ''}
+                    className="rounded-full bg-crowe-amber px-4 py-2 text-sm font-semibold text-crowe-indigo-dark transition-colors hover:bg-crowe-amber-dark disabled:opacity-50"
+                  >
+                    Apply list
+                  </button>
+                </div>
               </div>
-            </div>
-          ) : null}
+            ) : null}
 
-          {isProcessing ? (
-            <div className="rounded-[1.2rem] border border-[#d6dde7] bg-white px-4 py-3 text-sm text-muted-foreground">
-              Processing file...
-            </div>
-          ) : null}
+            {isProcessing ? (
+              <div className="rounded-[1.2rem] border border-[#d6dde7] bg-white px-4 py-3 text-sm text-muted-foreground">
+                Processing file...
+              </div>
+            ) : null}
 
-          {result ? (
-            <div className="space-y-3">
-              {result.error ? (
-                <div className="rounded-[1.2rem] border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-                  {result.error}
-                </div>
-              ) : null}
+            {result ? (
+              <div className="space-y-3">
+                {result.error ? (
+                  <div className="rounded-[1.2rem] border border-destructive/20 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                    {result.error}
+                  </div>
+                ) : null}
 
-              {!result.error && result.names.length > 0 ? (
-                <div className="rounded-[1.2rem] border border-[#cae6df] bg-[#effaf6] px-4 py-3 text-sm text-crowe-teal">
-                  <span className="font-semibold">
-                    {result.names.length.toLocaleString()} {result.names.length === 1 ? 'name' : 'names'}
-                  </span>{' '}
-                  ready for screening.
-                  {result.rawCount !== result.names.length ? (
-                    <span className="text-muted-foreground">
-                      {' '}({result.rawCount - result.names.length} skipped)
-                    </span>
-                  ) : null}
-                </div>
-              ) : null}
+                {!result.error && result.names.length > 0 ? (
+                  <div className="rounded-[1.2rem] border border-[#cae6df] bg-[#effaf6] px-4 py-3 text-sm text-crowe-teal">
+                    <span className="font-semibold">
+                      {result.names.length.toLocaleString()} {result.names.length === 1 ? 'name' : 'names'}
+                    </span>{' '}
+                    ready for screening.
+                    {result.rawCount !== result.names.length ? (
+                      <span className="text-muted-foreground">
+                        {' '}({result.rawCount - result.names.length} skipped)
+                      </span>
+                    ) : null}
+                  </div>
+                ) : null}
 
-              <WarningList warnings={result.warnings} />
-            </div>
+                <WarningList warnings={result.warnings} />
+              </div>
+            ) : null}
+          </div>
+
+          {loadedNames.length > 0 ? (
+            <LoadedQueuePreview
+              currentCount={currentCount}
+              loadedNames={loadedNames}
+              previewLimit={previewLimit}
+              showAll={showAllPreview}
+              onToggle={() => setShowAllPreview((prev) => !prev)}
+            />
           ) : null}
         </div>
       </div>

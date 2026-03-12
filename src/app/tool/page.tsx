@@ -161,9 +161,9 @@ function SimulationGuidePanel() {
         <ol className="space-y-3">
           {[
             { icon: Chart, text: 'Select a velocity preset (Baseline, Elevated, Surge).' },
-            { icon: Refresh2, text: 'Optionally enter a recalibration point.' },
+            { icon: Refresh2, text: 'Optionally mark a recalibration review cycle.' },
             { icon: ArrowRight, text: 'Click Run Simulation.' },
-            { icon: ArrowRight, text: 'Inspect the catch rate chart and snapshot table.' },
+            { icon: ArrowRight, text: 'Inspect the catch-rate chart and review-cycle detail.' },
           ].map((step, i) => {
             const StepIcon = step.icon;
             return (
@@ -579,10 +579,11 @@ export default function Home() {
             )}
           </TabsContent>
 
-          <TabsContent value="screening" className="flex-1 min-h-0 flex flex-col overflow-hidden rounded-[1.8rem] gap-4">
-            <SectionCallout tab="screening" />
+          <TabsContent value="screening" className="min-h-0 flex-1 overflow-y-auto rounded-[1.8rem] pr-1">
+            <div className="flex min-h-full flex-col gap-4">
+              <SectionCallout tab="screening" />
             {matchResults.length === 0 ? (
-              <div className="flex flex-col gap-4 flex-1">
+              <div className="flex flex-1 flex-col gap-4">
                 <InputPanel
                   onNamesLoaded={(names) => {
                     setActiveNames(names);
@@ -591,23 +592,30 @@ export default function Home() {
                     }
                   }}
                   currentCount={activeNames.length}
+                  loadedNames={activeNames}
                 />
                 {isScreening ? (
                   <ScreeningProgressBar progress={0} nameCount={activeNames.length} processedCount={0} />
                 ) : activeNames.length === 0 ? (
                   <EmptyScreeningState />
                 ) : (
-                  <div className="executive-panel flex justify-end rounded-[1.5rem] border border-white/80 p-4">
-                    <button
-                      type="button"
-                      onClick={handleRunScreening}
-                      disabled={!workerAvailable || isScreening}
-                      className="bg-crowe-amber text-crowe-indigo-dark text-sm font-semibold py-2 px-6 rounded-md
-                                 hover:bg-crowe-amber-dark disabled:opacity-50 disabled:cursor-not-allowed transition-colors
-                                 flex items-center gap-2"
-                    >
-                      Run Screening
-                    </button>
+                  <div className="executive-panel rounded-[1.5rem] border border-white/80 p-5">
+                    <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">Queue ready for screening</p>
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          Review the loaded names, then run the analyst queue against the synthetic SDN dataset.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleRunScreening}
+                        disabled={!workerAvailable || isScreening}
+                        className="inline-flex items-center justify-center rounded-full bg-crowe-amber px-6 py-2.5 text-sm font-semibold text-crowe-indigo-dark transition-colors hover:bg-crowe-amber-dark disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        Run Screening
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
@@ -635,6 +643,7 @@ export default function Home() {
                 </div>
               </>
             )}
+            </div>
           </TabsContent>
 
           <TabsContent value="simulation" className="min-h-0 flex-1 overflow-y-auto rounded-[1.8rem] pr-1">

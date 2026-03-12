@@ -56,7 +56,7 @@ export function FeatureStatsSection() {
 
             return (
               <StatTiltCard key={stat.label} className="rounded-[1.75rem]">
-                <div className="h-full rounded-[1.75rem] border border-white/8 bg-white/8 p-8 text-left backdrop-blur-sm [transform-style:preserve-3d]">
+                <div className="stat-card h-full rounded-[1.75rem] border border-white/8 bg-white/8 p-8 text-left backdrop-blur-sm [transform-style:preserve-3d]">
                   <div className="mb-10 flex items-center justify-between">
                     <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/12">
                       <StatIcon variant="Bold" size={24} color="var(--color-crowe-amber)" />

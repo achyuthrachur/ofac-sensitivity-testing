@@ -13,6 +13,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import type { SimulationSnapshot } from '@/types/simulation';
+import { formatReviewCycle, SIMULATION_CADENCE_LABEL } from '@/lib/simulation/display';
 
 interface SimulationChartProps {
   snapshots: SimulationSnapshot[];
@@ -48,7 +49,7 @@ function ChartTooltip({ active, payload, label }: {
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-lg border bg-popover shadow-md p-2 text-xs space-y-1 min-w-[160px]">
-      <p className="font-semibold text-foreground mb-1">Snapshot {label}</p>
+      <p className="font-semibold text-foreground mb-1">{formatReviewCycle((label ?? 1) - 1)}</p>
       {payload.map((entry) => (
         <div key={entry.name} className="flex items-center justify-between gap-3">
           <span style={{ color: entry.color }}>{entry.name}</span>
@@ -82,7 +83,8 @@ export function SimulationChart({
   }
 
   const data = snapshots.map((s) => ({
-    snapshot: s.snapshotIndex,
+    snapshotIndex: s.snapshotIndex,
+    reviewCycle: s.snapshotIndex + 1,
     'CR 0.75': s.catchRate75,
     'CR 0.85': s.catchRate85,
     'CR 0.95': s.catchRate95,
@@ -96,18 +98,26 @@ export function SimulationChart({
           data={data}
           margin={{ top: 8, right: 48, left: 8, bottom: 8 }}
           onClick={(e: unknown) => {
-            const evt = e as { activeLabel?: number } | null;
+            const evt = e as {
+              activeLabel?: number;
+              activePayload?: Array<{ payload?: { snapshotIndex?: number } }>;
+            } | null;
+            const snapshotIndex = evt?.activePayload?.[0]?.payload?.snapshotIndex;
+            if (snapshotIndex !== undefined) {
+              onSnapshotSelect(snapshotIndex);
+              return;
+            }
             if (evt?.activeLabel !== undefined) {
-              onSnapshotSelect(evt.activeLabel);
+              onSnapshotSelect(evt.activeLabel - 1);
             }
           }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
 
           <XAxis
-            dataKey="snapshot"
+            dataKey="reviewCycle"
             tick={{ fontSize: 10, fill: 'var(--muted-foreground)' }}
-            label={{ value: 'Snapshot', position: 'insideBottom', offset: -2, fontSize: 10 }}
+            label={{ value: SIMULATION_CADENCE_LABEL, position: 'insideBottom', offset: -2, fontSize: 10 }}
           />
 
           {/* Left Y-axis — catch rate (0–1) */}
@@ -140,7 +150,7 @@ export function SimulationChart({
             <ReferenceLine
               key={`tier-${tier}`}
               yAxisId="left"
-              x={index}
+              x={index + 1}
               stroke={TIER_MARKER_COLORS[tier]}
               strokeDasharray="4 3"
               strokeWidth={1.5}
@@ -156,7 +166,7 @@ export function SimulationChart({
           {/* Selected snapshot marker */}
           <ReferenceLine
             yAxisId="left"
-            x={selectedSnapshot}
+            x={selectedSnapshot + 1}
             stroke="var(--foreground)"
             strokeDasharray="2 2"
             strokeWidth={1}
@@ -166,7 +176,7 @@ export function SimulationChart({
           {recalibrationAt !== null && (
             <ReferenceLine
               yAxisId="left"
-              x={recalibrationAt}
+              x={recalibrationAt + 1}
               stroke={COLOR_RECAL}
               strokeDasharray="6 3"
               strokeWidth={2}
